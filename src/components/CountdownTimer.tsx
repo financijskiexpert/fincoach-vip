@@ -6,6 +6,7 @@ interface CountdownTimerProps {
   expiresAt: string // ISO date string
   onExpired?: () => void
   className?: string
+  inline?: boolean
 }
 
 interface TimeLeft {
@@ -32,7 +33,7 @@ function pad(n: number): string {
   return n.toString().padStart(2, '0')
 }
 
-export default function CountdownTimer({ expiresAt, onExpired, className }: CountdownTimerProps) {
+export default function CountdownTimer({ expiresAt, onExpired, className, inline }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(() => calculateTimeLeft(expiresAt))
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function CountdownTimer({ expiresAt, onExpired, className }: Coun
   }, [expiresAt, onExpired])
 
   if (!timeLeft) {
+    if (inline) return <span className="text-gold font-mono">isteklo</span>
     return (
       <div className={className}>
         <p className="text-center text-white/60 text-sm">Posebna cijena je istekla.</p>
@@ -62,6 +64,14 @@ export default function CountdownTimer({ expiresAt, onExpired, className }: Coun
     { label: 'MINUTA', value: timeLeft.minutes },
     { label: 'SEKUNDI', value: timeLeft.seconds },
   ]
+
+  if (inline) {
+    return (
+      <span className="text-gold font-mono font-bold">
+        {pad(timeLeft.hours)}:{pad(timeLeft.minutes)}:{pad(timeLeft.seconds)}
+      </span>
+    )
+  }
 
   return (
     <div className={className}>
