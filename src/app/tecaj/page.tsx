@@ -371,16 +371,22 @@ export default function SalesPage() {
               </h2>
               <div className="space-y-4 text-white/60 leading-relaxed">
                 <p>
-                  Financijama se bavim više od 30 godina. Prošao sam kroz sve — od financijskog stresa i dugova do potpune financijske slobode.
+                  Više od 30 godina radim u financijama i osiguranju. Ali to nije ono što me je naučilo o novcu — naučio me mentor.
                 </p>
                 <p>
-                  Moja transformacija počela je zahvaljujući mentoru koji me naučio da financijski uspjeh nije stvar koliko zarađuješ — već što radiš s tim novcem.
+                  Zvao se Smiljan. Kada sam ga upoznao, bio sam kao većina ljudi — radio sam, zarađivao, ali novac je nekako uvijek nestajao. Imao sam dugove, stres, i osjećaj da financijska sloboda nije za mene.
                 </p>
                 <p>
-                  Od tada sam pomogao stotinama ljudi transformirati odnos prema novcu. Ne kroz složene teorije, već kroz konkretne, svakodnevne navike koje svako može primijeniti.
+                  Smiljan mi je pokazao nešto što me potpuno promijenilo: <strong className="text-white">financijski uspjeh nije stvar koliko zarađuješ — već što radiš s tim novcem.</strong> I da je 80% toga psihologija, ne matematika.
                 </p>
                 <p>
-                  U ovom programu dijelim sve — od psihologije novca do praktičnih strategija štednje i investiranja.
+                  Primjenio sam što me naučio. Eliminirao dugove. Počeo štedjeti. Izgradio pasivne prihode. I danas živim financijsku slobodu o kojoj sam nekad samo sanjao.
+                </p>
+                <p>
+                  Sve što sam naučio — od mentalnih blokada do konkretnih strategija — sada prenosim tebi u ovom 90-dnevnom programu.
+                </p>
+                <p className="text-gold/80 italic font-medium">
+                  "Ne čekaj savršen trenutak. Savršen trenutak je sada." — Napoleon Hill
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-4">
