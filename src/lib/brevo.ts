@@ -1,4 +1,4 @@
-﻿const BREVO_API_KEY = process.env.BREVO_API_KEY!
+const BREVO_API_KEY = process.env.BREVO_API_KEY!
 const BREVO_API_URL = 'https://api.brevo.com/v3'
 
 interface BrevoContact {
@@ -129,19 +129,19 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
           <div class="logo">FinCoach VIP</div>
         </div>
         <div class="body">
-          <div class="h1">DobrodoĹˇao/la, ${name}! đźŽ‰</div>
-          <p class="p">ÄŚestitamo! UspjeĹˇno si se pridruĹľio/la programu <strong>FinCoach VIP â€” 90-dnevni financijski teÄŤaj</strong>.</p>
-          <p class="p">Tvoj pristup portalu je aktivan. MoĹľeĹˇ poÄŤeti s prvom lekcijom odmah.</p>
-          <p class="p">Svaki dan Ä‡eĹˇ dobiti novu video lekciju koja Ä‡e te korak po korak voditi prema financijskoj slobodi.</p>
+          <div class="h1">Dobrodošao/la, ${name}! 🎉</div>
+          <p class="p">Čestitamo! Uspješno si se pridružio/la programu <strong>FinCoach VIP — 90-dnevni financijski tečaj</strong>.</p>
+          <p class="p">Tvoj pristup portalu je aktivan. Možeš početi s prvom lekcijom odmah.</p>
+          <p class="p">Svaki dan ćeš dobiti novu video lekciju koja će te korak po korak voditi prema financijskoj slobodi.</p>
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/portal" class="btn">Idi na portal â†’</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/portal" class="btn">Idi na portal →</a>
           </div>
-          <p class="p">Ako imaĹˇ bilo kakvih pitanja, slobodno mi se javi odgovorom na ovaj email.</p>
+          <p class="p">Ako imaš bilo kakvih pitanja, slobodno mi se javi odgovorom na ovaj email.</p>
           <p class="p">Do prvog dana!</p>
           <p class="p"><strong>Brane</strong><br>Financijski coach</p>
         </div>
         <div class="footer">
-          Â© 2024 FinCoach VIP Â· <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
+          © 2024 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
         </div>
       </div>
     </body>
@@ -150,7 +150,7 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
 
   await sendTransactionalEmail({
     to: [{ email, name }],
-    subject: 'DobrodoĹˇao/la u FinCoach VIP! Tvoj portal je spreman đźŽ‰',
+    subject: 'Dobrodošao/la u FinCoach VIP! Tvoj portal je spreman 🎉',
     htmlContent,
   })
 }
@@ -179,20 +179,20 @@ export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: stri
           <div class="logo">FinCoach VIP</div>
         </div>
         <div class="body">
-          <div class="h1">Evo tvog besplatnog vodiÄŤa, ${name}!</div>
-          <p class="p">Hvala Ĺˇto si preuzeo/la vodiÄŤ <strong>"5 koraka do financijske slobode"</strong>.</p>
-          <p class="p">Unutar Ä‡eĹˇ pronaÄ‡i konkretne, odmah primjenjive korake koji su pomogli stotinama ljudi preuzeti kontrolu nad financijama.</p>
+          <div class="h1">Evo tvog besplatnog vodiča, ${name}!</div>
+          <p class="p">Hvala što si preuzeo/la vodič <strong>"5 koraka do financijske slobode"</strong>.</p>
+          <p class="p">Unutar ćeš pronaći konkretne, odmah primjenjive korake koji su pomogli stotinama ljudi preuzeti kontrolu nad financijama.</p>
           <div style="text-align: center;">
-            <a href="${pdfUrl}" class="btn">Preuzmi vodiÄŤ (PDF) â†’</a>
+            <a href="${pdfUrl}" class="btn">Preuzmi vodič (PDF) →</a>
           </div>
-          <p class="p">Kao poseban bonus, za sljedeÄ‡a <strong>3 dana</strong> imaĹˇ pristup posebnoj cijeni za naĹˇ kompletan 90-dnevni program.</p>
+          <p class="p">Kao poseban bonus, za sljedeća <strong>3 dana</strong> imaš pristup posebnoj cijeni za naš kompletan 90-dnevni program.</p>
           <p class="p">Provjeri ovdje:</p>
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/tecaj" style="color: #D4AF37;">Pogledaj teÄŤaj â†’</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/tecaj" style="color: #D4AF37;">Pogledaj tečaj →</a>
           </div>
         </div>
         <div class="footer">
-          Â© 2024 FinCoach VIP Â· <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
+          © 2024 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
         </div>
       </div>
     </body>
@@ -201,7 +201,7 @@ export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: stri
 
   await sendTransactionalEmail({
     to: [{ email, name }],
-    subject: 'Tvoj besplatni vodiÄŤ je spreman za preuzimanje',
+    subject: 'Tvoj besplatni vodič je spreman za preuzimanje',
     htmlContent,
   })
 }

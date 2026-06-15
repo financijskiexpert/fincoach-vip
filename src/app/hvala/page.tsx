@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -16,7 +16,7 @@ function ThanksContent() {
       setStatus('error')
       return
     }
-    // Just show success â€” webhook handles the actual fulfillment
+    // Just show success — webhook handles the actual fulfillment
     const timer = setTimeout(() => setStatus('success'), 1000)
     return () => clearTimeout(timer)
   }, [sessionId])
@@ -26,7 +26,7 @@ function ThanksContent() {
       <div className="min-h-screen bg-navy flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-gold animate-spin mx-auto mb-4" />
-          <p className="text-white/60">ObraÄ‘ujemo tvoju narudĹľbu...</p>
+          <p className="text-white/60">Obrađujemo tvoju narudžbu...</p>
         </div>
       </div>
     )
@@ -40,21 +40,21 @@ function ThanksContent() {
         </div>
 
         <h1 className="text-4xl font-black text-white mb-4">
-          DobrodoĹˇao/la u<br />
+          Dobrodošao/la u<br />
           <span className="text-gold">FinCoach VIP!</span>
         </h1>
 
         <p className="text-white/60 text-lg mb-8 leading-relaxed">
-          Tvoja narudĹľba je uspjeĹˇno obradena. Za nekoliko minuta primit Ä‡eĹˇ email s pristupnim podacima za student portal.
+          Tvoja narudžba je uspješno obradena. Za nekoliko minuta primit ćeš email s pristupnim podacima za student portal.
         </p>
 
         <div className="bg-navy-50 border border-white/10 rounded-2xl p-6 mb-8 text-left space-y-3">
           {[
-            'âś… Pristup svim 90 video lekcijama',
-            'âś… Radni listovi i predloĹˇci',
-            'âś… Privatna zajednica polaznika',
-            'âś… Certifikat po zavrĹˇetku',
-            'âś… DoĹľivotni pristup + nadopune',
+            '✅ Pristup svim 90 video lekcijama',
+            '✅ Radni listovi i predlošci',
+            '✅ Privatna zajednica polaznika',
+            '✅ Certifikat po završetku',
+            '✅ Doživotni pristup + nadopune',
           ].map(item => (
             <p key={item} className="text-white/70 text-sm">{item}</p>
           ))}
@@ -63,7 +63,7 @@ function ThanksContent() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/portal">
             <Button size="lg" className="w-full sm:w-auto">
-              Idi na portal â†’
+              Idi na portal →
             </Button>
           </Link>
           <Link href="/prijava">
@@ -74,7 +74,7 @@ function ThanksContent() {
         </div>
 
         <p className="text-white/30 text-sm mt-8">
-          Pitanja? PiĹˇite nam na{' '}
+          Pitanja? Pišite nam na{' '}
           <a href={`mailto:${process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? 'financijski.expert@gmail.com'}`} className="text-gold hover:underline">
             financijski.expert@gmail.com
           </a>

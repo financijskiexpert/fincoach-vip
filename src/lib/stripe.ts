@@ -1,4 +1,4 @@
-﻿import Stripe from 'stripe'
+import Stripe from 'stripe'
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-06-20',
@@ -39,8 +39,8 @@ export async function createCheckoutSession({
         price_data: {
           currency: 'eur',
           product_data: {
-            name: 'FinCoach VIP â€” 90-dnevni financijski teÄŤaj',
-            description: '90 dana, 90 video lekcija, certifikat o zavrĹˇetku',
+            name: 'FinCoach VIP — 90-dnevni financijski tečaj',
+            description: '90 dana, 90 video lekcija, certifikat o završetku',
             images: [`${process.env.NEXT_PUBLIC_SITE_URL}/og-image.jpg`],
           },
           unit_amount: priceAmountCents,

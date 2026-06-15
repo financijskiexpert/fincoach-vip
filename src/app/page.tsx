@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -29,9 +29,9 @@ export default function LandingPage() {
       })
       if (!res.ok) throw new Error()
       setSubmitted(true)
-      toast.success('VodiÄŤ je na putu! Provjeri svoju email pristiglu poĹˇtu.')
+      toast.success('Vodič je na putu! Provjeri svoju email pristiglu poštu.')
     } catch {
-      toast.error('NeĹˇto je poĹˇlo po krivu. PokuĹˇaj ponovo.')
+      toast.error('Nešto je pošlo po krivu. Pokušaj ponovo.')
     } finally {
       setLoading(false)
     }
@@ -47,7 +47,7 @@ export default function LandingPage() {
           </Link>
           <Link href="/tecaj">
             <Button size="sm" variant="outline">
-              Pogledaj teÄŤaj â†’
+              Pogledaj tečaj →
             </Button>
           </Link>
         </div>
@@ -58,16 +58,16 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-4 py-1.5 text-gold text-sm font-medium mb-8">
             <Star className="w-3.5 h-3.5" />
-            Besplatni vodiÄŤ â€” ograniÄŤena dostupnost
+            Besplatni vodič — ograničena dostupnost
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
-            Preuzmi besplatni vodiÄŤ koji je pomogao{' '}
+            Preuzmi besplatni vodič koji je pomogao{' '}
             <span className="text-gold">stotinama ljudi</span> preuzeti kontrolu nad financijama
           </h1>
 
           <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed">
-            5 konkretnih koraka koje moĹľeĹˇ primijeniti veÄ‡ danas â€” bez financijskog znanja, bez sloĹľenih aplikacija.
+            5 konkretnih koraka koje možeš primijeniti već danas — bez financijskog znanja, bez složenih aplikacija.
           </p>
 
           {submitted ? (
@@ -77,8 +77,8 @@ export default function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">VodiÄŤ je na putu!</h3>
-              <p className="text-white/60">Provjeri svoju email pristiglu poĹˇtu (i spam folder) za nekoliko minuta.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Vodič je na putu!</h3>
+              <p className="text-white/60">Provjeri svoju email pristiglu poštu (i spam folder) za nekoliko minuta.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="max-w-md mx-auto">
@@ -99,10 +99,10 @@ export default function LandingPage() {
                   className="text-base"
                 />
                 <Button type="submit" size="lg" loading={loading} className="w-full text-base">
-                  PoĹˇalji mi vodiÄŤ besplatno â†’
+                  Pošalji mi vodič besplatno →
                 </Button>
                 <p className="text-xs text-white/30 text-center">
-                  Bez spama. MoĹľeĹˇ se odjaviti u bilo trenutku.
+                  Bez spama. Možeš se odjaviti u bilo trenutku.
                 </p>
               </div>
             </form>
@@ -115,7 +115,7 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-8 text-center">
           {[
             { number: '500+', label: 'Polaznika' },
-            { number: '4.9/5', label: 'ProsjeÄŤna ocjena' },
+            { number: '4.9/5', label: 'Prosječna ocjena' },
             { number: '90', label: 'Dana programa' },
             { number: '100%', label: 'Garancija povrata' },
           ].map(stat => (
@@ -132,9 +132,9 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              PrepoznajeĹˇ li se u ovome?
+              Prepoznaješ li se u ovome?
             </h2>
-            <p className="text-white/50 text-lg">VeÄ‡ina nas se suoÄŤava s istim problemima.</p>
+            <p className="text-white/50 text-lg">Većina nas se suočava s istim problemima.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -142,17 +142,17 @@ export default function LandingPage() {
               {
                 icon: TrendingDown,
                 title: 'Novac "nestaje" do kraja mjeseca',
-                desc: 'ZaraÄ‘ujeĹˇ pristojno, ali nikad ne znaĹˇ gdje novac odlazi. Krajem mjeseca uvijek neĹˇto nedostaje.',
+                desc: 'Zarađuješ pristojno, ali nikad ne znaš gdje novac odlazi. Krajem mjeseca uvijek nešto nedostaje.',
               },
               {
                 icon: PiggyBank,
-                title: 'Ĺ tednja koja ne funkcionira',
-                desc: 'Svaki tjedan si kaĹľeĹˇ "od sljedeÄ‡eg mjeseca poÄŤnem Ĺˇtediti". Taj dan nikad ne doÄ‘e.',
+                title: 'Štednja koja ne funkcionira',
+                desc: 'Svaki tjedan si kažeš "od sljedećeg mjeseca počnem štediti". Taj dan nikad ne dođe.',
               },
               {
                 icon: Frown,
                 title: 'Stres zbog financija',
-                desc: 'NeoÄŤekivani troĹˇkovi te potpuno izbacuju iz takta. Financijska nesigurnost utjeÄŤe na sve aspekte Ĺľivota.',
+                desc: 'Neočekivani troškovi te potpuno izbacuju iz takta. Financijska nesigurnost utječe na sve aspekte života.',
               },
             ].map(item => (
               <div key={item.title} className="bg-navy-50 border border-white/10 rounded-2xl p-6">
@@ -172,9 +172,9 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Ĺ to dobivaĹˇ u vodiÄŤu?
+              Što dobivaš u vodiču?
             </h2>
-            <p className="text-white/50 text-lg">PraktiÄŤan, odmah primjenjiv sadrĹľaj.</p>
+            <p className="text-white/50 text-lg">Praktičan, odmah primjenjiv sadržaj.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -187,12 +187,12 @@ export default function LandingPage() {
               {
                 icon: Video,
                 title: 'Korak 2: 50/30/20 formula',
-                desc: 'Provjerenoj formuli koja automatski rasporeÄ‘uje tvoj novac na potrebe, Ĺľelje i Ĺˇtednju.',
+                desc: 'Provjerenoj formuli koja automatski raspoređuje tvoj novac na potrebe, želje i štednju.',
               },
               {
                 icon: Award,
-                title: 'Korak 3: Automatska Ĺˇtednja',
-                desc: 'Postavi sustav koji Ĺˇtedi novac umjesto tebe â€” bez volje, bez napora.',
+                title: 'Korak 3: Automatska štednja',
+                desc: 'Postavi sustav koji štedi novac umjesto tebe — bez volje, bez napora.',
               },
             ].map(item => (
               <div key={item.title} className="bg-navy border border-gold/20 rounded-2xl p-6">
@@ -223,10 +223,10 @@ export default function LandingPage() {
               <Badge className="mb-4 bg-gold/10 text-gold border-gold/30">Tvoj financijski coach</Badge>
               <h2 className="text-3xl font-bold text-white mb-4">Bok, ja sam Brane</h2>
               <p className="text-white/60 leading-relaxed mb-4">
-                Financijama se bavim veÄ‡ viĹˇe od 10 godina. ProĹˇao sam kroz sve â€” od dugova i financijskog stresa do potpune financijske slobode.
+                Financijama se bavim već više od 10 godina. Prošao sam kroz sve — od dugova i financijskog stresa do potpune financijske slobode.
               </p>
               <p className="text-white/60 leading-relaxed mb-6">
-                Pomogao sam stotinama ljudi transformirati odnos prema novcu. Ne kroz sloĹľene teorije, veÄ‡ kroz konkretne, svakodnevne navike.
+                Pomogao sam stotinama ljudi transformirati odnos prema novcu. Ne kroz složene teorije, već kroz konkretne, svakodnevne navike.
               </p>
               <div className="flex gap-6">
                 <div>
@@ -247,14 +247,14 @@ export default function LandingPage() {
       <section className="py-20 px-4 sm:px-6 bg-navy-50/30">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-white mb-4">Ĺ to kaĹľu polaznici?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Što kažu polaznici?</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 name: 'Marija K.',
-                role: 'UÄŤiteljica, Split',
-                text: 'Za 3 mjeseca sam uspjela uĹˇtedjeti viĹˇe nego za cijelu prethodnu godinu. Ovo stvarno funkcionira!',
+                role: 'Učiteljica, Split',
+                text: 'Za 3 mjeseca sam uspjela uštedjeti više nego za cijelu prethodnu godinu. Ovo stvarno funkcionira!',
                 stars: 5,
               },
               {
@@ -265,8 +265,8 @@ export default function LandingPage() {
               },
               {
                 name: 'Ana M.',
-                role: 'Marketing menadĹľerica, Rijeka',
-                text: 'KonaÄŤno nemam stres na kraju mjeseca. PreporuÄŤujem svima koji osjeÄ‡aju da im novac "curi".',
+                role: 'Marketing menadžerica, Rijeka',
+                text: 'Konačno nemam stres na kraju mjeseca. Preporučujem svima koji osjećaju da im novac "curi".',
                 stars: 5,
               },
             ].map(t => (
@@ -294,7 +294,7 @@ export default function LandingPage() {
             Spreman/na za promjenu?
           </h2>
           <p className="text-white/50 mb-8 text-lg">
-            Preuzmi besplatni vodiÄŤ i napravi prvi korak prema financijskoj slobodi.
+            Preuzmi besplatni vodič i napravi prvi korak prema financijskoj slobodi.
           </p>
           {!submitted && (
             <form onSubmit={handleSubmit} className="max-w-md mx-auto">
@@ -313,7 +313,7 @@ export default function LandingPage() {
                   required
                 />
                 <Button type="submit" size="lg" loading={loading} className="w-full">
-                  PoĹˇalji mi vodiÄŤ besplatno â†’
+                  Pošalji mi vodič besplatno →
                 </Button>
               </div>
             </form>
@@ -321,7 +321,7 @@ export default function LandingPage() {
           <p className="mt-6 text-white/30 text-sm">
             Ili{' '}
             <Link href="/tecaj" className="text-gold hover:underline">
-              odmah pogledaj kompletan teÄŤaj â†’
+              odmah pogledaj kompletan tečaj →
             </Link>
           </p>
         </div>
@@ -332,13 +332,13 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gold font-bold tracking-wide">FinCoach VIP</p>
           <div className="flex gap-6 text-sm text-white/40">
-            <Link href="/tecaj" className="hover:text-white transition-colors">TeÄŤaj</Link>
+            <Link href="/tecaj" className="hover:text-white transition-colors">Tečaj</Link>
             <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
             <Link href="/privatnost" className="hover:text-white transition-colors">Privatnost</Link>
             <Link href="/uvjeti" className="hover:text-white transition-colors">Uvjeti</Link>
             <Link href="/prijava" className="hover:text-white transition-colors">Prijava</Link>
           </div>
-          <p className="text-white/30 text-sm">Â© 2024 FinCoach VIP</p>
+          <p className="text-white/30 text-sm">© 2024 FinCoach VIP</p>
         </div>
       </footer>
     </div>

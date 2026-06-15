@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'sonner'
@@ -10,11 +10,11 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'FinCoach VIP â€” 90-dnevni financijski teÄŤaj',
+  title: 'FinCoach VIP — 90-dnevni financijski tečaj',
   description: 'Preuzmi kontrolu nad svojim financijama za 90 dana. Korak po korak, video po video.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'),
   openGraph: {
-    title: 'FinCoach VIP â€” 90-dnevni financijski teÄŤaj',
+    title: 'FinCoach VIP — 90-dnevni financijski tečaj',
     description: 'Preuzmi kontrolu nad svojim financijama za 90 dana.',
     url: 'https://fincoach.vip',
     siteName: 'FinCoach VIP',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FinCoach VIP â€” 90-dnevni financijski teÄŤaj',
+    title: 'FinCoach VIP — 90-dnevni financijski tečaj',
     description: 'Preuzmi kontrolu nad svojim financijama za 90 dana.',
   },
   robots: {

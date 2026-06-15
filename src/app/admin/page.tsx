@@ -1,4 +1,4 @@
-﻿import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -67,7 +67,7 @@ export default async function AdminDashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-            <p className="text-white/50 mt-1">FinCoach VIP â€” Pregled poslovanja</p>
+            <p className="text-white/50 mt-1">FinCoach VIP — Pregled poslovanja</p>
           </div>
           <Badge className="bg-gold/10 text-gold border-gold/30">Admin</Badge>
         </div>
@@ -112,7 +112,7 @@ export default async function AdminDashboard() {
             },
             {
               icon: CheckCircle,
-              label: 'Lekcije zavrĹˇene',
+              label: 'Lekcije završene',
               value: stats.completedLessons,
               color: 'text-orange-400',
               bg: 'bg-orange-500/10 border-orange-500/20',
@@ -129,10 +129,10 @@ export default async function AdminDashboard() {
         {/* Quick links */}
         <div className="grid md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Upravljaj lekcijama', href: '/admin/lekcije', icon: 'đź“ą' },
-            { label: 'Studenti', href: '/admin/studenti', icon: 'đź‘Ą' },
-            { label: 'Kuponi', href: '/admin/kuponi', icon: 'đźŹ·ď¸Ź' },
-            { label: 'Blog', href: '/admin/blog', icon: 'đź“ť' },
+            { label: 'Upravljaj lekcijama', href: '/admin/lekcije', icon: '📹' },
+            { label: 'Studenti', href: '/admin/studenti', icon: '👥' },
+            { label: 'Kuponi', href: '/admin/kuponi', icon: '🏷️' },
+            { label: 'Blog', href: '/admin/blog', icon: '📝' },
           ].map(link => (
             <a
               key={link.label}
@@ -152,7 +152,7 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             {stats.recentPurchases.length === 0 ? (
-              <p className="text-white/40 text-sm">JoĹˇ nema prodaja.</p>
+              <p className="text-white/40 text-sm">Još nema prodaja.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -168,10 +168,10 @@ export default async function AdminDashboard() {
                     {stats.recentPurchases.map((p: any) => (
                       <tr key={p.id} className="border-b border-white/5 hover:bg-white/2">
                         <td className="py-3 text-white">
-                          {p.profiles?.full_name ?? 'â€”'}
+                          {p.profiles?.full_name ?? '—'}
                         </td>
                         <td className="py-3 text-white/60">
-                          {p.profiles?.email ?? 'â€”'}
+                          {p.profiles?.email ?? '—'}
                         </td>
                         <td className="py-3 text-gold font-semibold text-right">
                           {formatCurrency(p.amount_paid ?? 0)}
