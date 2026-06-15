@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 213 47% 11%;
+    --foreground: 0 0% 100%;
+    --card: 213 47% 14%;
+    --card-foreground: 0 0% 100%;
+    --popover: 213 47% 11%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 45 61% 52%;
+    --primary-foreground: 213 47% 11%;
+    --secondary: 213 40% 18%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 213 40% 20%;
+    --muted-foreground: 213 15% 65%;
+    --accent: 45 61% 52%;
+    --accent-foreground: 213 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 213 30% 22%;
+    --input: 213 30% 22%;
+    --ring: 45 61% 52%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-navy text-white font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-sm border border-white/10;
+  }
+}
