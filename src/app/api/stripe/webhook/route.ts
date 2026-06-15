@@ -188,9 +188,4 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ received: true })
 }
 
-// Disable body parsing — need raw body for Stripe signature
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+export const dynamic = 'force-dynamic'
