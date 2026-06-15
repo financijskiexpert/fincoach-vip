@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -29,7 +29,7 @@ function LoginForm() {
       if (mode === 'login') {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        toast.success('Dobrodošao/la!')
+        toast.success('DobrodoĹˇao/la!')
         router.push(redirect)
         router.refresh()
       } else if (mode === 'signup') {
@@ -53,7 +53,7 @@ function LoginForm() {
         setEmailSent(true)
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Greška. Pokušaj ponovo.'
+      const message = err instanceof Error ? err.message : 'GreĹˇka. PokuĹˇaj ponovo.'
       toast.error(message)
     } finally {
       setLoading(false)
@@ -65,13 +65,13 @@ function LoginForm() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="text-gold font-bold text-2xl tracking-wide">
-            VOLIM SVOJNOVAC
+            FinCoach VIP
           </Link>
           <h1 className="text-2xl font-bold text-white mt-6 mb-2">
             {mode === 'login' ? 'Prijava' : mode === 'signup' ? 'Registracija' : 'Zaboravljena lozinka'}
           </h1>
           <p className="text-white/50 text-sm">
-            {mode === 'login' ? 'Upiši se u svoj student portal' : mode === 'signup' ? 'Stvori novi račun' : 'Pošaljemo ti link za reset'}
+            {mode === 'login' ? 'UpiĹˇi se u svoj student portal' : mode === 'signup' ? 'Stvori novi raÄŤun' : 'PoĹˇaljemo ti link za reset'}
           </p>
         </div>
 
@@ -83,7 +83,7 @@ function LoginForm() {
               </svg>
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Email poslan!</h3>
-            <p className="text-white/60 text-sm">Provjeri svoju pristiglu poštu i klikni na link.</p>
+            <p className="text-white/60 text-sm">Provjeri svoju pristiglu poĹˇtu i klikni na link.</p>
             <button onClick={() => { setEmailSent(false); setMode('login') }} className="mt-4 text-gold text-sm hover:underline">
               Natrag na prijavu
             </button>
@@ -112,7 +112,7 @@ function LoginForm() {
                 <Input
                   label="Lozinka"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="â€˘â€˘â€˘â€˘â€˘â€˘â€˘â€˘"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
@@ -120,7 +120,7 @@ function LoginForm() {
                 />
               )}
               <Button type="submit" size="lg" loading={loading} className="w-full mt-2">
-                {mode === 'login' ? 'Prijavi se' : mode === 'signup' ? 'Registriraj se' : 'Pošalji link'}
+                {mode === 'login' ? 'Prijavi se' : mode === 'signup' ? 'Registriraj se' : 'PoĹˇalji link'}
               </Button>
             </form>
 
@@ -131,7 +131,7 @@ function LoginForm() {
                     Zaboravili ste lozinku?
                   </button>
                   <p className="text-white/40">
-                    Nemaš račun?{' '}
+                    NemaĹˇ raÄŤun?{' '}
                     <button onClick={() => setMode('signup')} className="text-gold hover:underline">
                       Registriraj se
                     </button>
@@ -140,7 +140,7 @@ function LoginForm() {
               )}
               {mode !== 'login' && (
                 <p className="text-white/40">
-                  Već imaš račun?{' '}
+                  VeÄ‡ imaĹˇ raÄŤun?{' '}
                   <button onClick={() => setMode('login')} className="text-gold hover:underline">
                     Prijavi se
                   </button>
@@ -151,7 +151,7 @@ function LoginForm() {
         )}
 
         <p className="text-center text-white/30 text-sm mt-6">
-          <Link href="/" className="hover:text-white transition-colors">← Natrag na početnu</Link>
+          <Link href="/" className="hover:text-white transition-colors">â† Natrag na poÄŤetnu</Link>
         </p>
       </div>
     </div>

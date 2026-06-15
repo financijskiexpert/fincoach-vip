@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -25,9 +25,9 @@ interface SidebarProps {
 
 const SECTIONS = [
   { key: 'priprema', label: 'Priprema', days: '0' },
-  { key: '1-30', label: 'Tjedan 1–4', days: '1–30' },
-  { key: '31-60', label: 'Tjedan 5–8', days: '31–60' },
-  { key: '61-90', label: 'Tjedan 9–13', days: '61–90' },
+  { key: '1-30', label: 'Tjedan 1â€“4', days: '1â€“30' },
+  { key: '31-60', label: 'Tjedan 5â€“8', days: '31â€“60' },
+  { key: '61-90', label: 'Tjedan 9â€“13', days: '61â€“90' },
 ]
 
 function formatDuration(seconds?: number): string {
@@ -56,7 +56,7 @@ export default function Sidebar({ lessons, completedLessonIds, currentLessonId, 
       {/* Header */}
       <div className="p-5 border-b border-white/10">
         <Link href="/portal" className="text-gold font-bold text-lg tracking-wide block mb-3">
-          VOLIM SVOJNOVAC
+          FinCoach VIP
         </Link>
         <div className="space-y-1.5">
           <div className="flex justify-between text-sm">
@@ -119,7 +119,7 @@ export default function Sidebar({ lessons, completedLessonIds, currentLessonId, 
                               <Lock className="w-4 h-4 shrink-0 text-white/30" />
                               <div className="min-w-0">
                                 <p className="text-xs text-white/40 truncate">
-                                  Dan {lesson.day_number} — {lesson.title}
+                                  Dan {lesson.day_number} â€” {lesson.title}
                                 </p>
                               </div>
                             </div>
@@ -172,7 +172,7 @@ export default function Sidebar({ lessons, completedLessonIds, currentLessonId, 
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          {completedCount >= totalDays ? 'Preuzmi certifikat' : 'Certifikat (završi tečaj)'}
+          {completedCount >= totalDays ? 'Preuzmi certifikat' : 'Certifikat (zavrĹˇi teÄŤaj)'}
         </Link>
       </div>
     </aside>
