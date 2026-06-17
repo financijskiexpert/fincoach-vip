@@ -141,7 +141,7 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
           <p class="p"><strong>Brane</strong><br>Financijski coach</p>
         </div>
         <div class="footer">
-          © 2024 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
+          © 2026 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
         </div>
       </div>
     </body>
@@ -180,19 +180,22 @@ export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: stri
         </div>
         <div class="body">
           <div class="h1">Evo tvog besplatnog vodiča, ${name}!</div>
-          <p class="p">Hvala što si preuzeo/la vodič <strong>"5 koraka do financijske slobode"</strong>.</p>
-          <p class="p">Unutar ćeš pronaći konkretne, odmah primjenjive korake koji su pomogli stotinama ljudi preuzeti kontrolu nad financijama.</p>
+          <p class="p">Hvala što si preuzeo/la vodič <strong>"Savjeti i tehnike za financijsku stabilnost"</strong> od Brane Recek.</p>
+          <p class="p">Unutar ćeš pronaći konkretne, odmah primjenjive savjete i tehnike koji su pomogli stotinama ljudi preuzeti kontrolu nad financijama.</p>
           <div style="text-align: center;">
             <a href="${pdfUrl}" class="btn">Preuzmi vodič (PDF) →</a>
           </div>
           <p class="p">Kao poseban bonus, za sljedeća <strong>3 dana</strong> imaš pristup posebnoj cijeni za naš kompletan 90-dnevni program.</p>
-          <p class="p">Provjeri ovdje:</p>
-          <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/tecaj" style="color: #D4AF37;">Pogledaj tečaj →</a>
+          <div style="text-align: center; margin-top: 8px;">
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/tecaj" style="color: #D4AF37;">Pogledaj kompletan tečaj →</a>
           </div>
+          <p class="p" style="margin-top: 24px; font-size: 13px; color: #718096;">
+            Primio/la si ovaj email jer si preuzeo/la besplatni vodič s fincoach.vip.<br>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #718096;">Odjavi se ovdje</a> ako ne želiš više primati emailove.
+          </p>
         </div>
         <div class="footer">
-          © 2024 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
+          © 2026 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
         </div>
       </div>
     </body>

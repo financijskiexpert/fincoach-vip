@@ -3,12 +3,12 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { addContact, sendLeadPdfEmail } from '@/lib/brevo'
 import { addDays } from 'date-fns'
 
-const PDF_URL = `${process.env.NEXT_PUBLIC_SITE_URL}/pdf/5-koraka-do-financijske-slobode.pdf`
+const PDF_URL = `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/vodic-financijska-stabilnost.pdf`
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { email, full_name, source = 'landing' } = body
+    const { email, full_name, source = 'landing', marketing_consent = false } = body
 
     if (!email) {
       return NextResponse.json({ error: 'Email je obavezan.' }, { status: 400 })
@@ -33,6 +33,8 @@ export async function POST(request: NextRequest) {
           full_name: full_name ?? '',
           source,
           countdown_expires_at: countdownExpiresAt,
+          marketing_consent: marketing_consent,
+          marketing_consent_at: marketing_consent ? new Date().toISOString() : null,
         },
         {
           onConflict: 'email',
@@ -51,6 +53,8 @@ export async function POST(request: NextRequest) {
     const firstName = full_name?.split(' ')[0] ?? ''
     const lastName = full_name?.split(' ').slice(1).join(' ') ?? ''
 
+    // Vedno dodaj v Brevo kontakte (za transakcijske emaile)
+    // V marketing listo (ID 2) samo z eksplicitnim soglasjem — GDPR čl. 6/1/a
     const brevoResult = await addContact({
       email: email.toLowerCase().trim(),
       firstName,
@@ -58,8 +62,9 @@ export async function POST(request: NextRequest) {
       attributes: {
         SOURCE: source,
         COUNTDOWN_EXPIRES: countdownExpiresAt,
+        MARKETING_CONSENT: marketing_consent ? 'true' : 'false',
       },
-      listIds: [2], // Leads list — adjust ID per your Brevo setup
+      listIds: marketing_consent ? [2] : [], // Lista 2 = marketing sekvenca — samo s soglasjem
     })
 
     // Update Brevo contact ID in Supabase if we got one

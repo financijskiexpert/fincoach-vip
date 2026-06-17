@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 export default function LandingPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [marketingConsent, setMarketingConsent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -26,7 +27,7 @@ export default function LandingPage() {
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, full_name: name, source: 'landing' }),
+        body: JSON.stringify({ email, full_name: name, source: 'landing', marketing_consent: marketingConsent }),
       })
       if (!res.ok) throw new Error()
       setSubmitted(true)
@@ -102,22 +103,30 @@ export default function LandingPage() {
                 <Button type="submit" size="lg" loading={loading} className="w-full text-base">
                   Pošalji mi vodič besplatno →
                 </Button>
-                <p className="text-xs text-white/30 text-center">
-                  Bez spama. Možeš se odjaviti u bilo trenutku.
+
+                {/* GDPR marketing consent — privzeto neoznačeno */}
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={e => setMarketingConsent(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 shrink-0 accent-[#D4AF37] cursor-pointer"
+                  />
+                  <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors leading-relaxed">
+                    Slažem se s primanjem edukativnih savjeta i posebnih ponuda od FinCoach VIP. Možeš se odjaviti u bilo trenutku.
+                  </span>
+                </label>
+
+                <p className="text-xs text-white/25 text-center">
+                  Slanjem forme prihvaćaš naše{' '}
+                  <Link href="/uvjetiposlovanja" className="underline hover:text-white/50">Uvjete poslovanja</Link>
+                  {' '}i{' '}
+                  <Link href="/politikaprivatnosti" className="underline hover:text-white/50">Politiku privatnosti</Link>.
+                  {' '}Vodič šaljemo samo na navedenu email adresu.
                 </p>
               </div>
             </form>
           )}
-          <p className="mt-4 text-white/30 text-sm">
-            Ili{' '}
-            <a
-              href="/downloads/vodic-financijska-stabilnost.pdf"
-              download
-              className="text-gold hover:underline"
-            >
-              preuzmi vodič odmah (PDF) →
-            </a>
-          </p>
         </div>
       </section>
 
@@ -329,6 +338,25 @@ export default function LandingPage() {
                 <Button type="submit" size="lg" loading={loading} className="w-full">
                   Pošalji mi vodič besplatno →
                 </Button>
+
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={e => setMarketingConsent(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 shrink-0 accent-[#D4AF37] cursor-pointer"
+                  />
+                  <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors leading-relaxed">
+                    Slažem se s primanjem edukativnih savjeta i posebnih ponuda od FinCoach VIP. Možeš se odjaviti u bilo trenutku.
+                  </span>
+                </label>
+
+                <p className="text-xs text-white/25 text-center">
+                  Slanjem forme prihvaćaš naše{' '}
+                  <Link href="/uvjetiposlovanja" className="underline hover:text-white/50">Uvjete poslovanja</Link>
+                  {' '}i{' '}
+                  <Link href="/politikaprivatnosti" className="underline hover:text-white/50">Politiku privatnosti</Link>.
+                </p>
               </div>
             </form>
           )}
