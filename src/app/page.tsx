@@ -108,6 +108,16 @@ export default function LandingPage() {
               </div>
             </form>
           )}
+          <p className="mt-4 text-white/30 text-sm">
+            Ili{' '}
+            <a
+              href="/downloads/vodic-financijska-stabilnost.pdf"
+              download
+              className="text-gold hover:underline"
+            >
+              preuzmi vodič odmah (PDF) →
+            </a>
+          </p>
         </div>
       </section>
 
@@ -213,11 +223,14 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="w-full aspect-square max-w-sm mx-auto rounded-2xl bg-navy-50 border border-white/10 flex items-center justify-center">
-                <div className="text-center text-white/30">
-                  <div className="w-20 h-20 rounded-full bg-white/10 mx-auto mb-3" />
-                  <p className="text-sm">Foto Branislava</p>
-                </div>
+              <div className="w-full max-w-sm mx-auto rounded-2xl overflow-hidden border border-white/10">
+                <Image
+                  src="/images/brane-portrait.jpg"
+                  alt="Brane Recek — FinCoach VIP"
+                  width={480}
+                  height={480}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
             <div>
