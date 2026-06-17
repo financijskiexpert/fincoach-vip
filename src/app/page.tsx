@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
@@ -42,8 +43,8 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-navy/95 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="text-gold font-bold text-lg tracking-wide">
-            FinCoach VIP
+          <Link href="/" className="flex items-center">
+            <Image src="/logo/fincoach-logo-vertical.svg" alt="FinCoach VIP" width={40} height={56} priority />
           </Link>
           <Link href="/tecaj">
             <Button size="sm" variant="outline">
@@ -330,7 +331,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-white/10 py-10 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gold font-bold tracking-wide">FinCoach VIP</p>
+          <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} />
           <div className="flex gap-6 text-sm text-white/40">
             <Link href="/tecaj" className="hover:text-white transition-colors">Tečaj</Link>
             <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>

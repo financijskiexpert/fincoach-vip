@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Progress } from '@/components/ui/progress'
@@ -55,8 +56,8 @@ export default function Sidebar({ lessons, completedLessonIds, currentLessonId, 
     <aside className="flex flex-col h-full bg-navy-100 border-r border-white/10 w-72 shrink-0">
       {/* Header */}
       <div className="p-5 border-b border-white/10">
-        <Link href="/portal" className="text-gold font-bold text-lg tracking-wide block mb-3">
-          FinCoach VIP
+        <Link href="/portal" className="block mb-3">
+          <Image src="/logo/fincoach-logo-vertical.svg" alt="FinCoach VIP" width={36} height={50} />
         </Link>
         <div className="space-y-1.5">
           <div className="flex justify-between text-sm">

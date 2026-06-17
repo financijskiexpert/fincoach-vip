@@ -108,8 +108,8 @@ export default function SalesPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-navy/95 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="text-gold font-bold text-lg tracking-wide">
-            FinCoach VIP
+          <Link href="/" className="flex items-center">
+            <Image src="/logo/fincoach-logo-vertical.svg" alt="FinCoach VIP" width={40} height={56} priority />
           </Link>
           <Button onClick={handleCheckout} size="sm" disabled={loading}>
             {loading ? 'Učitavam...' : `Kupi program — ${currentPrice}`}
@@ -146,20 +146,16 @@ export default function SalesPage() {
             </p>
           </div>
 
-          {/* Video placeholder */}
+          {/* Promo video */}
           <div className="max-w-3xl mx-auto mb-10">
-            <div className="aspect-video bg-navy-50 border border-white/10 rounded-2xl flex items-center justify-center relative overflow-hidden">
-              <Image
-                src="/images/brane-predava.jpg"
-                alt="Brane Recek predaje"
-                fill
-                className="object-cover opacity-40"
+            <div className="aspect-video bg-navy-50 border border-white/10 rounded-2xl overflow-hidden">
+              <video
+                src="/videos/fincoach_promo.mp4"
+                controls
+                poster="/images/brane-predava.jpg"
+                className="w-full h-full object-cover"
+                preload="metadata"
               />
-              <button className="relative z-10 w-24 h-24 rounded-full bg-gold flex items-center justify-center shadow-2xl shadow-gold/30 hover:scale-105 transition-transform">
-                <svg className="w-10 h-10 text-navy ml-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                </svg>
-              </button>
             </div>
           </div>
 
@@ -531,7 +527,7 @@ export default function SalesPage() {
       {/* Footer */}
       <footer className="border-t border-white/10 py-10 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gold font-bold tracking-wide">FinCoach VIP</p>
+          <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} />
           <div className="flex gap-6 text-sm text-white/40">
             <Link href="/" className="hover:text-white transition-colors">Početna</Link>
             <Link href="/privatnost" className="hover:text-white transition-colors">Privatnost</Link>
