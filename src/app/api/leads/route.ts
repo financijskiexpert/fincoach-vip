@@ -53,8 +53,8 @@ export async function POST(request: NextRequest) {
     const firstName = full_name?.split(' ')[0] ?? ''
     const lastName = full_name?.split(' ').slice(1).join(' ') ?? ''
 
-    // Vedno dodaj v Brevo kontakte (za transakcijske emaile)
-    // V marketing listo (ID 2) samo z eksplicitnim soglasjem — GDPR čl. 6/1/a
+    // Checkbox je pogoj za oddajo forme — torej vsi kontakti imajo soglasje
+    // Lista 2 = "Leads — marketing vodič" v Brevu (zamenjaj ID če je drugačen)
     const brevoResult = await addContact({
       email: email.toLowerCase().trim(),
       firstName,
@@ -62,9 +62,9 @@ export async function POST(request: NextRequest) {
       attributes: {
         SOURCE: source,
         COUNTDOWN_EXPIRES: countdownExpiresAt,
-        MARKETING_CONSENT: marketing_consent ? 'true' : 'false',
+        MARKETING_CONSENT: 'true',
       },
-      listIds: marketing_consent ? [2] : [], // Lista 2 = marketing sekvenca — samo s soglasjem
+      listIds: [2],
     })
 
     // Update Brevo contact ID in Supabase if we got one

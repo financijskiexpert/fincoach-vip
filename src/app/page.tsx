@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { TrendingDown, PiggyBank, Frown, BookOpen, Video, Award, Star, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import PdfBookMockup from '@/components/PdfBookMockup'
 
 export default function LandingPage() {
   const [name, setName] = useState('')
@@ -20,6 +21,10 @@ export default function LandingPage() {
     e.preventDefault()
     if (!email || !name) {
       toast.error('Molimo unesite ime i email adresu.')
+      return
+    }
+    if (!marketingConsent) {
+      toast.error('Za primanje vodiča potrebna je suglasnost za primanje emailova.')
       return
     }
     setLoading(true)
@@ -68,9 +73,17 @@ export default function LandingPage() {
             <span className="text-gold">stotinama ljudi</span> preuzeti kontrolu nad financijama
           </h1>
 
-          <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed">
-            5 konkretnih koraka koje možeš primijeniti već danas — bez financijskog znanja, bez složenih aplikacija.
+          <p className="text-xl text-white/60 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Konkretni savjeti i tehnike koje možeš primijeniti već danas — bez financijskog znanja, bez složenih aplikacija.
           </p>
+
+          {/* 3D PDF book mockup */}
+          <div className="mb-8">
+            <PdfBookMockup />
+            <p className="text-white/40 text-sm mt-3">
+              <span className="text-gold font-semibold">Besplatno</span> · PDF vodič · Brane Recek
+            </p>
+          </div>
 
           {submitted ? (
             <div className="max-w-md mx-auto bg-green-500/10 border border-green-500/30 rounded-2xl p-8 text-center">
@@ -112,8 +125,8 @@ export default function LandingPage() {
                     onChange={e => setMarketingConsent(e.target.checked)}
                     className="mt-0.5 w-4 h-4 shrink-0 accent-[#D4AF37] cursor-pointer"
                   />
-                  <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors leading-relaxed">
-                    Slažem se s primanjem edukativnih savjeta i posebnih ponuda od FinCoach VIP. Možeš se odjaviti u bilo trenutku.
+                  <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors leading-relaxed">
+                    <span className="text-gold">*</span> Slažem se s primanjem besplatnog vodiča i edukativnih savjeta od FinCoach VIP na navedenu email adresu. Možeš se odjaviti u bilo trenutku.
                   </span>
                 </label>
 
@@ -346,8 +359,8 @@ export default function LandingPage() {
                     onChange={e => setMarketingConsent(e.target.checked)}
                     className="mt-0.5 w-4 h-4 shrink-0 accent-[#D4AF37] cursor-pointer"
                   />
-                  <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors leading-relaxed">
-                    Slažem se s primanjem edukativnih savjeta i posebnih ponuda od FinCoach VIP. Možeš se odjaviti u bilo trenutku.
+                  <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors leading-relaxed">
+                    <span className="text-gold">*</span> Slažem se s primanjem besplatnog vodiča i edukativnih savjeta od FinCoach VIP na navedenu email adresu. Možeš se odjaviti u bilo trenutku.
                   </span>
                 </label>
 
