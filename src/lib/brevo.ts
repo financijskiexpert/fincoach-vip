@@ -87,14 +87,14 @@ export async function sendTransactionalEmail(params: TransactionalEmailParams): 
       body: JSON.stringify({
         sender: {
           name: 'Brane | FinCoach VIP',
-          email: process.env.ADMIN_EMAIL ?? 'financijski.expert@gmail.com',
+          email: process.env.SENDER_EMAIL ?? 'brane@fincoach.vip',
         },
         to: params.to,
         subject: params.subject,
         htmlContent: params.htmlContent,
         textContent: params.textContent,
         replyTo: params.replyTo ?? {
-          email: process.env.ADMIN_EMAIL ?? 'financijski.expert@gmail.com',
+          email: process.env.SENDER_EMAIL ?? 'brane@fincoach.vip',
           name: 'Brane',
         },
         params: params.params,
