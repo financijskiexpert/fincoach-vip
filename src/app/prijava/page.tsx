@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
@@ -64,8 +65,8 @@ function LoginForm() {
     <div className="min-h-screen bg-navy flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-gold font-bold text-2xl tracking-wide">
-            FinCoach VIP
+          <Link href="/" className="inline-block">
+            <Image src="/logo/fincoach-logo-vertical.svg" alt="FinCoach VIP" width={40} height={56} />
           </Link>
           <h1 className="text-2xl font-bold text-white mt-6 mb-2">
             {mode === 'login' ? 'Prijava' : mode === 'signup' ? 'Registracija' : 'Zaboravljena lozinka'}
