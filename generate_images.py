@@ -16,6 +16,12 @@ try:
 except ImportError:
     pass
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv(r"E:\YT_Corporate_Channel\pipeline\.env")
+except ImportError:
+    pass
+
 def make_session():
     session = requests.Session()
     retry = Retry(total=3, backoff_factor=2, status_forcelist=[500, 502, 503, 504])
@@ -25,7 +31,7 @@ def make_session():
 
 SESSION = make_session()
 
-LEONARDO_API_KEY = "bf35f8c7-905a-4b4f-b0df-4434726bac5b"
+LEONARDO_API_KEY = os.environ.get("LEONARDO_API_KEY", "")
 OUTPUT_DIR = Path(r"E:\fincoach-vip\public\images\generated")
 OUTPUT_DIR.mkdir(exist_ok=True)
 

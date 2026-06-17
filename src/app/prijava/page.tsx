@@ -66,7 +66,7 @@ function LoginForm() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <Image src="/logo/fincoach-logo-vertical.svg" alt="FinCoach VIP" width={40} height={56} />
+            <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={150} height={47} />
           </Link>
           <h1 className="text-2xl font-bold text-white mt-6 mb-2">
             {mode === 'login' ? 'Prijava' : mode === 'signup' ? 'Registracija' : 'Zaboravljena lozinka'}

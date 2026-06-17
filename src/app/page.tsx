@@ -44,7 +44,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-navy/95 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center">
-            <Image src="/logo/fincoach-logo-vertical.svg" alt="FinCoach VIP" width={40} height={56} priority />
+            <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={150} height={47} priority />
           </Link>
           <Link href="/tecaj">
             <Button size="sm" variant="outline">
@@ -334,12 +334,11 @@ export default function LandingPage() {
           <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} />
           <div className="flex gap-6 text-sm text-white/40">
             <Link href="/tecaj" className="hover:text-white transition-colors">Tečaj</Link>
-            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
-            <Link href="/privatnost" className="hover:text-white transition-colors">Privatnost</Link>
-            <Link href="/uvjeti" className="hover:text-white transition-colors">Uvjeti</Link>
+            <Link href="/uvjetiposlovanja" className="hover:text-white transition-colors">Uvjeti</Link>
+            <Link href="/politikaprivatnosti" className="hover:text-white transition-colors">Privatnost</Link>
             <Link href="/prijava" className="hover:text-white transition-colors">Prijava</Link>
           </div>
-          <p className="text-white/30 text-sm">© 2024 FinCoach VIP</p>
+          <p className="text-white/30 text-sm">© 2026 FinCoach VIP</p>
         </div>
       </footer>
     </div>

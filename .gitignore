@@ -35,3 +35,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python scripts secrets
+api_keys.txt
+*.env
+secrets.py
+
+# promo assets (large files, not for git)
+/promo/
+__pycache__/

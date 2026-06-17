@@ -21,13 +21,19 @@ try:
 except ImportError:
     pass
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv(r"E:\YT_Corporate_Channel\pipeline\.env")
+except ImportError:
+    pass
+
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 BASE_DIR       = Path(__file__).parent
 IMAGES_DIR     = BASE_DIR / "public" / "images"
 OUTPUT_DIR     = BASE_DIR / "promo"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-ELEVENLABS_API_KEY = "sk_9aad93deb96c3d70e6b788513dc9bc9a59e5ad3fb309dd35"
+ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
 VOICE_ID           = "UHqZihCaTRvL7TIfJCrQ"   # Brane Recek — osobni glas
 MODEL_ID           = "eleven_multilingual_v2"
 
