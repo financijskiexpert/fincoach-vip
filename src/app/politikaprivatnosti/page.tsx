@@ -1,6 +1,7 @@
 ﻿import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import SiteFooter from '@/components/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'Politika privatnosti â€” FinCoach VIP',
@@ -161,16 +162,7 @@ export default function PolitikaPrivatnostiPage() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 sm:px-6 mt-16">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={130} height={41} />
-          <div className="flex gap-6 text-sm text-white/40">
-            <Link href="/uvjetiposlovanja" className="hover:text-white transition-colors">Uvjeti poslovanja</Link>
-            <Link href="/politikaprivatnosti" className="hover:text-white transition-colors">Politika privatnosti</Link>
-          </div>
-          <p className="text-white/30 text-sm">Â© 2026 FinCoach VIP</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
