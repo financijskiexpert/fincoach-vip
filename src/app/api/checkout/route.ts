@@ -57,17 +57,13 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (coupon) {
-        // Check expiry
-        if (!coupon.expires_at || new Date(coupon.expires_at) > new Date()) {
-          // Check max uses
-          if (!coupon.max_uses || coupon.uses_count < coupon.max_uses) {
-            if (coupon.stripe_coupon_id) {
-              stripeCouponId = coupon.stripe_coupon_id
-            } else if (coupon.discount_percent) {
-              priceAmountCents = Math.round(priceAmountCents * (1 - coupon.discount_percent / 100))
-            } else if (coupon.discount_amount) {
-              priceAmountCents = Math.max(0, priceAmountCents - coupon.discount_amount)
-            }
+        const notExpired = !coupon.expires_at || new Date(coupon.expires_at) > new Date()
+        const notMaxed = !coupon.max_uses || coupon.used_count < coupon.max_uses
+        if (notExpired && notMaxed) {
+          if (coupon.discount_type === 'percentage') {
+            priceAmountCents = Math.round(priceAmountCents * (1 - coupon.discount_value / 100))
+          } else if (coupon.discount_type === 'fixed') {
+            priceAmountCents = Math.max(0, priceAmountCents - coupon.discount_value * 100)
           }
         }
       }

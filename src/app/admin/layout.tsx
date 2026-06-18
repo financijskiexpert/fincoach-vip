@@ -31,6 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 { href: '/admin/studenti', label: 'Studenti' },
                 { href: '/admin/lekcije', label: 'Lekcije' },
                 { href: '/admin/kuponi', label: 'Kuponi' },
+                { href: '/admin/affiliate', label: 'Affiliate' },
                 { href: '/admin/blog', label: 'Blog' },
               ].map(link => (
                 <Link key={link.href} href={link.href} className="text-white/50 hover:text-white transition-colors">
