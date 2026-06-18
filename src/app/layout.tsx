@@ -31,6 +31,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: '/logo/fincoach-favicon.svg',
+    shortcut: '/logo/fincoach-favicon.svg',
+    apple: '/logo/fincoach-favicon.svg',
+  },
 }
 
 export default function RootLayout({

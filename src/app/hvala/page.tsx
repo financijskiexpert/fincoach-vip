@@ -75,8 +75,8 @@ function ThanksContent() {
 
         <p className="text-white/30 text-sm mt-8">
           Pitanja? Pišite nam na{' '}
-          <a href={`mailto:${process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? 'financijski.expert@gmail.com'}`} className="text-gold hover:underline">
-            financijski.expert@gmail.com
+          <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">
+            brane.recek@gmail.com
           </a>
         </p>
       </div>
