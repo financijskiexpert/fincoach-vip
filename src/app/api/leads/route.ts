@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { addContact, sendLeadPdfEmail } from '@/lib/brevo'
 import { addDays } from 'date-fns'
+import { EMAIL_SEQUENCE } from '@/lib/email-sequence'
 
 const PDF_URL = `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/vodic-financijska-stabilnost.pdf`
 
@@ -75,12 +76,29 @@ export async function POST(request: NextRequest) {
         .eq('id', lead.id)
     }
 
-    // Send email with PDF
+    // Send email with PDF (dan 0)
     await sendLeadPdfEmail(
       email.toLowerCase().trim(),
       full_name ?? 'Prijatelju',
       PDF_URL
     )
+
+    // Zapolni email sekvenco v queue (emaili 1-7, vsake 2 dni)
+    if (lead?.id) {
+      const emailLower = email.toLowerCase().trim()
+      const queueItems = EMAIL_SEQUENCE.map((seq, index) => ({
+        lead_id: lead.id,
+        email: emailLower,
+        full_name: full_name ?? '',
+        sequence_index: index,
+        scheduled_at: addDays(new Date(), seq.dayOffset).toISOString(),
+        status: 'pending',
+      }))
+
+      await supabase
+        .from('email_sequence_queue')
+        .upsert(queueItems, { onConflict: 'lead_id,sequence_index', ignoreDuplicates: true })
+    }
 
     return NextResponse.json({
       success: true,

@@ -3,6 +3,25 @@
 -- Zaženi v Supabase → SQL Editor
 -- ============================================================
 
+-- 0. EMAIL SEQUENCE QUEUE
+CREATE TABLE IF NOT EXISTS email_sequence_queue (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  lead_id UUID REFERENCES leads(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  full_name TEXT,
+  sequence_index INTEGER NOT NULL,
+  scheduled_at TIMESTAMPTZ NOT NULL,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'skipped', 'failed')),
+  sent_at TIMESTAMPTZ,
+  error_message TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(lead_id, sequence_index)
+);
+
+CREATE INDEX IF NOT EXISTS idx_email_queue_due
+  ON email_sequence_queue(status, scheduled_at)
+  WHERE status = 'pending';
+
 -- 1. COUPONS
 CREATE TABLE IF NOT EXISTS coupons (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
