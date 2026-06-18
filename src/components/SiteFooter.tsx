@@ -10,7 +10,6 @@ export default function SiteFooter() {
           <Link href="/tecaj" className="hover:text-white transition-colors">Tečaj</Link>
           <Link href="/uvjetiposlovanja" className="hover:text-white transition-colors">Uvjeti</Link>
           <Link href="/politikaprivatnosti" className="hover:text-white transition-colors">Privatnost</Link>
-          <Link href="/odjava" className="hover:text-white transition-colors">Odjava od emailova</Link>
           <Link href="/prijava" className="hover:text-white transition-colors font-medium text-white/60">Prijava →</Link>
         </div>
         <p className="text-white/30 text-sm">© 2026 FinCoach VIP</p>
