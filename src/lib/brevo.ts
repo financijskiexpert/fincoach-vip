@@ -105,7 +105,18 @@ export async function sendTransactionalEmail(params: TransactionalEmailParams): 
   }
 }
 
-export async function sendWelcomeEmail(email: string, name: string): Promise<void> {
+export async function sendWelcomeEmail(email: string, name: string, generatedPassword?: string): Promise<void> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+
+  const credentialsBlock = generatedPassword ? `
+    <div style="background: #0a1929; border: 1px solid #D4AF37; border-radius: 10px; padding: 24px; margin: 24px 0;">
+      <p style="color: #D4AF37; font-weight: 700; margin: 0 0 12px 0; font-size: 15px;">🔐 Tvoji prijavni podaci</p>
+      <p style="color: #cbd5e0; margin: 6px 0; font-size: 14px;"><strong style="color: #fff;">Email:</strong> ${email}</p>
+      <p style="color: #cbd5e0; margin: 6px 0; font-size: 14px;"><strong style="color: #fff;">Lozinka:</strong> <span style="font-family: monospace; background: #1a2f47; padding: 2px 8px; border-radius: 4px; letter-spacing: 1px;">${generatedPassword}</span></p>
+      <p style="color: #718096; font-size: 12px; margin: 12px 0 0 0;">Možeš promijeniti lozinku nakon prijave klikom na "Zaboravili ste lozinku?".</p>
+    </div>
+  ` : ''
+
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -131,17 +142,18 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<voi
         <div class="body">
           <div class="h1">Dobrodošao/la, ${name}! 🎉</div>
           <p class="p">Čestitamo! Uspješno si se pridružio/la programu <strong>FinCoach VIP — 90-dnevni financijski tečaj</strong>.</p>
+          ${credentialsBlock}
           <p class="p">Tvoj pristup portalu je aktivan. Možeš početi s prvom lekcijom odmah.</p>
           <p class="p">Svaki dan ćeš dobiti novu video lekciju koja će te korak po korak voditi prema financijskoj slobodi.</p>
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/portal" class="btn">Idi na portal →</a>
+            <a href="${siteUrl}/prijava" class="btn">Prijavi se u portal →</a>
           </div>
           <p class="p">Ako imaš bilo kakvih pitanja, slobodno mi se javi odgovorom na ovaj email.</p>
           <p class="p">Do prvog dana!</p>
           <p class="p"><strong>Brane</strong><br>Financijski coach</p>
         </div>
         <div class="footer">
-          © 2026 FinCoach VIP · <a href="${process.env.NEXT_PUBLIC_SITE_URL}/odjava" style="color: #4a5568;">Odjava</a>
+          © 2026 FinCoach VIP · <a href="${siteUrl}/odjava" style="color: #4a5568;">Odjava</a>
         </div>
       </div>
     </body>

@@ -15,10 +15,9 @@ function LoginForm() {
   const redirect = searchParams.get('redirect') ?? '/portal'
   const supabase = createClient()
 
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
+  const [mode, setMode] = useState<'login' | 'forgot'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
 
@@ -33,18 +32,6 @@ function LoginForm() {
         toast.success('Dobrodošao/la!')
         router.push(redirect)
         router.refresh()
-      } else if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: name },
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-          },
-        })
-        if (error) throw error
-        toast.success('Provjeri email za potvrdu registracije!')
-        setEmailSent(true)
       } else {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/auth/reset-password`,
@@ -69,10 +56,10 @@ function LoginForm() {
             <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={150} height={47} />
           </Link>
           <h1 className="text-2xl font-bold text-white mt-6 mb-2">
-            {mode === 'login' ? 'Prijava' : mode === 'signup' ? 'Registracija' : 'Zaboravljena lozinka'}
+            {mode === 'login' ? 'Prijava' : 'Zaboravljena lozinka'}
           </h1>
           <p className="text-white/50 text-sm">
-            {mode === 'login' ? 'Upiši se u svoj student portal' : mode === 'signup' ? 'Stvori novi račun' : 'Pošaljemo ti link za reset'}
+            {mode === 'login' ? 'Upiši se u svoj student portal' : 'Pošaljemo ti link za reset'}
           </p>
         </div>
 
@@ -84,7 +71,7 @@ function LoginForm() {
               </svg>
             </div>
             <h3 className="text-lg font-bold text-white mb-2">Email poslan!</h3>
-            <p className="text-white/60 text-sm">Provjeri svoju pristiglu poštu i klikni na link.</p>
+            <p className="text-white/60 text-sm">Provjeri svoju pristiglu poštu i klikni na link za reset lozinke.</p>
             <button onClick={() => { setEmailSent(false); setMode('login') }} className="mt-4 text-gold text-sm hover:underline">
               Natrag na prijavu
             </button>
@@ -92,15 +79,6 @@ function LoginForm() {
         ) : (
           <div className="bg-navy-50 border border-white/10 rounded-2xl p-8">
             <form onSubmit={handleSubmit} className="space-y-4">
-              {mode === 'signup' && (
-                <Input
-                  label="Puno ime"
-                  placeholder="Ime i prezime"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  required
-                />
-              )}
               <Input
                 label="Email adresa"
                 type="email"
@@ -109,7 +87,7 @@ function LoginForm() {
                 onChange={e => setEmail(e.target.value)}
                 required
               />
-              {mode !== 'forgot' && (
+              {mode === 'login' && (
                 <Input
                   label="Lozinka"
                   type="password"
@@ -117,37 +95,36 @@ function LoginForm() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  hint={mode === 'signup' ? 'Minimalno 8 znakova' : undefined}
                 />
               )}
               <Button type="submit" size="lg" loading={loading} className="w-full mt-2">
-                {mode === 'login' ? 'Prijavi se' : mode === 'signup' ? 'Registriraj se' : 'Pošalji link'}
+                {mode === 'login' ? 'Prijavi se' : 'Pošalji link za reset'}
               </Button>
             </form>
 
-            <div className="mt-6 space-y-3 text-center text-sm">
-              {mode === 'login' && (
-                <>
-                  <button onClick={() => setMode('forgot')} className="text-white/40 hover:text-white transition-colors block w-full">
-                    Zaboravili ste lozinku?
-                  </button>
-                  <p className="text-white/40">
-                    Nemaš račun?{' '}
-                    <button onClick={() => setMode('signup')} className="text-gold hover:underline">
-                      Registriraj se
-                    </button>
-                  </p>
-                </>
-              )}
-              {mode !== 'login' && (
-                <p className="text-white/40">
-                  Već imaš račun?{' '}
-                  <button onClick={() => setMode('login')} className="text-gold hover:underline">
-                    Prijavi se
-                  </button>
-                </p>
+            <div className="mt-6 text-center text-sm">
+              {mode === 'login' ? (
+                <button onClick={() => setMode('forgot')} className="text-white/40 hover:text-white transition-colors">
+                  Zaboravili ste lozinku?
+                </button>
+              ) : (
+                <button onClick={() => setMode('login')} className="text-gold hover:underline">
+                  Natrag na prijavu
+                </button>
               )}
             </div>
+          </div>
+        )}
+
+        {mode === 'login' && (
+          <div className="mt-6 bg-white/3 border border-white/5 rounded-xl p-4 text-center">
+            <p className="text-white/40 text-xs leading-relaxed">
+              Pristup portalu dobivaju isključivo kupci tečaja.<br />
+              Prijavne podatke smo ti poslali emailom nakon kupnje.
+            </p>
+            <Link href="/tecaj" className="text-gold text-xs hover:underline mt-2 inline-block">
+              Kupi tečaj →
+            </Link>
           </div>
         )}
 

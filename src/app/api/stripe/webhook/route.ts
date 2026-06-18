@@ -56,9 +56,17 @@ export async function POST(request: NextRequest) {
         if (profile) {
           finalUserId = profile.id
         } else {
-          // Create new auth user
+          // Generate a secure random password
+          const generatedPassword = Array.from(
+            { length: 12 },
+            () => 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#'.charAt(
+              Math.floor(Math.random() * 58)
+            )
+          ).join('')
+
           const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
             email: customerEmail,
+            password: generatedPassword,
             email_confirm: true,
             user_metadata: {
               full_name: customerName,
@@ -70,6 +78,8 @@ export async function POST(request: NextRequest) {
             console.error('Error creating user:', createError)
           } else {
             finalUserId = newUser?.user?.id
+            // Pass generated password to welcome email
+            ;(metadata as any).__generatedPassword = generatedPassword
           }
         }
       }
@@ -142,9 +152,10 @@ export async function POST(request: NextRequest) {
         await supabase.rpc('increment_coupon_uses', { coupon_code: couponCode })
       }
 
-      // Send welcome email
+      // Send welcome email with login credentials
       if (customerEmail) {
-        await sendWelcomeEmail(customerEmail, customerName || 'Polazniče')
+        const generatedPassword = (metadata as any).__generatedPassword
+        await sendWelcomeEmail(customerEmail, customerName || 'Polazniče', generatedPassword)
       }
 
       // Update Stripe customer ID in profile
