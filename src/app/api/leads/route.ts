@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
         COUNTDOWN_EXPIRES: countdownExpiresAt,
         MARKETING_CONSENT: 'true',
       },
-      listIds: [2],
+      listIds: [],
     })
 
     // Update Brevo contact ID in Supabase if we got one
