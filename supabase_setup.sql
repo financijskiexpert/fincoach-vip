@@ -35,9 +35,14 @@ CREATE TABLE IF NOT EXISTS coupons (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Obstoječi kupon PRILIKA (€200 popust = cena €197 namesto €397)
+-- Kupon PRILIKA (€200 popust = cena €197 namesto €397)
 INSERT INTO coupons (code, discount_type, discount_value, is_active)
 VALUES ('PRILIKA', 'fixed', 200, true)
+ON CONFLICT (code) DO NOTHING;
+
+-- Kupon PRIJATELJ (10% popust — za affiliate kupce)
+INSERT INTO coupons (code, discount_type, discount_value, is_active)
+VALUES ('PRIJATELJ', 'percentage', 10, true)
 ON CONFLICT (code) DO NOTHING;
 
 -- 2. BLOG POSTS
@@ -78,6 +83,7 @@ CREATE TABLE IF NOT EXISTS affiliate_conversions (
   purchase_id UUID REFERENCES purchases(id) ON DELETE CASCADE,
   commission_amount NUMERIC NOT NULL,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'cancelled')),
+  payout_eligible_at TIMESTAMPTZ, -- 30 dana od kupnje (po isteku roka za povrat)
   paid_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

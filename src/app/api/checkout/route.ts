@@ -8,9 +8,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { courseSlug, couponCode, affiliateCode: bodyAffiliateCode } = body
 
-    // Resolve affiliate from cookie or body
-    const cookieAffiliate = request.cookies.get('affiliate_code')?.value
-    const affiliateCode = bodyAffiliateCode ?? cookieAffiliate ?? ''
+    // Resolve affiliate from cookie (30-day tracking) or body
+    const cookieAffiliate = request.cookies.get('aff_ref')?.value
+    const affiliateCode = (bodyAffiliateCode ?? cookieAffiliate ?? '').toUpperCase()
 
     const supabase = await createClient()
     const serviceSupabase = await createServiceClient()
@@ -44,6 +44,20 @@ export async function POST(request: NextRequest) {
 
       if (lead?.countdown_expires_at && new Date(lead.countdown_expires_at) > new Date()) {
         priceAmountCents = course.price_launch
+      }
+    }
+
+    // Affiliate discount: if affiliate code is valid, apply 10% buyer discount
+    // (Only if no explicit coupon already provided)
+    if (affiliateCode && !couponCode) {
+      const { data: aff } = await serviceSupabase
+        .from('affiliates')
+        .select('id')
+        .eq('code', affiliateCode)
+        .eq('is_active', true)
+        .single()
+      if (aff) {
+        priceAmountCents = Math.round(priceAmountCents * 0.9)
       }
     }
 

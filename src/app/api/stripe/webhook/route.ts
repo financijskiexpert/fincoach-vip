@@ -123,12 +123,16 @@ export async function POST(request: NextRequest) {
 
         if (affiliate) {
           const commissionAmount = Math.round(amountPaid * (affiliate.commission_percent / 100))
+          // Payout eligible after 30-day refund window expires
+          const payoutEligibleAt = new Date()
+          payoutEligibleAt.setDate(payoutEligibleAt.getDate() + 30)
 
           await supabase.from('affiliate_conversions').insert({
             affiliate_id: affiliate.id,
             purchase_id: purchase.id,
             commission_amount: commissionAmount,
             status: 'pending',
+            payout_eligible_at: payoutEligibleAt.toISOString(),
           })
 
           await supabase.rpc('increment_affiliate_stats', {
