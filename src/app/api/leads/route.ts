@@ -46,8 +46,8 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (leadError) {
-      console.error('Supabase lead error:', leadError)
-      // Don't fail — continue with email
+      console.error('Supabase lead error:', JSON.stringify(leadError))
+      return NextResponse.json({ error: 'DB error: ' + leadError.message }, { status: 500 })
     }
 
     // Add to Brevo contacts (list ID 2 = leads)
