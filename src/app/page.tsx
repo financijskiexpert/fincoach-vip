@@ -35,11 +35,14 @@ export default function LandingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, full_name: name, source: 'landing', marketing_consent: marketingConsent }),
       })
-      if (!res.ok) throw new Error()
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || `HTTP ${res.status}`)
+      }
       setSubmitted(true)
       toast.success('Vodič je na putu! Provjeri svoju email pristiglu poštu.')
-    } catch {
-      toast.error('Nešto je pošlo po krivu. Pokušaj ponovo.')
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Nešto je pošlo po krivu. Pokušaj ponovo.')
     } finally {
       setLoading(false)
     }
