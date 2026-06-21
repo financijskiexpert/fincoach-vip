@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -8,7 +8,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   if (!user) redirect('/prijava?redirect=/admin')
 
-  const { data: profile } = await supabase
+  const service = await createServiceClient()
+  const { data: profile } = await service
     .from('profiles')
     .select('role, full_name')
     .eq('id', user.id)
