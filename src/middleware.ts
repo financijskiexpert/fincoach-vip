@@ -49,11 +49,12 @@ export async function middleware(request: NextRequest) {
         process.env.SUPABASE_SERVICE_ROLE_KEY!,
         { auth: { autoRefreshToken: false, persistSession: false } }
       )
-      const { data: profile } = await serviceSupabase
+      const { data: profile, error: profileError } = await serviceSupabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .single()
+      console.log('[middleware] user:', user.id, 'profile:', profile, 'error:', profileError?.message, 'SERVICE_KEY starts:', process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 10))
       if (profile?.role !== 'admin') {
         return NextResponse.redirect(new URL('/portal', request.url))
       }
