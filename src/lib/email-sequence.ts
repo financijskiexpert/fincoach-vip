@@ -62,7 +62,7 @@ function emailBase(content: string, unsubEmail: string): string {
   <div class="header"><div class="logo">FinCoach VIP</div></div>
   <div class="body">${content}</div>
   <div class="footer">
-    © 2026 FinCoach VIP · Smart Money Solutions d.o.o.<br>
+    © 2026 FinCoach VIP<br>
     <a href="${SITE_URL}/odjava?email=${encodeURIComponent(unsubEmail)}" style="color: #4a5568;">Odjavi se od emailova</a>
   </div>
 </div>
@@ -94,7 +94,7 @@ export function buildEmailContent(
       </div>
       <p>Ovo nije o odricanju — radi se o <strong style="color:#fff;">svjesnosti</strong>. Kad vidiš brojke, sve se promijeni.</p>
       <p>Za 2 dana dijelim svoju osobnu priču. 🙏</p>
-      <p><span class="sig">Brane Recek</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     1: () => `
       <h2>Kako sam izgubio sve i krenuo ispočetka</h2>
@@ -108,28 +108,28 @@ export function buildEmailContent(
       </div>
       <p>Počeo sam od nule. Primjenio sam sustav. I danas živim financijsku slobodu o kojoj sam nekad samo sanjao.</p>
       <p>Sve to — komprimirano u 90 dana — čeka i tebe.</p>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     2: () => `
       <h2>3 financijske navike koje mijenjaju sve</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <div class="box"><p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">1. 🧾 "Plati prvo sebe" — 10% odmah</p><p style="margin:0;">Čim primite plaću — odmah prebaci 10% na poseban račun. Automatski. Prije svih računa.</p></div>
       <div class="box"><p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">2. 📊 Tjedni check-in — 10 minuta</p><p style="margin:0;">Svaki ponedjeljak: 10 minuta pregleda troškova. Samo svjesnost — bez kazni.</p></div>
       <div class="box"><p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">3. 🎯 Formula 50/30/20</p><p style="margin:0;">50% potrebe · 30% želje · 20% štednja i dugovi. Jednostavno i brutalno učinkovito.</p></div>
       <p>Ove 3 navike — primjenjiš li ih ovaj tjedan — već ćeš vidjeti razliku.</p>
       <div style="text-align:center;margin:24px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj kompletan program →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     3: () => `
       <h2>Tomislav je u 60 dana eliminirao dug od 8.000 €</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <div class="box">
         <p style="font-style:italic;color:#fff;margin:0 0 12px;">"Kao freelancer, nikad nisam znao planirati s nepravilnim prihodima. Nakon Braninog programa — eliminirao sam dug od 8.000 € za 60 dana. Danas investiram prvi put u životu."</p>
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Tomislav R., freelancer, Osijek ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Tomislav nije iznimka. <strong style="color:#fff;">Nije pitanje volje. Pitanje je sustava.</strong></p>
       <div style="text-align:center;margin:24px 0;"><a href="${SITE_URL}/tecaj" class="btn">Saznaj više o programu →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     4: () => `
       <h2>Posebna ponuda za tebe, ${n} — samo 48 sati</h2>
@@ -143,7 +143,7 @@ export function buildEmailContent(
       <p>✅ 90 video lekcija · ✅ Radni listovi · ✅ Certifikat · ✅ Doživotni pristup</p>
       <div style="text-align:center;margin:24px 0;"><a href="${SITE_URL}/tecaj" class="btn">Upiši se po cijeni od €97 →</a></div>
       <p style="color:#718096;font-size:13px;text-align:center;">30-dnevna garancija povrata. Nema rizika.</p>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     5: () => `
       <h2>⏰ Zadnja šansa — kod ističe večeras u ponoć</h2>
@@ -155,11 +155,11 @@ export function buildEmailContent(
       </div>
       <div style="text-align:center;margin:24px 0;"><a href="${SITE_URL}/tecaj" class="btn">Da, upisujem se sada →</a></div>
       <p style="color:#718096;font-size:13px;text-align:center;">30-dnevna garancija. Nema rizika.</p>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     6: () => `
       <h2>Zaradi preporučujući ono što ti pomoglo</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>FinCoach VIP lansira partnerski program — i tražimo <strong style="color:#fff;">prave ambasadore</strong>.</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 12px;">🤝 Kako funkcionira?</p>
@@ -169,12 +169,12 @@ export function buildEmailContent(
         <p style="margin:0;">→ Isplata jednom mjesečno, direktno na tvoj račun</p>
       </div>
       <p>Odgovori na ovaj email s riječju <strong style="color:#D4AF37;">"PARTNER"</strong> i bit ćeš među prvima koji dobiju pristup.</p>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     // FAZA 2
     7: () => `
       <h2>Zašto 80% ljudi nikad ne počne štedjeti</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Istraživanja pokazuju da 80% odraslih planira početi štedjeti — "od sljedećeg mjeseca".</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Razlog nije nedostatak volje.</p>
@@ -183,11 +183,11 @@ export function buildEmailContent(
       <p>20% koji uspijevaju imaju jedno zajedničko: sustav koji radi za njih, a ne oni za njega.</p>
       <p>Upravo taj sustav gradimo u 90-dnevnom programu — korak po korak.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj kako to izgleda →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     8: () => `
       <h2>Formula bogatih: što rade drugačije?</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Godinama sam pratio financijski uspješne ljude. Evo što ih razlikuje:</p>
       <div class="box">
         <p style="margin:0 0 8px;">💰 <strong style="color:#fff;">Ne troše sve što zarade</strong> — uvijek ostave 20%+ za štednju/investicije</p>
@@ -197,22 +197,22 @@ export function buildEmailContent(
       </div>
       <p>Nijedna od ovih stvari nije genetska ni privilegija bogatih. Sve se uči.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Nauči i ti →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     9: () => `
       <h2>Ana je u 3 mjeseca uštedjela više nego za cijelu godinu</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <div class="box">
         <p style="font-style:italic;color:#fff;margin:0 0 12px;">"Za 3 mjeseca uspjela sam uštedjeti više nego za cijelu prethodnu godinu. Konačno razumijem kamo odlazi svaka kuna i imam plan. Ovo stvarno funkcionira!"</p>
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Ana M., marketing menadžerica, Rijeka ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Ana nije imala posebnih financijskih znanja. Imala je sustav i 10-20 minuta dnevno.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Počni i ti danas →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     10: () => `
       <h2>Moje 5 najvećih financijskih grešaka</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Bit ću iskren — i ja sam napravio puno grešaka. Evo pet koje te koštaju i tebe:</p>
       <div class="box">
         <p style="margin:0 0 8px;">❌ Trošio sam VIŠE kad sam zarađivao VIŠE (tzv. lifestyle inflation)</p>
@@ -223,11 +223,11 @@ export function buildEmailContent(
       </div>
       <p>Te greške koštale su me godine napretka. U programu učim kako ih izbjegavate ti.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Saznaj više →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     11: () => `
       <h2>Jedno pitanje koje mijenja odnos prema novcu</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Ovo je pitanje koje postavljam svim polaznicima na prvom danu:</p>
       <div class="box" style="text-align:center;">
         <p style="font-size:20px;font-weight:700;color:#D4AF37;margin:0;">"Ako bi tvoj novac mogao govoriti — što bi ti rekao?"</p>
@@ -236,11 +236,11 @@ export function buildEmailContent(
       <p>Taj trenutak svjesnosti — to je početak promjene.</p>
       <p>Spreman/na za tu promjenu? 90 dana. Korak po korak.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj program →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     12: () => `
       <h2>Jesi li spreman/na? Posebna cijena ovaj tjedan</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Zadnjih 9 tjedana dijelio sam s tobom:</p>
       <p>✅ Vodič za financijsku stabilnost<br>✅ Vježbu "Audit novca"<br>✅ Moju osobnu priču<br>✅ 3 ključne navike<br>✅ Priče polaznika koji su promijenili živote</p>
       <p>Sve ovo je samo uvod u 90-dnevni program.</p>
@@ -250,11 +250,11 @@ export function buildEmailContent(
         <p style="color:#718096;font-size:12px;margin:0;">Umjesto redovnih €397</p>
       </div>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Upiši se sada →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     13: () => `
       <h2>Pasivni prihod: mit ili stvarnost?</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Jedan od najčešćih mitova: "Pasivni prihod je samo za bogate."</p>
       <p>Nije. Ali treba red prioriteta:</p>
       <div class="box">
@@ -266,22 +266,22 @@ export function buildEmailContent(
       </div>
       <p>Upravo ta putanja — korak po korak — je srž 90-dnevnog programa.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj program →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     14: () => `
       <h2>Darko je počeo investirati — na 42. godini</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <div class="box">
         <p style="font-style:italic;color:#fff;margin:0 0 12px;">"Mislio sam da je kasno. Imao sam 42 godine i nikad nisam investirao. Brane mi je pokazao da nije kasno — nego da svaka godina odgode košta puno više nego trošak programa."</p>
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Darko V., inženjer, Ljubljana ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Nije kasno. Jedino što košta skuplje od programa — je čekanje.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Počni danas →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     15: () => `
       <h2>90 dana može promijeniti tvoju financijsku budućnost</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>3 mjeseca od sada — bez obzira što napraviš — proteći će.</p>
       <p>Jedino pitanje je: <strong style="color:#fff;">kakva će biti tvoja financijska situacija za 3 mjeseca?</strong></p>
       <div class="box">
@@ -293,12 +293,12 @@ export function buildEmailContent(
       </div>
       <p>Kod <strong style="font-family:monospace;color:#D4AF37;">${DISCOUNT_CODE}</strong> — cijena €97 umjesto €397.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Upiši se → počni za 90 dana živjeti drugačije</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     // FAZA 3 — newsletter stil
     16: () => `
       <h2>💡 FinCoach Insights: Inflacija i tvoja štednja</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Inflacija od 4-6% godišnje znači da novac koji stoji na tekućem računu <strong style="color:#fff;">gubi vrijednost</strong> svake godine.</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Što možeš napraviti?</p>
@@ -308,11 +308,11 @@ export function buildEmailContent(
       </div>
       <p>Ovo i mnogo više — detaljno, s konkretnim primjerima za naše tržište — pokrivamo u programu.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj program →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     17: () => `
       <h2>💡 Kako postaviti financijske ciljeve za sljedeću godinu</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Konkretni financijski ciljevi moraju biti SMART: Specifični, Mjerljivi, Dostižni, Relevantni, Vremenski određeni.</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Primjer lošeg cilja vs. dobrog:</p>
@@ -321,11 +321,11 @@ export function buildEmailContent(
       </div>
       <p>Napiši 3 SMART financijska cilja za sljedeću godinu. Odmah. Dok čitaš ovo. 📝</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Program koji ti pomaže ostvariti te ciljeve →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     18: () => `
       <h2>Novo u FinCoach programu</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Upravo smo dodali nove materijale u program:</p>
       <div class="box">
         <p style="margin:0 0 6px;">📊 <strong style="color:#fff;">Excel predložak za godišnji budžet</strong> — planiranje po tjednima</p>
@@ -334,11 +334,11 @@ export function buildEmailContent(
       </div>
       <p>Svi polaznici dobivaju ove materijale automatski. Ako još nisi s nama — ovo je odličan trenutak.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pridruži se programu →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     19: () => `
       <h2>Sezona poreza: 5 stvari koje moraš znati</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <div class="box">
         <p style="margin:0 0 6px;">1️⃣ <strong style="color:#fff;">Zahtjev za povrat poreza</strong> — mnogi ostavljaju 200-500€ na stolu jer ga ne traže</p>
         <p style="margin:0 0 6px;">2️⃣ <strong style="color:#fff;">Odbitne stavke</strong> — provjeri što možeš odbiti (donacije, stambeni kredit, osobni odbitak)</p>
@@ -347,11 +347,11 @@ export function buildEmailContent(
         <p style="margin:0;">5️⃣ <strong style="color:#fff;">Povrat odmah investiraj</strong> — ne troši ga, stavi u hitni fond ili investiciju</p>
       </div>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Program koji te uči upravljati svim ovim →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     20: () => `
       <h2>Znam da još razmišljaš. Evo zašto ima smisla sada.</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Pratim te već nekoliko mjeseci. Čitaš, razmišljaš — ali još nisi napravio/la korak.</p>
       <p>Razumijem. Svaka investicija u sebe zahtijeva odluku.</p>
       <div class="box">
@@ -362,11 +362,11 @@ export function buildEmailContent(
       </div>
       <p>30-dnevna garancija povrata. Ako ne vidiš rezultate — vratiš novac.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Zadnja šansa — upiši se s kodom ${DISCOUNT_CODE} →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
 
     21: () => `
       <h2>💡 FinCoach Insights: Investiranje za početnike</h2>
-      <p>Bok ${n},</p>
+      <p>Dragi/a ${n},</p>
       <p>Najčešće pitanje koje dobivam: <strong style="color:#fff;">"Brane, gdje da počnem investirati?"</strong></p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Moj odgovor (ukratko):</p>
@@ -377,7 +377,7 @@ export function buildEmailContent(
       </div>
       <p>Ovo razrađujemo detaljno u Fazi 3 (dani 61-90) programa.</p>
       <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj cijeli program →</a></div>
-      <p><span class="sig">Brane</span></p>`,
+      <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`,
   }
 
   const buildFn = cases[sequenceIndex]

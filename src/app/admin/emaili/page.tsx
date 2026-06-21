@@ -23,7 +23,7 @@ export default function EmailiPage() {
   const [previewMode, setPreviewMode] = useState<'html' | 'text'>('html')
 
   const preview = selected !== null
-    ? buildEmailContent(selected, 'Ime Prezime', 'primjer@email.com')
+    ? buildEmailContent(selected, 'Ana Horvat', 'ana.horvat@email.com')
     : null
 
   return (

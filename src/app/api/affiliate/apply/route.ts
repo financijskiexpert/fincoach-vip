@@ -130,9 +130,9 @@ export async function POST() {
       <a href="${siteUrl}/affiliate/dashboard" class="btn">Idi na dashboard →</a>
     </div>
     <p style="color:#718096;font-size:13px;">Pitanja? Napiši na brane@fincoach.vip</p>
-    <p><span style="color:#D4AF37;font-weight:700;">Brane Recek</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>
+    <p><span style="color:#D4AF37;font-weight:700;">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>
   </div>
-  <div class="footer">© 2026 FinCoach VIP · Smart Money Solutions d.o.o.</div>
+  <div class="footer">© 2026 FinCoach VIP</div>
 </div>
 </body></html>`,
     })
