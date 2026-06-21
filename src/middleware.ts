@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { createClient } from '@supabase/supabase-js'
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
@@ -44,17 +43,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/prijava', request.url))
     }
     if (pathname.startsWith('/admin')) {
-      const serviceSupabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { autoRefreshToken: false, persistSession: false } }
-      )
-      const { data: profile, error: profileError } = await serviceSupabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .single()
-      console.log('[middleware] user:', user.id, 'profile:', profile, 'error:', profileError?.message, 'SERVICE_KEY starts:', process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 10))
       if (profile?.role !== 'admin') {
         return NextResponse.redirect(new URL('/portal', request.url))
       }
