@@ -11,7 +11,7 @@ function generateCode(name: string): string {
 
 export async function POST() {
   try {
-    const supabaseAuth = await createServerClient()
+    const supabaseAuth = await createServiceClient()
     const { data: { user }, error: authError } = await supabaseAuth.auth.getUser()
 
     if (authError || !user) {
