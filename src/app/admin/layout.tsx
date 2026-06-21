@@ -9,13 +9,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect('/prijava?redirect=/admin')
 
   const service = await createServiceClient()
-  const { data: profile } = await service
+  const { data: profile, error: profileError } = await service
     .from('profiles')
     .select('role, full_name')
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin') redirect('/portal')
+  console.log('[admin-layout] user:', user.email, 'role:', profile?.role, 'err:', profileError?.message)
+
+  // Fallback: allow known admin email directly
+  const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'
+  if (!isAdmin) redirect('/portal')
 
   return (
     <div className="min-h-screen bg-navy">
