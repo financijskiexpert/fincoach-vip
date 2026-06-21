@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,21 +13,23 @@ export default async function PortalDashboard() {
 
   if (!user) redirect('/prijava')
 
+  const service = await createServiceClient()
+
   // Get profile
-  const { data: profile } = await supabase
+  const { data: profile } = await service
     .from('profiles')
     .select('full_name, email')
     .eq('id', user.id)
     .single()
 
   // Get course & purchase
-  const { data: course } = await supabase
+  const { data: course } = await service
     .from('courses')
     .select('id, title, slug')
     .eq('slug', 'volim-svojnovac')
     .single()
 
-  const hasPurchase = course ? await supabase
+  const hasPurchase = course ? await service
     .from('purchases')
     .select('id')
     .eq('user_id', user.id)
@@ -41,13 +43,13 @@ export default async function PortalDashboard() {
   }
 
   // Get progress
-  const { data: lessons } = await supabase
+  const { data: lessons } = await service
     .from('lessons')
     .select('id, day_number, title, section, duration_seconds')
     .eq('course_id', course!.id)
     .order('sort_order')
 
-  const { data: progressData } = await supabase
+  const { data: progressData } = await service
     .from('progress')
     .select('lesson_id, completed_at')
     .eq('user_id', user.id)

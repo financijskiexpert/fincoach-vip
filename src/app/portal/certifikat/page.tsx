@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Award } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -9,20 +9,21 @@ export default async function CertifikatPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/prijava')
 
-  const { data: profile } = await supabase
+  const service = await createServiceClient()
+
+  const { data: profile } = await service
     .from('profiles')
     .select('full_name')
     .eq('id', user.id)
     .single()
 
-  const { data: course } = await supabase
+  const { data: course } = await service
     .from('courses')
     .select('id')
     .eq('slug', 'volim-svojnovac')
     .single()
 
-  // Check completion
-  const { count: completedCount } = await supabase
+  const { count: completedCount } = await service
     .from('progress')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', user.id)

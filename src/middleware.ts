@@ -40,7 +40,9 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/portal') || pathname.startsWith('/admin')) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      return NextResponse.redirect(new URL('/prijava', request.url))
+      const loginUrl = new URL('/prijava', request.url)
+      if (pathname.startsWith('/admin')) loginUrl.searchParams.set('redirect', '/admin')
+      return NextResponse.redirect(loginUrl)
     }
     // Admin role check is handled in /admin/layout.tsx (Node.js runtime)
   }

@@ -1,12 +1,11 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import Sidebar from '@/components/Sidebar'
 
 async function getLessonsAndProgress(userId: string, courseSlug = 'volim-svojnovac') {
-  const supabase = await createClient()
+  const service = await createServiceClient()
 
-  // Get course
-  const { data: course } = await supabase
+  const { data: course } = await service
     .from('courses')
     .select('id')
     .eq('slug', courseSlug)
@@ -14,8 +13,7 @@ async function getLessonsAndProgress(userId: string, courseSlug = 'volim-svojnov
 
   if (!course) return { lessons: [], completedIds: [] }
 
-  // Get lessons (only if user has purchased)
-  const { data: purchase } = await supabase
+  const { data: purchase } = await service
     .from('purchases')
     .select('id')
     .eq('user_id', userId)
@@ -25,13 +23,13 @@ async function getLessonsAndProgress(userId: string, courseSlug = 'volim-svojnov
 
   if (!purchase) return { lessons: [], completedIds: [] }
 
-  const { data: lessons } = await supabase
+  const { data: lessons } = await service
     .from('lessons')
     .select('id, day_number, title, section, duration_seconds')
     .eq('course_id', course.id)
     .order('sort_order')
 
-  const { data: progress } = await supabase
+  const { data: progress } = await service
     .from('progress')
     .select('lesson_id')
     .eq('user_id', userId)
