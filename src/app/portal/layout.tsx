@@ -21,7 +21,23 @@ async function getLessonsAndProgress(userId: string, courseSlug = 'volim-svojnov
     .eq('status', 'completed')
     .single()
 
-  if (!purchase) return { lessons: [], completedIds: [] }
+  if (!purchase) {
+    const { data: profile } = await service
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single()
+
+    if (profile?.role !== 'admin') return { lessons: [], completedIds: [] }
+
+    const { data: adminLessons } = await service
+      .from('lessons')
+      .select('id, day_number, title, section, duration_seconds')
+      .eq('course_id', course.id)
+      .order('sort_order')
+
+    return { lessons: adminLessons ?? [], completedIds: [] }
+  }
 
   const { data: lessons } = await service
     .from('lessons')
