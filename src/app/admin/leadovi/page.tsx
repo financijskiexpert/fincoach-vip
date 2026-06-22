@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Mail, Users, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import { EMAIL_SEQUENCE } from '@/lib/email-sequence'
+import { DeleteLeadButton } from './DeleteLeadButton'
 
 export default async function LeadoviPage() {
   const supabase = await createClient()
@@ -14,19 +15,16 @@ export default async function LeadoviPage() {
   const { data: profile } = await service.from('profiles').select('role').eq('id', user.id).single()
   if (profile?.role !== 'admin' && user.email !== 'brane.recek@gmail.com') redirect('/portal')
 
-  // Svi leadovi
   const { data: leads } = await service
     .from('leads')
     .select('*')
     .order('created_at', { ascending: false })
 
-  // Email queue statistika po leadu
   const { data: queue } = await service
     .from('email_sequence_queue')
     .select('lead_id, status, sequence_index, scheduled_at, sent_at, error_message')
     .order('sequence_index', { ascending: true })
 
-  // Grupaj queue po lead_id
   const queueByLead: Record<string, typeof queue> = {}
   for (const item of queue ?? []) {
     if (!queueByLead[item.lead_id]) queueByLead[item.lead_id] = []
@@ -48,26 +46,18 @@ export default async function LeadoviPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="border border-white/10 rounded-xl p-4 bg-navy-50">
-            <Users className="w-5 h-5 text-cyan-400 mb-2" />
-            <p className="text-2xl font-bold text-cyan-400">{total}</p>
-            <p className="text-xs text-white/50 mt-0.5">Ukupno leadova</p>
-          </div>
-          <div className="border border-white/10 rounded-xl p-4 bg-navy-50">
-            <CheckCircle className="w-5 h-5 text-green-400 mb-2" />
-            <p className="text-2xl font-bold text-green-400">{converted}</p>
-            <p className="text-xs text-white/50 mt-0.5">Konvertirani u kupce</p>
-          </div>
-          <div className="border border-white/10 rounded-xl p-4 bg-navy-50">
-            <Mail className="w-5 h-5 text-gold mb-2" />
-            <p className="text-2xl font-bold text-gold">{totalSent}</p>
-            <p className="text-xs text-white/50 mt-0.5">Emailova poslano</p>
-          </div>
-          <div className="border border-white/10 rounded-xl p-4 bg-navy-50">
-            <AlertCircle className="w-5 h-5 text-red-400 mb-2" />
-            <p className="text-2xl font-bold text-red-400">{totalFailed}</p>
-            <p className="text-xs text-white/50 mt-0.5">Greške slanja</p>
-          </div>
+          {[
+            { icon: Users, label: 'Ukupno leadova', value: total, color: 'text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/20' },
+            { icon: CheckCircle, label: 'Konvertirani', value: converted, color: 'text-green-400', bg: 'bg-green-500/10 border-green-500/20' },
+            { icon: Mail, label: 'Emailova poslano', value: totalSent, color: 'text-gold', bg: 'bg-gold/10 border-gold/20' },
+            { icon: AlertCircle, label: 'Greške slanja', value: totalFailed, color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' },
+          ].map(s => (
+            <div key={s.label} className={`border rounded-xl p-4 ${s.bg}`}>
+              <s.icon className={`w-5 h-5 ${s.color} mb-2`} />
+              <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+              <p className="text-xs text-white/50 mt-0.5">{s.label}</p>
+            </div>
+          ))}
         </div>
 
         {/* Lead kartice */}
@@ -80,12 +70,8 @@ export default async function LeadoviPage() {
             const pending = items.filter(i => i.status === 'pending')
             const failed = items.filter(i => i.status === 'failed')
             const skipped = items.filter(i => i.status === 'skipped')
-
-            // Zadnji poslani email
             const lastSent = sent.length > 0 ? sent[sent.length - 1] : null
             const lastSubject = lastSent ? EMAIL_SEQUENCE[lastSent.sequence_index]?.subject : null
-
-            // Sljedeći email
             const nextPending = pending.length > 0 ? pending[0] : null
             const nextSubject = nextPending ? EMAIL_SEQUENCE[nextPending.sequence_index]?.subject : null
             const nextDate = nextPending ? new Date(nextPending.scheduled_at) : null
@@ -95,14 +81,12 @@ export default async function LeadoviPage() {
                 <CardContent className="pt-5">
                   <div className="flex flex-col lg:flex-row lg:items-start gap-4">
 
-                    {/* Osnovi podaci */}
+                    {/* Podaci */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="text-white font-semibold text-base truncate">
-                          {lead.full_name || '(bez imena)'}
-                        </h3>
+                      <div className="flex items-center gap-3 mb-1 flex-wrap">
+                        <h3 className="text-white font-semibold text-base">{lead.full_name || '(bez imena)'}</h3>
                         {lead.converted_to_purchase && (
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs shrink-0">Kupio/la</Badge>
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">Kupio/la</Badge>
                         )}
                       </div>
                       <p className="text-white/60 text-sm">{lead.email}</p>
@@ -110,12 +94,12 @@ export default async function LeadoviPage() {
                         Prijavljen/a: {new Date(lead.created_at).toLocaleDateString('hr-HR', {
                           day: '2-digit', month: '2-digit', year: 'numeric',
                           hour: '2-digit', minute: '2-digit',
-                        })} · Izvor: {lead.source ?? 'landing'}
+                        })} · {lead.source ?? 'landing'}
                       </p>
                     </div>
 
-                    {/* Email statistika */}
-                    <div className="flex gap-3 shrink-0">
+                    {/* Email brojevci */}
+                    <div className="flex gap-2 shrink-0 flex-wrap">
                       <div className="text-center px-3 py-2 bg-green-500/10 border border-green-500/20 rounded-lg">
                         <p className="text-lg font-bold text-green-400">{sent.length}</p>
                         <p className="text-xs text-white/40">Poslano</p>
@@ -135,9 +119,14 @@ export default async function LeadoviPage() {
                         </div>
                       )}
                     </div>
+
+                    {/* Admin akcije */}
+                    <div className="flex gap-2 shrink-0">
+                      <DeleteLeadButton leadId={lead.id} email={lead.email} />
+                    </div>
                   </div>
 
-                  {/* Zadnji i sljedeći email */}
+                  {/* Zadnji + sljedeći email */}
                   <div className="mt-4 grid sm:grid-cols-2 gap-3">
                     {lastSent && lastSubject && (
                       <div className="bg-white/3 border border-white/8 rounded-lg p-3">
@@ -163,9 +152,14 @@ export default async function LeadoviPage() {
                         </p>
                       </div>
                     )}
+                    {sent.length === 0 && pending.length === 0 && (
+                      <div className="bg-white/3 border border-white/8 rounded-lg p-3 col-span-2">
+                        <p className="text-white/40 text-xs">Email sekvenca još nije kreirana za ovog leada.</p>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Failed emaili */}
+                  {/* Greške */}
                   {failed.length > 0 && (
                     <div className="mt-3 p-3 bg-red-500/5 border border-red-500/20 rounded-lg">
                       <p className="text-xs text-red-400 font-medium mb-1">⚠️ Greške slanja:</p>
