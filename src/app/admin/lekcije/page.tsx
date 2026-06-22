@@ -13,6 +13,7 @@ interface Lesson {
   description: string | null
   day_number: number
   video_url: string | null
+  video_key: string | null
   duration_seconds: number | null
   is_published: boolean
 }
@@ -27,6 +28,7 @@ export default function AdminLekcije() {
     description: '',
     day_number: '',
     video_url: '',
+    video_key: '',
     duration_seconds: '',
     is_published: true,
   })
@@ -48,6 +50,11 @@ export default function AdminLekcije() {
     }
   }
 
+  function autoVideoKey(day: string) {
+    const n = parseInt(day)
+    return isNaN(n) ? '' : `courses/volim-svojnovac/day-${n}.mp4`
+  }
+
   function startEdit(lesson: Lesson) {
     setEditingId(lesson.id)
     setForm({
@@ -55,6 +62,7 @@ export default function AdminLekcije() {
       description: lesson.description ?? '',
       day_number: lesson.day_number.toString(),
       video_url: lesson.video_url ?? '',
+      video_key: lesson.video_key ?? autoVideoKey(lesson.day_number.toString()),
       duration_seconds: lesson.duration_seconds?.toString() ?? '',
       is_published: lesson.is_published,
     })
@@ -64,11 +72,13 @@ export default function AdminLekcije() {
   function startNew() {
     setEditingId(null)
     const nextDay = lessons.length > 0 ? Math.max(...lessons.map(l => l.day_number)) + 1 : 1
+    const nextDayStr = nextDay.toString()
     setForm({
       title: '',
       description: '',
-      day_number: nextDay.toString(),
+      day_number: nextDayStr,
       video_url: '',
+      video_key: autoVideoKey(nextDayStr),
       duration_seconds: '',
       is_published: true,
     })
@@ -82,12 +92,14 @@ export default function AdminLekcije() {
     }
 
     try {
+      const dayNum = parseInt(form.day_number)
       const payload = {
         id: editingId,
         title: form.title,
         description: form.description || null,
-        day_number: parseInt(form.day_number),
+        day_number: dayNum,
         video_url: form.video_url || null,
+        video_key: form.video_key || autoVideoKey(form.day_number) || null,
         duration_seconds: form.duration_seconds ? parseInt(form.duration_seconds) : null,
         is_published: form.is_published,
       }
@@ -172,7 +184,16 @@ export default function AdminLekcije() {
               <Input
                 type="number"
                 value={form.day_number}
-                onChange={e => setForm(f => ({ ...f, day_number: e.target.value }))}
+                onChange={e => {
+                  const val = e.target.value
+                  setForm(f => ({
+                    ...f,
+                    day_number: val,
+                    video_key: f.video_key === autoVideoKey(f.day_number) || f.video_key === ''
+                      ? autoVideoKey(val)
+                      : f.video_key,
+                  }))
+                }}
                 placeholder="1"
                 min="0"
                 max="90"
@@ -187,13 +208,22 @@ export default function AdminLekcije() {
                 placeholder="600"
               />
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm text-white/50 mb-1.5">Video URL (Cloudflare R2)</label>
+            <div>
+              <label className="block text-sm text-white/50 mb-1.5">Video URL (Cloudflare R2 javni URL)</label>
               <Input
                 value={form.video_url}
                 onChange={e => setForm(f => ({ ...f, video_url: e.target.value }))}
                 placeholder="https://..."
               />
+            </div>
+            <div>
+              <label className="block text-sm text-white/50 mb-1.5">Video Key (R2 ključ za signed URL)</label>
+              <Input
+                value={form.video_key}
+                onChange={e => setForm(f => ({ ...f, video_key: e.target.value }))}
+                placeholder="courses/volim-svojnovac/day-1.mp4"
+              />
+              <p className="text-white/20 text-xs mt-1">Auto-generirano iz broja dana. Mijenjaj samo ako je drugačije.</p>
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm text-white/50 mb-1.5">Opis</label>

@@ -33,6 +33,8 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const supabase = await createServiceClient()
 
+  const videoKey = body.video_key ?? `courses/volim-svojnovac/day-${body.day_number}.mp4`
+
   const { data, error } = await supabase
     .from('lessons')
     .insert({
@@ -40,6 +42,7 @@ export async function POST(request: NextRequest) {
       description: body.description,
       day_number: body.day_number,
       video_url: body.video_url,
+      video_key: videoKey,
       duration_seconds: body.duration_seconds,
       is_published: body.is_published ?? true,
       course_id: body.course_id ?? null,
@@ -60,6 +63,8 @@ export async function PUT(request: NextRequest) {
 
   const supabase = await createServiceClient()
 
+  const videoKey = body.video_key ?? `courses/volim-svojnovac/day-${body.day_number}.mp4`
+
   const { data, error } = await supabase
     .from('lessons')
     .update({
@@ -67,6 +72,7 @@ export async function PUT(request: NextRequest) {
       description: body.description,
       day_number: body.day_number,
       video_url: body.video_url,
+      video_key: videoKey,
       duration_seconds: body.duration_seconds,
       is_published: body.is_published,
     })
