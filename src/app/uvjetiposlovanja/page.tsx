@@ -69,7 +69,7 @@ export default function UvjetiPoslovanjaPage() {
               <strong>Iznimka:</strong> Ako ste pristupili digitalnom sadržaju (pogledali lekciju, preuzeli materijale) i izričito pristali na gubitak prava na odustanak, pravo na povrat ne primjenjuje se na potrošeni sadržaj.
             </p>
             <p className="mt-3">
-              Uz to, nudimo <strong>garanciju povrata novca u roku od 30 dana</strong> bez pitanja — ako niste zadovoljni programom iz bilo kojeg razloga. Zahtjev za povrat pošaljite na: <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a>
+              Uz to, nudimo <strong>garanciju povrata novca u roku od 30 dana</strong> bez pitanja — ako niste zadovoljni programom iz bilo kojeg razloga. Zahtjev za povrat pošaljite na: <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a>
             </p>
             <p className="mt-3">Povrat se vrši istom metodom plaćanja u roku od 5–10 radnih dana.</p>
           </section>
@@ -116,7 +116,7 @@ export default function UvjetiPoslovanjaPage() {
             <h2 className="text-xl font-semibold text-white mb-3">9. Kontakt i rješavanje sporova</h2>
             <p>
               Za sva pitanja, reklamacije ili zahtjeve kontaktirajte nas na:<br />
-              <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a>
+              <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a>
             </p>
             <p className="mt-3">
               Za rješavanje sporova s potrošačima nadležan je sud prema sjedištu Pružatelja usluge, uz mogućnost izvansudskog rješavanja sporova putem <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">EU platforme za online rješavanje sporova (ODR)</a>.
