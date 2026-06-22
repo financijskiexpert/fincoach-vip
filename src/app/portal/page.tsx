@@ -18,9 +18,14 @@ export default async function PortalDashboard() {
   // Get profile
   const { data: profile } = await service
     .from('profiles')
-    .select('full_name, email')
+    .select('full_name, email, role')
     .eq('id', user.id)
     .single()
+
+  // Admin bypass — redirect to admin dashboard
+  if (profile?.role === 'admin' || user.email === 'brane.recek@gmail.com') {
+    redirect('/admin')
+  }
 
   // Get course & purchase
   const { data: course } = await service
