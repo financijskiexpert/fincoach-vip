@@ -29,7 +29,7 @@ export default function UvjetiPoslovanjaPage() {
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">1. Opće informacije</h2>
             <p>
-              Ove Uvjete poslovanja primjenjuje Smart Money Solutions d.o.o. (u daljnjem tekstu: &quot;Pružatelj usluge&quot;, &quot;mi&quot;, &quot;nas&quot;), sa sjedištem u Republici Sloveniji, OIB/matični broj dostupan na zahtjev, koja upravlja platformom <strong>FinCoach VIP</strong> dostupnom na adresi <strong>fincoach.vip</strong> (u daljnjem tekstu: &quot;Platforma&quot;).
+              Ove Uvjete poslovanja primjenjuje <strong>Expert s.p.</strong>, Kidričeva 2, 2000 Maribor, Slovenija, davčna številka: 83099131 (u daljnjem tekstu: &quot;Pružatelj usluge&quot;, &quot;mi&quot;, &quot;nas&quot;), koja upravlja platformom <strong>FinCoach VIP</strong> dostupnom na adresi <strong>fincoach.vip</strong> (u daljnjem tekstu: &quot;Platforma&quot;).
             </p>
             <p className="mt-3">
               Korištenjem Platforme ili kupnjom bilo kojeg tečaja ili usluge potvrđujete da ste pročitali, razumjeli i prihvatili ove Uvjete u cijelosti. Ako se ne slažete s bilo kojim dijelom Uvjeta, molimo vas da ne koristite Platformu.
@@ -69,7 +69,7 @@ export default function UvjetiPoslovanjaPage() {
               <strong>Iznimka:</strong> Ako ste pristupili digitalnom sadržaju (pogledali lekciju, preuzeli materijale) i izričito pristali na gubitak prava na odustanak, pravo na povrat ne primjenjuje se na potrošeni sadržaj.
             </p>
             <p className="mt-3">
-              Uz to, nudimo <strong>garanciju povrata novca u roku od 30 dana</strong> bez pitanja — ako niste zadovoljni programom iz bilo kojeg razloga. Zahtjev za povrat pošaljite na: <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a>
+              Uz to, nudimo <strong>garanciju povrata novca u roku od 30 dana</strong> bez pitanja — ako niste zadovoljni programom iz bilo kojeg razloga. Zahtjev za povrat pošaljite na: <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a>
             </p>
             <p className="mt-3">Povrat se vrši istom metodom plaćanja u roku od 5–10 radnih dana.</p>
           </section>
@@ -116,7 +116,7 @@ export default function UvjetiPoslovanjaPage() {
             <h2 className="text-xl font-semibold text-white mb-3">9. Kontakt i rješavanje sporova</h2>
             <p>
               Za sva pitanja, reklamacije ili zahtjeve kontaktirajte nas na:<br />
-              <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a>
+              <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a>
             </p>
             <p className="mt-3">
               Za rješavanje sporova s potrošačima nadležan je sud prema sjedištu Pružatelja usluge, uz mogućnost izvansudskog rješavanja sporova putem <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">EU platforme za online rješavanje sporova (ODR)</a>.

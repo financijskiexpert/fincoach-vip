@@ -14,13 +14,13 @@ export default function AffiliateUvjetiPage() {
         </Link>
 
         <h1 className="text-3xl font-black mb-2">Opći uvjeti affiliate programa</h1>
-        <p className="text-gray-500 text-sm mb-10">Smart Money Solutions d.o.o. · Zadnja izmjena: lipanj 2026.</p>
+        <p className="text-gray-500 text-sm mb-10">Expert s.p. · Kidričeva 2, 2000 Maribor · Davčna številka: 83099131 · Zadnja izmjena: lipanj 2026.</p>
 
         <div className="prose prose-invert prose-sm max-w-none space-y-8 text-gray-300 leading-relaxed">
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3">1. Definicije i sudionici</h2>
-            <p><strong className="text-white">Organizator programa:</strong> Smart Money Solutions d.o.o., prodavač tečaja "Volim Svoj Novac" putem platforme fincoach.vip.</p>
+            <p><strong className="text-white">Organizator programa:</strong> Expert s.p., Kidričeva 2, 2000 Maribor, Slovenija, davčna številka: 83099131 — prodavač tečaja "Volim Svoj Novac" putem platforme fincoach.vip.</p>
             <p><strong className="text-white">Affiliate partner (Partner):</strong> fizička ili pravna osoba koja se prijavila u affiliate program i prihvatila ove uvjete.</p>
             <p><strong className="text-white">Kupac:</strong> osoba koja je kupila tečaj putem affiliate veze Partnera.</p>
             <p><strong className="text-white">Provizija:</strong> novčana naknada koja se Partneru isplaćuje za uspješno posredovanu prodaju.</p>
@@ -83,7 +83,7 @@ export default function AffiliateUvjetiPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3">9. Mjerodavno pravo</h2>
-            <p>Na ove uvjete primjenjuje se pravo <strong className="text-white">Republike Hrvatske</strong>. Za sve sporove nadležan je sud u Zagrebu.</p>
+            <p>Na ove uvjete primjenjuje se pravo <strong className="text-white">Republike Slovenije</strong>. Za sve sporove nadležno je Okrožno sodišče v Mariboru.</p>
           </section>
 
           <section>

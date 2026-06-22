@@ -30,8 +30,10 @@ export default function PolitikaPrivatnostiPage() {
             <h2 className="text-xl font-semibold text-white mb-3">1. Voditelj obrade podataka</h2>
             <p>
               Voditelj obrade vaših osobnih podataka je:<br />
-              <strong className="text-white">Smart Money Solutions d.o.o.</strong><br />
-              E-mail: <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a>
+              <strong className="text-white">Expert s.p.</strong><br />
+              Kidričeva 2, 2000 Maribor, Slovenija<br />
+              Davčna številka: 83099131<br />
+              E-mail: <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a>
             </p>
           </section>
 
@@ -139,7 +141,7 @@ export default function PolitikaPrivatnostiPage() {
               <li><strong className="text-white">Pravo povlačenja suglasnosti</strong> — u bilo koje vrijeme, bez utjecaja na prethodnu obradu</li>
             </ul>
             <p className="mt-4">
-              Zahtjeve ostvarujete slanjem e-maila na: <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a><br />
+              Zahtjeve ostvarujete slanjem e-maila na: <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a><br />
               Odgovaramo u roku od <strong className="text-white">30 dana</strong>. Imate pravo podnijeti pritužbu nadzornom tijelu — u Sloveniji je to <a href="https://www.ip-rs.si" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">Informacijski pooblaščenec (IP-RS)</a>.
             </p>
           </section>
@@ -155,7 +157,7 @@ export default function PolitikaPrivatnostiPage() {
             <h2 className="text-xl font-semibold text-white mb-3">9. Kontakt</h2>
             <p>
               Za sva pitanja o obradi podataka:<br />
-              <a href="mailto:brane.recek@gmail.com" className="text-gold hover:underline">brane.recek@gmail.com</a>
+              <a href="mailto:branislav.recek@smartmoneysolutions.com" className="text-gold hover:underline">branislav.recek@smartmoneysolutions.com</a>
             </p>
           </section>
 
