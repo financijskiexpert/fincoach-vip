@@ -30,8 +30,7 @@ function LoginForm() {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
         toast.success('Dobrodošao/la!')
-        router.push(redirect)
-        router.refresh()
+        window.location.href = redirect
       } else {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/auth/reset-password`,
