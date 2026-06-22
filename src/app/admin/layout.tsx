@@ -36,6 +36,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 { href: '/admin/studenti', label: 'Studenti' },
                 { href: '/admin/lekcije', label: 'Lekcije' },
                 { href: '/admin/kuponi', label: 'Kuponi' },
+                { href: '/admin/leadovi', label: 'Leadovi' },
                 { href: '/admin/affiliate', label: 'Affiliate' },
                 { href: '/admin/blog', label: 'Blog' },
                 { href: '/admin/emaili', label: 'Emaili' },
