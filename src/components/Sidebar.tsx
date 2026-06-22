@@ -164,6 +164,30 @@ export default function Sidebar({ lessons, completedLessonIds, currentLessonId, 
       {/* Footer */}
       <div className="p-4 border-t border-white/10 space-y-3">
         <Link
+          href="/portal/kalkulatori"
+          className={cn(
+            'flex items-center gap-2 text-sm transition-colors',
+            pathname === '/portal/kalkulatori' ? 'text-gold' : 'text-white/50 hover:text-gold'
+          )}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.638 4.5 4.716V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.716c0-1.078-.806-2.014-1.857-2.144A48.5 48.5 0 0 0 12 2.25Z" />
+          </svg>
+          Financijski kalkulatori
+        </Link>
+        <Link
+          href="/portal/biljeznice"
+          className={cn(
+            'flex items-center gap-2 text-sm transition-colors',
+            pathname === '/portal/biljeznice' ? 'text-gold' : 'text-white/50 hover:text-gold'
+          )}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+          </svg>
+          Moje bilješke
+        </Link>
+        <Link
           href="/portal/certifikat"
           className={cn(
             'flex items-center gap-2 text-sm transition-colors',

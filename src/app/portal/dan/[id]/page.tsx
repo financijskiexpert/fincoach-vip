@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import VideoPlayer from '@/components/VideoPlayer'
@@ -19,6 +19,65 @@ interface Lesson {
   duration_seconds: number | null
   section: string
   course_id: string
+}
+
+function LessonNotes({ lessonId }: { lessonId: string }) {
+  const [content, setContent] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [savedAt, setSavedAt] = useState<string | null>(null)
+  const [loaded, setLoaded] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    fetch(`/api/notes?lesson_id=${lessonId}`)
+      .then(r => r.json())
+      .then(({ note }) => {
+        if (note?.content) setContent(note.content)
+        if (note?.updated_at) setSavedAt(note.updated_at)
+        setLoaded(true)
+      })
+  }, [lessonId])
+
+  function handleChange(val: string) {
+    setContent(val)
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => autoSave(val), 1200)
+  }
+
+  async function autoSave(val: string) {
+    setSaving(true)
+    try {
+      const res = await fetch('/api/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lesson_id: lessonId, content: val }),
+      })
+      const data = await res.json()
+      if (data.ok) setSavedAt(data.updated_at)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (!loaded) return null
+
+  return (
+    <div className="bg-navy-50 border border-white/10 rounded-xl p-6 mb-8">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="font-semibold text-white text-base">Moje bilješke</h2>
+        <span className="text-xs text-white/30">
+          {saving ? 'Snima...' : savedAt ? `Snimljeno ${new Date(savedAt).toLocaleTimeString('hr')}` : 'Nije još snimljeno'}
+        </span>
+      </div>
+      <textarea
+        value={content}
+        onChange={e => handleChange(e.target.value)}
+        placeholder="Napiši svoje misli, zadatke ili uvide za ovaj dan..."
+        rows={4}
+        className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-none"
+      />
+    </div>
+  )
 }
 
 export default function DailyLessonPage() {
@@ -172,6 +231,47 @@ export default function DailyLessonPage() {
         )}
       </div>
 
+      {/* Calculator banner */}
+      {(() => {
+        const calcMap: Record<number, { label: string; tab: number }> = {
+          36: { label: 'Kalkulator proračuna', tab: 0 },
+          37: { label: 'Kalkulator proračuna', tab: 0 },
+          38: { label: 'Kalkulator proračuna', tab: 0 },
+          39: { label: 'Kalkulator hitnog fonda', tab: 1 },
+          52: { label: 'Kalkulator hitnog fonda', tab: 1 },
+          54: { label: 'Kalkulator hitnog fonda', tab: 1 },
+          29: { label: 'Kalkulator otplate duga', tab: 2 },
+          42: { label: 'Kalkulator otplate duga', tab: 2 },
+          43: { label: 'Kalkulator otplate duga', tab: 2 },
+          74: { label: 'Kalkulator složene kamate', tab: 3 },
+          80: { label: 'Kalkulator složene kamate', tab: 3 },
+          85: { label: 'Kalkulator složene kamate', tab: 3 },
+        }
+        const calc = calcMap[dayNumber]
+        if (!calc) return null
+        return (
+          <Link
+            href={`/portal/kalkulatori?tab=${calc.tab}`}
+            className="flex items-center justify-between bg-gold/10 border border-gold/30 rounded-xl px-4 py-3 mb-6 hover:bg-gold/20 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gold/20 flex items-center justify-center">
+                <svg className="w-4 h-4 text-gold" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.638 4.5 4.716V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.716c0-1.078-.806-2.014-1.857-2.144A48.5 48.5 0 0 0 12 2.25Z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-gold font-semibold text-sm">{calc.label}</p>
+                <p className="text-white/50 text-xs">Isprobaj uz ovu lekciju</p>
+              </div>
+            </div>
+            <svg className="w-4 h-4 text-gold/50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+        )
+      })()}
+
       {/* Video */}
       {videoUrl ? (
         <VideoPlayer
@@ -220,6 +320,9 @@ export default function DailyLessonPage() {
           </div>
         )}
       </div>
+
+      {/* Notes */}
+      <LessonNotes lessonId={lesson.id} />
 
       {/* Navigation */}
       <div className="flex items-center justify-between border-t border-white/10 pt-6">

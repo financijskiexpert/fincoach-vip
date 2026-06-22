@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import CountdownTimer from '@/components/CountdownTimer'
 import {
   CheckCircle, Star, Shield, ChevronDown, ChevronUp,
-  Video, Award, Calendar, Users, Zap, Clock, Brain, TrendingUp
+  Video, Award, Calendar, Zap, Clock, Brain, TrendingUp
 } from 'lucide-react'
 import SiteFooter from '@/components/SiteFooter'
 
@@ -280,11 +280,11 @@ export default function SalesPage() {
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {[
               { icon: Brain, title: '80% psihologija, 20% matematika', desc: 'Najprije uklanjamo mentalne blokade i negativna uvjerenja o novcu. Bez toga, tehnike ne funkcioniraju.' },
-              { icon: Video, title: '90 video lekcija (10-20 min)', desc: 'Kratke, fokusirane lekcije koje možeš gledati bilo kada i odmah primijeniti u svakodnevnom životu.' },
-              { icon: Zap, title: 'Radni listovi i predlošci', desc: 'Svaka lekcija dolazi s praktičnim alatima — Excel tablicama, kalkulatorima, kontrolnim popisima.' },
+              { icon: Video, title: '90 video lekcija (5-10 min)', desc: 'Kratke, fokusirane lekcije koje možeš gledati bilo kada i odmah primijeniti u svakodnevnom životu.' },
+              { icon: Zap, title: '4 financijska kalkulatora', desc: 'Kalkulator proračuna, hitnog fonda, otplate duga i složene kamate — interaktivni alati dostupni u portalu.' },
               { icon: TrendingUp, title: 'Strategije pasivnog prihoda', desc: 'Naučit ćeš kako natjerati novac da radi za tebe — osnove investiranja prilagođene našem tržištu.' },
-              { icon: Users, title: 'Privatna zajednica', desc: 'Pristupiš privatnoj grupi gdje možeš postavljati pitanja i razmjenjivati iskustva s ostalim polaznicima.' },
               { icon: Award, title: 'Certifikat + doživotni pristup', desc: 'Po završetku programa dobivaš personalizirani certifikat. Sve buduće nadopune su uključene u cijenu.' },
+              { icon: Clock, title: 'Uči vlastitim tempom', desc: 'Nema rokova ni rasporeda. Pristupaš sadržaju 24/7 i napreduješ onoliko brzo koliko ti odgovara.' },
             ].map(item => (
               <div key={item.title} className="flex gap-4">
                 <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
