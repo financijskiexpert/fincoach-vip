@@ -104,14 +104,15 @@ export default function DailyLessonPage() {
         return
       }
 
-      // Fetch lesson
-      const { data: lessonData, error } = await supabase
-        .from('lessons')
-        .select('*')
-        .eq('day_number', dayNumber)
-        .single()
-
-      if (error || !lessonData) {
+      // Fetch lesson via API (bypasses RLS for admin users)
+      const lessonRes = await fetch(`/api/lesson?day=${dayNumber}`)
+      if (!lessonRes.ok) {
+        toast.error('Lekcija nije pronađena.')
+        router.push('/portal')
+        return
+      }
+      const { lesson: lessonData } = await lessonRes.json()
+      if (!lessonData) {
         toast.error('Lekcija nije pronađena.')
         router.push('/portal')
         return
