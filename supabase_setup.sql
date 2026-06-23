@@ -118,6 +118,19 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- FROM auth.users WHERE email = 'brane.recek@gmail.com'
 -- ON CONFLICT (id) DO UPDATE SET role = 'admin', full_name = 'Brane Recek';
 
+-- 8. INACTIVITY REMINDERS
+-- Sledi komu in kdaj je bil poslan reminder za neaktivnost,
+-- da ne pošilja večkrat v kratkem času (cooldown 3 dni)
+CREATE TABLE IF NOT EXISTS inactivity_reminders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  sent_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_inactivity_reminders_user_sent
+  ON inactivity_reminders(user_id, sent_at DESC);
+
 -- ============================================================
 -- RLS policies (priporočeno)
 -- ============================================================
@@ -131,3 +144,9 @@ CREATE POLICY "Public read published posts" ON blog_posts
   FOR SELECT USING (is_published = true);
 
 -- Admin full access (service role bypasses RLS)
+
+-- ============================================================
+-- LEADS: marketing_consent stolpci (IF NOT EXISTS — varno za re-run)
+-- ============================================================
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS marketing_consent BOOLEAN DEFAULT false;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS marketing_consent_at TIMESTAMPTZ;
