@@ -22,11 +22,6 @@ export default async function PortalDashboard() {
     .eq('id', user.id)
     .single()
 
-  // Admin bypass — redirect to admin dashboard
-  if (profile?.role === 'admin' || user.email === 'brane.recek@gmail.com') {
-    redirect('/admin')
-  }
-
   // Get course & purchase
   const { data: course } = await service
     .from('courses')
@@ -43,7 +38,8 @@ export default async function PortalDashboard() {
     .single()
     .then(r => !!r.data) : false
 
-  if (!hasPurchase) {
+  const isAdmin = profile?.role === 'admin'
+  if (!hasPurchase && !isAdmin) {
     redirect('/tecaj')
   }
 

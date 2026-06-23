@@ -134,6 +134,9 @@ function emailBase(content: string, unsubEmail: string): string {
   <div class="header"><div class="logo">FinCoach VIP</div></div>
   <div class="body">${content}</div>
   <div class="footer">
+    <div style="margin-bottom:12px;">
+      Već si polaznik programa? <a href="${SITE_URL}/prijava" style="color:#D4AF37;font-weight:600;">Prijavi se u tečaj →</a>
+    </div>
     © 2026 FinCoach VIP<br>
     <a href="${SITE_URL}/odjava?email=${encodeURIComponent(unsubEmail)}" style="color:#4a5568;">Odjavi se od emailova</a>
   </div>
