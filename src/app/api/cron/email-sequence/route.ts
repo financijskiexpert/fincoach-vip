@@ -6,11 +6,15 @@ import { sendTransactionalEmail } from '@/lib/brevo'
 export const dynamic = 'force-dynamic'
 
 // Zaščita cron endpointa z secret tokenom
+// Podpira Authorization header (Vercel Pro / ročni klici) in query param ?token= (Vercel Hobby / cron-job.org)
 function isAuthorized(request: NextRequest): boolean {
-  const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
-  if (!cronSecret) return false
-  return authHeader === `Bearer ${cronSecret}`
+  const headerToken = request.headers.get('authorization')?.replace('Bearer ', '')
+  const queryToken = request.nextUrl.searchParams.get('token')
+  const token = headerToken ?? queryToken
+
+  if (!cronSecret || token !== cronSecret) return false
+  return true
 }
 
 export async function GET(request: NextRequest) {
