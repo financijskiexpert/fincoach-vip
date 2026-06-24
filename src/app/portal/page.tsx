@@ -38,7 +38,7 @@ export default async function PortalDashboard() {
     .single()
     .then(r => !!r.data) : false
 
-  const isAdmin = profile?.role === 'admin'
+  const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'
   if (!hasPurchase && !isAdmin) {
     redirect('/tecaj')
   }

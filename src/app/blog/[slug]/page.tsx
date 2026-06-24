@@ -1,0 +1,177 @@
+import { createServiceClient } from '@/lib/supabase/server'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
+
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  content: string | null
+  published_at: string | null
+  is_published: boolean
+}
+
+interface Props {
+  params: Promise<{ slug: string }>
+}
+
+function formatDate(dateStr: string | null): string {
+  if (!dateStr) return ''
+  return new Date(dateStr).toLocaleDateString('hr-HR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
+async function getPost(slug: string): Promise<BlogPost | null> {
+  const supabase = await createServiceClient()
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('id, title, slug, excerpt, content, published_at, is_published')
+    .eq('slug', slug)
+    .single()
+
+  if (error || !data) return null
+  return data as BlogPost
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPost(slug)
+
+  if (!post || !post.is_published) {
+    return { title: 'Blog | FinCoach VIP' }
+  }
+
+  return {
+    title: `${post.title} | FinCoach VIP Blog`,
+    description: post.excerpt ?? 'Članak o osobnim financijama i financijskoj slobodi.',
+    openGraph: {
+      title: post.title,
+      description: post.excerpt ?? undefined,
+      type: 'article',
+      publishedTime: post.published_at ?? undefined,
+    },
+  }
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params
+  const post = await getPost(slug)
+
+  if (!post || !post.is_published) {
+    notFound()
+  }
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: '#0f1e35', color: '#fff' }}>
+      {/* Header */}
+      <div className="border-b" style={{ borderColor: 'rgba(212,175,55,0.2)' }}>
+        <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
+          <Link
+            href="/"
+            className="text-xl font-bold tracking-tight"
+            style={{ color: '#D4AF37' }}
+          >
+            FinCoach VIP
+          </Link>
+          <Link
+            href="/tecaj"
+            className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
+          >
+            Pridruži se programu
+          </Link>
+        </div>
+      </div>
+
+      <article className="max-w-3xl mx-auto px-4 py-12">
+        {/* Back link */}
+        <Link
+          href="/blog"
+          className="inline-flex items-center text-sm mb-10 transition-colors hover:opacity-80"
+          style={{ color: '#D4AF37' }}
+        >
+          ← Natrag na blog
+        </Link>
+
+        {/* Meta */}
+        {post.published_at && (
+          <time
+            dateTime={post.published_at}
+            className="block text-xs font-medium uppercase tracking-widest mb-4"
+            style={{ color: '#D4AF37' }}
+          >
+            {formatDate(post.published_at)}
+          </time>
+        )}
+
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-8">
+          {post.title}
+        </h1>
+
+        {/* Divider */}
+        <div
+          className="h-px mb-10"
+          style={{ backgroundColor: 'rgba(212,175,55,0.25)' }}
+        />
+
+        {/* Content */}
+        {post.content ? (
+          <div
+            className="prose-blog"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+            style={{
+              lineHeight: '1.8',
+              fontSize: '1.05rem',
+              color: 'rgba(255,255,255,0.85)',
+            }}
+          />
+        ) : (
+          <p style={{ color: 'rgba(255,255,255,0.5)' }}>Sadržaj nije dostupan.</p>
+        )}
+      </article>
+
+      {/* CTA Card */}
+      <section className="max-w-3xl mx-auto px-4 pb-20">
+        <div
+          className="rounded-2xl p-8 md:p-10 text-center"
+          style={{
+            background: 'linear-gradient(135deg, rgba(212,175,55,0.18) 0%, rgba(212,175,55,0.08) 100%)',
+            border: '1px solid rgba(212,175,55,0.35)',
+          }}
+        >
+          <p
+            className="text-xs font-semibold uppercase tracking-widest mb-4"
+            style={{ color: '#D4AF37' }}
+          >
+            FinCoach VIP Program
+          </p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-snug">
+            Završi s financijskim brigama — pridruži se{' '}
+            <span style={{ color: '#D4AF37' }}>FinCoach VIP programu</span>
+          </h2>
+          <p
+            className="mb-8 max-w-xl mx-auto"
+            style={{ color: 'rgba(255,255,255,0.7)' }}
+          >
+            90 dana strukturiranog programa koji te vodi od financijskog kaosa do sustava koji radi sam — čak i kad nisi motiviran/a.
+          </p>
+          <Link
+            href="/tecaj"
+            className="inline-block px-8 py-4 rounded-xl font-bold text-lg transition-opacity hover:opacity-90"
+            style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
+          >
+            Saznaj više i prijavi se
+          </Link>
+        </div>
+      </section>
+    </main>
+  )
+}
