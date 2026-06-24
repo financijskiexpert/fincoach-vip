@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     q: 'Koliko vremena mi treba svaki dan?',
-    a: 'Svaka lekcija traje između 10 i 20 minuta. Program je dizajniran da stane u tvoj svakodnevni raspored — bez stresa, bez žrtvovanja.',
+    a: 'Svaka lekcija traje između 5 i 10 minuta. Program je dizajniran da stane u tvoj svakodnevni raspored — bez stresa, bez žrtvovanja.',
   },
   {
     q: 'Na čemu je fokus programa?',
