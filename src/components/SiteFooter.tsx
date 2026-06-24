@@ -21,7 +21,7 @@ export default function SiteFooter() {
               onClick={() => setCookieManagerOpen(true)}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Upravljanje piškotkov
+              Upravljanje kolačićima
             </button>
             <Link href="/prijava" className="hover:text-white transition-colors font-medium text-white/60">Prijava →</Link>
           </div>

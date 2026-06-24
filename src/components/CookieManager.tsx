@@ -61,7 +61,7 @@ export default function CookieManager({ open, onClose }: Props) {
       className="fixed inset-0 z-[9998] flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
-      aria-label="Upravljanje piškotki"
+      aria-label="Upravljanje kolačićima"
     >
       {/* Backdrop */}
       <div
@@ -74,18 +74,18 @@ export default function CookieManager({ open, onClose }: Props) {
         <div className="p-6">
           {/* Header */}
           <div className="flex items-start justify-between gap-4 mb-4">
-            <h2 className="text-white font-semibold text-lg">Upravljanje piškotki</h2>
+            <h2 className="text-white font-semibold text-lg">Upravljanje kolačićima</h2>
             <button
               onClick={onClose}
               className="text-white/40 hover:text-white transition-colors shrink-0"
-              aria-label="Zapri"
+              aria-label="Zatvori"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           <p className="text-white/60 text-sm leading-relaxed mb-5">
-            Izberite, katere kategorije piškotkov dovolite. Nujni piškotki so vedno aktivni, ker so potrebni za delovanje spletnega mesta.
+            Odaberite koje kategorije kolačića dopuštate. Nužni kolačići su uvijek aktivni jer su potrebni za funkcioniranje web stranice.
           </p>
 
           {/* Categories */}
@@ -93,14 +93,13 @@ export default function CookieManager({ open, onClose }: Props) {
             {/* Necessary — always on */}
             <div className="flex items-start justify-between gap-4 py-3 border-t border-white/10">
               <div>
-                <p className="text-white text-sm font-medium">Nujni piškotki</p>
-                <p className="text-white/40 text-xs mt-0.5">Prijava, seja, varnost — vedno aktivni</p>
+                <p className="text-white text-sm font-medium">Nužni kolačići</p>
+                <p className="text-white/40 text-xs mt-0.5">Prijava, sesija, sigurnost — uvijek aktivni</p>
               </div>
-              {/* Static "always on" toggle */}
               <div
                 className="w-10 h-5 bg-gold rounded-full relative shrink-0 cursor-not-allowed"
-                title="Vedno aktivno"
-                aria-label="Nujni piškotki so vedno aktivni"
+                title="Uvijek aktivno"
+                aria-label="Nužni kolačići su uvijek aktivni"
               >
                 <span className="w-4 h-4 bg-white rounded-full absolute right-0.5 top-0.5 block" />
               </div>
@@ -109,15 +108,15 @@ export default function CookieManager({ open, onClose }: Props) {
             {/* Analytics */}
             <div className="flex items-start justify-between gap-4 py-3 border-t border-white/10">
               <div>
-                <p className="text-white text-sm font-medium">Analitični piškotki</p>
-                <p className="text-white/40 text-xs mt-0.5">Anonimna statistika obiskov (Google Analytics)</p>
+                <p className="text-white text-sm font-medium">Analitički kolačići</p>
+                <p className="text-white/40 text-xs mt-0.5">Anonimna statistika posjeta (Google Analytics)</p>
               </div>
               <button
                 onClick={() => setAnalytics(v => !v)}
                 className={`w-10 h-5 rounded-full relative shrink-0 transition-colors ${analytics ? 'bg-gold' : 'bg-white/20'}`}
                 role="switch"
                 aria-checked={analytics}
-                aria-label="Analitični piškotki"
+                aria-label="Analitički kolačići"
               >
                 <span
                   className={`w-4 h-4 bg-white rounded-full absolute top-0.5 transition-all ${analytics ? 'right-0.5' : 'left-0.5'}`}
@@ -128,15 +127,15 @@ export default function CookieManager({ open, onClose }: Props) {
             {/* Marketing */}
             <div className="flex items-start justify-between gap-4 py-3 border-t border-white/10">
               <div>
-                <p className="text-white text-sm font-medium">Marketinški piškotki</p>
-                <p className="text-white/40 text-xs mt-0.5">Ciljano oglaševanje, affiliate sledenje</p>
+                <p className="text-white text-sm font-medium">Marketinški kolačići</p>
+                <p className="text-white/40 text-xs mt-0.5">Ciljano oglašavanje, praćenje afilijata</p>
               </div>
               <button
                 onClick={() => setMarketing(v => !v)}
                 className={`w-10 h-5 rounded-full relative shrink-0 transition-colors ${marketing ? 'bg-gold' : 'bg-white/20'}`}
                 role="switch"
                 aria-checked={marketing}
-                aria-label="Marketinški piškotki"
+                aria-label="Marketinški kolačići"
               >
                 <span
                   className={`w-4 h-4 bg-white rounded-full absolute top-0.5 transition-all ${marketing ? 'right-0.5' : 'left-0.5'}`}
@@ -148,10 +147,10 @@ export default function CookieManager({ open, onClose }: Props) {
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-2">
             <Button onClick={saveCustom} className="flex-1">
-              Shrani preference
+              Spremi postavke
             </Button>
             <Button variant="outline" onClick={acceptAll} className="flex-1">
-              Sprejmi vse
+              Prihvati sve
             </Button>
           </div>
         </div>
