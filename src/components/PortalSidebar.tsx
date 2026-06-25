@@ -42,6 +42,7 @@ interface PortalSidebarProps {
   completedLessonIds: string[]
   userName?: string
   userEmail?: string
+  showAdminBackLink?: boolean
 }
 
 const SECTIONS = [
@@ -75,6 +76,7 @@ export default function PortalSidebar({
   completedLessonIds,
   userName,
   userEmail,
+  showAdminBackLink = false,
 }: PortalSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
@@ -132,6 +134,7 @@ export default function PortalSidebar({
       label: `Napredak (${progressPercent}%)`,
       icon: TrendingUp,
     },
+    { href: '/portal/biljeske', label: 'Moje bilješke', icon: FileText },
     { href: '/portal/certifikat', label: 'Certifikat', icon: Award },
     ...(hasAffiliate
       ? [{ href: '/portal/affiliate', label: 'Affiliate', icon: Link2 }]
@@ -397,6 +400,21 @@ export default function PortalSidebar({
                     )
                   })}
                 </div>
+              )}
+
+              {/* Admin back link — viden samo adminu */}
+              {showAdminBackLink && (
+                <Link
+                  href="/admin"
+                  title={collapsed ? 'Admin panel' : undefined}
+                  className={cn(
+                    'mt-4 mx-2 flex items-center gap-3 py-2.5 text-sm rounded-lg border border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 transition-colors',
+                    collapsed ? 'justify-center px-2' : 'px-4',
+                  )}
+                >
+                  <LayoutDashboard className="w-5 h-5 shrink-0" />
+                  {!collapsed && <span className="font-semibold">Natrag u admin</span>}
+                </Link>
               )}
             </>
           )}

@@ -76,7 +76,9 @@ export default async function PortalLayout({
     .eq('id', user.id)
     .single()
 
-  const role = (profile?.role === 'admin' || user.email === 'brane.recek@gmail.com') ? 'admin' : 'student'
+  // /portal je VEDNO student view — tudi admin tukaj vidi kako izgleda za študente
+  // Admin panel je strogo na /admin
+  const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'
 
   const { data: affiliateRecord } = await service
     .from('affiliates')
@@ -90,14 +92,21 @@ export default async function PortalLayout({
   return (
     <div className="flex h-screen bg-navy overflow-hidden">
       <PortalSidebar
-        role={role as 'admin' | 'student'}
+        role="student"
         hasAffiliate={hasAffiliate}
         lessons={lessons}
         completedLessonIds={completedIds}
         userName={profile?.full_name ?? undefined}
         userEmail={user.email ?? undefined}
+        showAdminBackLink={isAdmin}
       />
       <main className="relative flex-1 overflow-y-auto">
+        {isAdmin && (
+          <div className="bg-gold/10 border-b border-gold/30 px-4 py-2 text-xs text-gold flex items-center justify-between">
+            <span>👁 Pregledaš portal kao student. Ovo vidi tvoj korisnik.</span>
+            <a href="/admin" className="font-bold underline hover:no-underline">← Natrag na admin panel</a>
+          </div>
+        )}
         {children}
       </main>
     </div>

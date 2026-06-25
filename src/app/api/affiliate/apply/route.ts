@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,7 +11,7 @@ function generateCode(name: string): string {
 
 export async function POST() {
   try {
-    const supabaseAuth = await createServiceClient()
+    const supabaseAuth = await createClient()
     const { data: { user }, error: authError } = await supabaseAuth.auth.getUser()
 
     if (authError || !user) {
@@ -20,13 +20,14 @@ export async function POST() {
 
     const supabase = await createServiceClient()
 
-    // Provjeri je li user kupio tečaj
+    // Provjeri je li user kupio tečaj (lahko ima več nakupov)
     const { data: purchase } = await supabase
       .from('purchases')
       .select('id')
       .eq('user_id', user.id)
       .eq('status', 'completed')
-      .single()
+      .limit(1)
+      .maybeSingle()
 
     if (!purchase) {
       return NextResponse.json(
@@ -40,10 +41,10 @@ export async function POST() {
       .from('affiliates')
       .select('id, code')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (existing) {
-      return NextResponse.json({ alreadyAffiliate: true, code: existing.code })
+      return NextResponse.json({ alreadyAffiliate: true, code: existing.code, success: true })
     }
 
     // Dohvati profil
@@ -51,7 +52,7 @@ export async function POST() {
       .from('profiles')
       .select('full_name')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     const name = profile?.full_name || user.email?.split('@')[0] || 'Partner'
 
@@ -63,7 +64,7 @@ export async function POST() {
         .from('affiliates')
         .select('id')
         .eq('code', code)
-        .single()
+        .maybeSingle()
       if (!taken) break
       code = generateCode(name)
       attempts++
@@ -121,12 +122,12 @@ export async function POST() {
       <p style="margin:0 0 6px;">🔗 <strong style="color:#fff;">Affiliate veza:</strong></p>
       <p style="font-family:monospace;background:#0D1B2A;padding:8px 12px;border-radius:6px;font-size:13px;margin:0 0 12px;word-break:break-all;">${affiliateLink}</p>
       <p style="margin:0 0 6px;">🏷️ <strong style="color:#fff;">Tvoj kod:</strong> <span style="font-family:monospace;font-size:18px;color:#D4AF37;">${code}</span></p>
-      <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Tvoja provizija:</strong> 30% po prodaji (~€59)</p>
-      <p style="margin:0;">🎁 <strong style="color:#fff;">Popust za tvoje kupce:</strong> 10% automatski</p>
+      <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Tvoja provizija:</strong> 30% × €357,30 = €107,19 po prodaji</p>
+      <p style="margin:0;">🎁 <strong style="color:#fff;">Popust za tvoje kupce:</strong> 10% (€397 → €357,30)</p>
     </div>
-    <p>Sve statistike i konverzije možeš pratiti na svom dashboardu:</p>
+    <p>Sve statistike, kreative i tekstove za objave nadeš na partnerskoj stranici:</p>
     <div style="text-align:center;margin:24px 0;">
-      <a href="${siteUrl}/affiliate/dashboard" class="btn">Idi na dashboard →</a>
+      <a href="${siteUrl}/portal/affiliate" class="btn">Otvori partnerski portal →</a>
     </div>
     <p style="color:#718096;font-size:13px;">Pitanja? Napiši na brane@fincoach.vip</p>
     <p><span style="color:#D4AF37;font-weight:700;">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>

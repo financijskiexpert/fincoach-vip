@@ -23,37 +23,45 @@ interface Lesson {
 
 function LessonNotes({ lessonId }: { lessonId: string }) {
   const [content, setContent] = useState('')
+  const [savedContent, setSavedContent] = useState('')
   const [saving, setSaving] = useState(false)
   const [savedAt, setSavedAt] = useState<string | null>(null)
   const [loaded, setLoaded] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     fetch(`/api/notes?lesson_id=${lessonId}`)
       .then(r => r.json())
       .then(({ note }) => {
-        if (note?.content) setContent(note.content)
+        if (cancelled) return
+        const c = note?.content ?? ''
+        setContent(c)
+        setSavedContent(c)
         if (note?.updated_at) setSavedAt(note.updated_at)
         setLoaded(true)
       })
+    return () => { cancelled = true }
   }, [lessonId])
 
-  function handleChange(val: string) {
-    setContent(val)
-    if (timerRef.current) clearTimeout(timerRef.current)
-    timerRef.current = setTimeout(() => autoSave(val), 1200)
-  }
-
-  async function autoSave(val: string) {
+  async function save() {
+    if (saving) return
     setSaving(true)
     try {
       const res = await fetch('/api/notes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lesson_id: lessonId, content: val }),
+        body: JSON.stringify({ lesson_id: lessonId, content }),
       })
       const data = await res.json()
-      if (data.ok) setSavedAt(data.updated_at)
+      if (data.ok) {
+        setSavedAt(data.updated_at)
+        setSavedContent(content)
+        toast.success('Bilješka spremljena.')
+      } else {
+        toast.error(data.error ?? 'Greška pri spremanju.')
+      }
+    } catch {
+      toast.error('Greška pri spremanju.')
     } finally {
       setSaving(false)
     }
@@ -61,21 +69,46 @@ function LessonNotes({ lessonId }: { lessonId: string }) {
 
   if (!loaded) return null
 
+  const isDirty = content !== savedContent
+
   return (
     <div className="bg-navy-50 border border-white/10 rounded-xl p-6 mb-8">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <h2 className="font-semibold text-white text-base">Moje bilješke</h2>
         <span className="text-xs text-white/30">
-          {saving ? 'Snima...' : savedAt ? `Snimljeno ${new Date(savedAt).toLocaleTimeString('hr')}` : 'Nije još snimljeno'}
+          {saving ? 'Sprema se...' : isDirty ? '● Nespremljeno' : savedAt ? `✓ Spremljeno ${new Date(savedAt).toLocaleString('hr-HR', { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' })}` : ''}
         </span>
       </div>
+      <p className="text-white/40 text-xs mb-3">
+        Tijekom gledanja videa zapiši svoje misli, zadatke i uvide. Klikni <strong className="text-gold">Spremi</strong> kad završiš.
+        Sve svoje bilješke možeš pregledati na stranici <Link href="/portal/biljeske" className="text-gold hover:underline">Moje bilješke</Link>.
+      </p>
       <textarea
         value={content}
-        onChange={e => handleChange(e.target.value)}
+        onChange={e => setContent(e.target.value)}
         placeholder="Napiši svoje misli, zadatke ili uvide za ovaj dan..."
-        rows={4}
-        className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-none"
+        rows={5}
+        className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-y"
       />
+      <div className="flex items-center justify-end gap-2 mt-3">
+        {isDirty && (
+          <button
+            onClick={() => { setContent(savedContent) }}
+            className="text-white/40 hover:text-white text-xs px-3 py-2"
+          >
+            Odustani
+          </button>
+        )}
+        <Button
+          onClick={save}
+          disabled={saving || !isDirty}
+          size="sm"
+          className="gap-2"
+        >
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : '💾'}
+          Spremi bilješku
+        </Button>
+      </div>
     </div>
   )
 }
