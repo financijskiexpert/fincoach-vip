@@ -101,8 +101,9 @@ export default function SalesPage() {
   }
 
   const showLaunchPrice = !!countdownExpires && new Date(countdownExpires) > new Date()
-  const currentPrice = showLaunchPrice ? '€97' : '€197'
-  const strikePrice = '€397'
+  // Cenovna politika: €397 redna · €97 launch (24h countdown za leade) · €197 s kuponom PRILIKA
+  const currentPrice = showLaunchPrice ? '€97' : '€397'
+  const strikePrice = showLaunchPrice ? '€397' : null
 
   return (
     <div className="min-h-screen bg-navy">
@@ -170,7 +171,7 @@ export default function SalesPage() {
             )}
 
             <div className="mb-6">
-              <p className="text-white/40 line-through text-lg">{strikePrice}</p>
+              {strikePrice && <p className="text-white/40 line-through text-lg">{strikePrice}</p>}
               <p className="text-5xl font-black text-gold mt-1">{currentPrice}</p>
               <p className="text-white/50 text-sm mt-1">
                 {showLaunchPrice ? '⚡ Tvoja osobna 24h cijena' : 'Jednokratna uplata · Doživotni pristup'}
@@ -498,7 +499,7 @@ export default function SalesPage() {
           )}
           <div className="bg-navy-50 border border-white/10 rounded-2xl p-8">
             <div className="mb-6">
-              <p className="text-white/40 line-through">{strikePrice}</p>
+              {strikePrice && <p className="text-white/40 line-through">{strikePrice}</p>}
               <p className="text-5xl font-black text-gold">{currentPrice}</p>
               <p className="text-white/50 text-sm">
                 {showLaunchPrice ? '⚡ Tvoja osobna 24h cijena' : 'Jednokratna uplata · Doživotni pristup'}
