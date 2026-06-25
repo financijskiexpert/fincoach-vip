@@ -58,21 +58,25 @@ export default function SalesPage() {
   const [countdownExpires, setCountdownExpires] = useState<string | null>(null)
 
   useEffect(() => {
-    const stored = localStorage.getItem('countdown_expires_at')
-    if (stored && new Date(stored) > new Date()) {
-      setCountdownExpires(stored)
-    } else {
-      // Set 24h countdown on first visit to /tecaj
-      const existing = localStorage.getItem('tecaj_first_visit')
-      if (!existing) {
-        const expires = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-        localStorage.setItem('tecaj_first_visit', expires)
-        localStorage.setItem('countdown_expires_at', expires)
-        setCountdownExpires(expires)
-      } else if (new Date(existing) > new Date()) {
-        setCountdownExpires(existing)
+    // Countdown velja SAMO za leade, ki so naročili PDF in imajo aktivnih 24h.
+    // Email/ID dobimo iz query parametra (povezava iz emaila) ali iz auth user-ja.
+    async function loadCountdown() {
+      const params = new URLSearchParams(window.location.search)
+      const emailFromUrl = params.get('email')
+      try {
+        const res = await fetch('/api/countdown' + (emailFromUrl ? `?email=${encodeURIComponent(emailFromUrl)}` : ''), {
+          credentials: 'include',
+        })
+        if (!res.ok) return
+        const data = await res.json()
+        if (data.expires_at && new Date(data.expires_at) > new Date()) {
+          setCountdownExpires(data.expires_at)
+        }
+      } catch {
+        // Brez countdowna — redna cijena €397
       }
     }
+    loadCountdown()
   }, [])
 
   async function handleCheckout() {
