@@ -80,7 +80,7 @@ export default async function PortalLayout({
   const { data: affiliateRecord } = await service
     .from('affiliates')
     .select('id, is_active')
-    .eq('email', user.email ?? '')
+    .eq('user_id', user.id)
     .maybeSingle()
   const hasAffiliate = !!affiliateRecord?.is_active
 

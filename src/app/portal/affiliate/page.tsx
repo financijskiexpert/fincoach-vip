@@ -57,7 +57,7 @@ export default function PortalAffiliatePage() {
       const { data: aff } = await supabase
         .from('affiliates')
         .select('*')
-        .eq('email', user.email)
+        .eq('user_id', user.id)
         .single()
 
       if (aff) {

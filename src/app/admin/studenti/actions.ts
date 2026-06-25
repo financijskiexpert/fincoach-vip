@@ -87,7 +87,7 @@ export async function addStudent(formData: FormData) {
   // 3. Kreiraj affiliate kod automatski (ako kupac)
   if (paid) {
     const { data: existingAff } = await service
-      .from('affiliates').select('id').eq('email', email).single()
+      .from('affiliates').select('id').eq('user_id', userId).single()
 
     if (!existingAff) {
       let code = generateAffiliateCode(fullName)
@@ -97,8 +97,7 @@ export async function addStudent(formData: FormData) {
         code = generateAffiliateCode(fullName)
       }
       await service.from('affiliates').insert({
-        name: fullName,
-        email,
+        user_id: userId,
         code,
         commission_percent: 30,
         is_active: true,
@@ -191,7 +190,7 @@ export async function grantAccess(userId: string) {
   }
 
   // Auto-kreiraj affiliate
-  const { data: existingAff } = await service.from('affiliates').select('id').eq('email', profile.email).single()
+  const { data: existingAff } = await service.from('affiliates').select('id').eq('user_id', userId).single()
   if (!existingAff) {
     let code = generateAffiliateCode(profile.full_name ?? profile.email)
     for (let i = 0; i < 5; i++) {
@@ -200,8 +199,7 @@ export async function grantAccess(userId: string) {
       code = generateAffiliateCode(profile.full_name ?? profile.email)
     }
     await service.from('affiliates').insert({
-      name: profile.full_name ?? profile.email,
-      email: profile.email,
+      user_id: userId,
       code,
       commission_percent: 30,
       is_active: true,
@@ -221,26 +219,23 @@ export async function revokeAccess(userId: string) {
 
 export async function revokeAffiliate(userId: string) {
   const service = await assertAdmin()
-  const { data: profile } = await service.from('profiles').select('email').eq('id', userId).single()
-  if (!profile) return
-  await service.from('affiliates').update({ is_active: false }).eq('email', profile.email)
+  await service.from('affiliates').update({ is_active: false }).eq('user_id', userId)
   revalidatePath('/admin/studenti')
 }
 
 export async function grantAffiliate(userId: string) {
   const service = await assertAdmin()
-  const { data: profile } = await service.from('profiles').select('email, full_name').eq('id', userId).single()
-  if (!profile) return
-  const { data: existing } = await service.from('affiliates').select('id').eq('email', profile.email).single()
+  const { data: profile } = await service.from('profiles').select('full_name').eq('id', userId).single()
+  const { data: existing } = await service.from('affiliates').select('id').eq('user_id', userId).single()
   if (existing) {
-    await service.from('affiliates').update({ is_active: true }).eq('email', profile.email)
+    await service.from('affiliates').update({ is_active: true }).eq('user_id', userId)
   } else {
-    const name = profile.full_name ?? profile.email
+    const name = profile?.full_name ?? 'User'
     const first = name.split(' ')[0].toUpperCase().replace(/[^A-Z]/g, '').slice(0, 8)
     const suffix = Math.random().toString(36).substring(2, 6).toUpperCase()
     const code = first + suffix
     await service.from('affiliates').insert({
-      name, email: profile.email, code, commission_percent: 30, is_active: true
+      user_id: userId, code, commission_percent: 30, is_active: true
     })
   }
   revalidatePath('/admin/studenti')

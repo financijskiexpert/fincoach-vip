@@ -39,7 +39,7 @@ export async function POST() {
     const { data: existing } = await supabase
       .from('affiliates')
       .select('id, code')
-      .eq('email', user.email)
+      .eq('user_id', user.id)
       .single()
 
     if (existing) {
@@ -73,8 +73,7 @@ export async function POST() {
     const { data: newAffiliate, error: createError } = await supabase
       .from('affiliates')
       .insert({
-        name,
-        email: user.email!,
+        user_id: user.id,
         code,
         commission_percent: 30,
         is_active: true,
