@@ -19,7 +19,8 @@ async function getLessonsAndProgress(userId: string, userEmail: string, courseSl
     .eq('user_id', userId)
     .eq('course_id', course.id)
     .eq('status', 'completed')
-    .single()
+    .limit(1)
+    .maybeSingle()
 
   if (!purchase) {
     const { data: profile } = await service

@@ -14,7 +14,7 @@ export default async function PreviewPortalPage() {
 
   // Dohvati affiliate za admina
   const { data: aff } = await service
-    .from('affiliates').select('*').eq('email', user.email!).single()
+    .from('affiliates').select('*').eq('user_id', user.id).maybeSingle()
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 
@@ -67,8 +67,8 @@ export default async function PreviewPortalPage() {
                 </div>
                 <div className="grid grid-cols-3 gap-3 pt-2">
                   {[
-                    { label: 'Konverzije', value: aff.total_conversions ?? 0 },
-                    { label: 'Zarađeno', value: `€${Number(aff.total_commission ?? 0).toFixed(0)}` },
+                    { label: 'Klikovi', value: aff.total_clicks ?? 0 },
+                    { label: 'Zarađeno', value: `€${(Number(aff.total_earned ?? 0) / 100).toFixed(2)}` },
                     { label: 'Prodaja', value: aff.total_sales ?? 0 },
                   ].map(s => (
                     <div key={s.label} className="text-center p-2 bg-white/5 rounded-lg">
@@ -88,7 +88,7 @@ export default async function PreviewPortalPage() {
           ) : (
             <div className="bg-white/5 rounded-lg p-4">
               <p className="text-white/40 text-sm mb-3">Nemaš affiliate koda. Kreiraj ga za testiranje:</p>
-              <CreateAffiliateForm adminEmail={user.email!} adminName={profile?.role === 'admin' ? 'Admin Brane' : user.email!} />
+              <CreateAffiliateForm userId={user.id} adminName={profile?.role === 'admin' ? 'Admin Brane' : user.email!} />
             </div>
           )}
         </div>
@@ -123,7 +123,7 @@ export default async function PreviewPortalPage() {
   )
 }
 
-function CreateAffiliateForm({ adminEmail, adminName }: { adminEmail: string; adminName: string }) {
+function CreateAffiliateForm({ userId, adminName }: { userId: string; adminName: string }) {
   return (
     <form action={async () => {
       'use server'
@@ -131,12 +131,11 @@ function CreateAffiliateForm({ adminEmail, adminName }: { adminEmail: string; ad
       const service = await createServiceClient()
       const code = adminName.split(' ')[0].toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6) + 'ADM'
       await service.from('affiliates').upsert({
-        name: adminName,
-        email: adminEmail,
+        user_id: userId,
         code,
         commission_percent: 30,
         is_active: true,
-      }, { onConflict: 'email' })
+      }, { onConflict: 'user_id' })
       const { revalidatePath } = await import('next/cache')
       revalidatePath('/admin/preview-portal')
     }}>

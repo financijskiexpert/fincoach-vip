@@ -35,7 +35,8 @@ export default async function PortalDashboard() {
     .eq('user_id', user.id)
     .eq('course_id', course.id)
     .eq('status', 'completed')
-    .single()
+    .limit(1)
+    .maybeSingle()
     .then(r => !!r.data) : false
 
   const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'

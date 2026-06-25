@@ -43,13 +43,14 @@ export default function PortalAffiliatePage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/prijava'); return }
 
-      // Check purchase
+      // Check purchase (lahko jih je več — uporabimo limit/maybeSingle)
       const { data: purchase } = await supabase
         .from('purchases')
         .select('id')
         .eq('user_id', user.id)
         .eq('status', 'completed')
-        .single()
+        .limit(1)
+        .maybeSingle()
       setHasPurchase(!!purchase)
 
       // Check if already affiliate
@@ -57,7 +58,7 @@ export default function PortalAffiliatePage() {
         .from('affiliates')
         .select('*')
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (aff) {
         setAffiliate(aff)
