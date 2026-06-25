@@ -7,12 +7,11 @@ import Link from 'next/link'
 
 interface AffiliateData {
   id: string
-  name: string
   code: string
   commission_percent: number
+  total_clicks: number
   total_sales: number
-  total_commission: number
-  total_conversions: number
+  total_earned: number
   is_active: boolean
 }
 
@@ -192,10 +191,10 @@ export default function PortalAffiliatePage() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: 'Ukupno prodaja', value: `€${Number(affiliate.total_sales).toFixed(0)}` },
-              { label: 'Zarađena provizija', value: `€${Number(affiliate.total_commission).toFixed(2)}` },
-              { label: 'Konverzije', value: affiliate.total_conversions },
-              { label: 'Na čekanju (30d)', value: `€${pendingCommission.toFixed(2)}` },
+              { label: 'Prodaje', value: affiliate.total_sales ?? 0 },
+              { label: 'Klikovi', value: affiliate.total_clicks ?? 0 },
+              { label: 'Zarađeno', value: `€${(Number(affiliate.total_earned ?? 0) / 100).toFixed(2)}` },
+              { label: 'Na čekanju (30d)', value: `€${(pendingCommission / 100).toFixed(2)}` },
             ].map(s => (
               <div key={s.label} className="bg-[#091623] border border-white/10 rounded-xl p-4 text-center">
                 <div className="text-xl font-black text-[#D4AF37]">{s.value}</div>
@@ -351,7 +350,7 @@ export default function PortalAffiliatePage() {
             <div className="px-6 py-4 border-b border-white/10 flex justify-between items-center">
               <h2 className="font-bold">Moje konverzije</h2>
               {paidCommission > 0 && (
-                <span className="text-green-400 text-sm font-semibold">Isplaćeno: €{paidCommission.toFixed(2)}</span>
+                <span className="text-green-400 text-sm font-semibold">Isplaćeno: €{(paidCommission / 100).toFixed(2)}</span>
               )}
             </div>
             {conversions.length === 0 ? (
@@ -377,7 +376,7 @@ export default function PortalAffiliatePage() {
                     return (
                       <tr key={c.id} className="border-b border-white/5 hover:bg-white/5">
                         <td className="px-6 py-3 text-gray-400">{purchaseDate.toLocaleDateString('hr-HR')}</td>
-                        <td className="px-6 py-3 text-right text-[#D4AF37] font-bold">€{Number(c.commission_amount).toFixed(2)}</td>
+                        <td className="px-6 py-3 text-right text-[#D4AF37] font-bold">€{(Number(c.commission_amount) / 100).toFixed(2)}</td>
                         <td className="px-6 py-3">
                           {c.status === 'paid' ? (
                             <span className="px-2 py-1 rounded text-xs font-semibold bg-green-900/50 text-green-400">Isplaćeno</span>

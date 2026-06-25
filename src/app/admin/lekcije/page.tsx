@@ -12,10 +12,10 @@ interface Lesson {
   title: string
   description: string | null
   day_number: number
-  video_url: string | null
   video_key: string | null
   duration_seconds: number | null
-  is_published: boolean
+  section: string | null
+  sort_order: number | null
 }
 
 export default function AdminLekcije() {
@@ -27,10 +27,8 @@ export default function AdminLekcije() {
     title: '',
     description: '',
     day_number: '',
-    video_url: '',
     video_key: '',
     duration_seconds: '',
-    is_published: true,
   })
 
   useEffect(() => {
@@ -61,10 +59,8 @@ export default function AdminLekcije() {
       title: lesson.title,
       description: lesson.description ?? '',
       day_number: lesson.day_number.toString(),
-      video_url: lesson.video_url ?? '',
       video_key: lesson.video_key ?? autoVideoKey(lesson.day_number.toString()),
       duration_seconds: lesson.duration_seconds?.toString() ?? '',
-      is_published: lesson.is_published,
     })
     setShowForm(true)
   }
@@ -77,10 +73,8 @@ export default function AdminLekcije() {
       title: '',
       description: '',
       day_number: nextDayStr,
-      video_url: '',
       video_key: autoVideoKey(nextDayStr),
       duration_seconds: '',
-      is_published: true,
     })
     setShowForm(true)
   }
@@ -98,10 +92,8 @@ export default function AdminLekcije() {
         title: form.title,
         description: form.description || null,
         day_number: dayNum,
-        video_url: form.video_url || null,
         video_key: form.video_key || autoVideoKey(form.day_number) || null,
         duration_seconds: form.duration_seconds ? parseInt(form.duration_seconds) : null,
-        is_published: form.is_published,
       }
 
       const res = await fetch('/api/admin/lekcije', {
@@ -132,22 +124,7 @@ export default function AdminLekcije() {
     }
   }
 
-  async function togglePublish(lesson: Lesson) {
-    try {
-      const res = await fetch('/api/admin/lekcije', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...lesson, is_published: !lesson.is_published }),
-      })
-      if (!res.ok) throw new Error()
-      fetchLessons()
-    } catch {
-      toast.error('Greška.')
-    }
-  }
-
-  const published = lessons.filter(l => l.is_published).length
-  const unpublished = lessons.filter(l => !l.is_published).length
+  const totalCount = lessons.length
 
   return (
     <div className="max-w-7xl mx-auto p-6 lg:p-8">
@@ -155,7 +132,7 @@ export default function AdminLekcije() {
         <div>
           <h1 className="text-3xl font-bold text-white">Lekcije</h1>
           <p className="text-white/50 mt-1">
-            {published} objavljenih · {unpublished} neobjavljenih · {lessons.length} ukupno
+            {totalCount} lekcija ukupno
           </p>
         </div>
         <Button onClick={startNew} className="gap-2">
@@ -208,15 +185,7 @@ export default function AdminLekcije() {
                 placeholder="600"
               />
             </div>
-            <div>
-              <label className="block text-sm text-white/50 mb-1.5">Video URL (Cloudflare R2 javni URL)</label>
-              <Input
-                value={form.video_url}
-                onChange={e => setForm(f => ({ ...f, video_url: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
-            <div>
+            <div className="md:col-span-2">
               <label className="block text-sm text-white/50 mb-1.5">Video Key (R2 ključ za signed URL)</label>
               <Input
                 value={form.video_key}
@@ -234,16 +203,6 @@ export default function AdminLekcije() {
                 rows={3}
                 className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-none"
               />
-            </div>
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="is_published"
-                checked={form.is_published}
-                onChange={e => setForm(f => ({ ...f, is_published: e.target.checked }))}
-                className="w-4 h-4 accent-[#D4AF37]"
-              />
-              <label htmlFor="is_published" className="text-sm text-white/70">Objavljeno (vidljivo studentima)</label>
             </div>
           </div>
           <div className="flex gap-3 mt-6">
@@ -275,7 +234,7 @@ export default function AdminLekcije() {
                   <th className="text-left px-4 py-3 text-white/40 font-medium w-12">Dan</th>
                   <th className="text-left px-4 py-3 text-white/40 font-medium">Naslov</th>
                   <th className="text-left px-4 py-3 text-white/40 font-medium hidden md:table-cell">Trajanje</th>
-                  <th className="text-left px-4 py-3 text-white/40 font-medium">Status</th>
+                  <th className="text-left px-4 py-3 text-white/40 font-medium">Sekcija</th>
                   <th className="text-right px-4 py-3 text-white/40 font-medium">Akcije</th>
                 </tr>
               </thead>
@@ -297,17 +256,9 @@ export default function AdminLekcije() {
                         : '—'}
                     </td>
                     <td className="px-4 py-3">
-                      <button onClick={() => togglePublish(lesson)}>
-                        {lesson.is_published ? (
-                          <Badge className="bg-green-500/10 text-green-400 border-green-500/20 cursor-pointer hover:bg-green-500/20 transition-colors">
-                            Objavljeno
-                          </Badge>
-                        ) : (
-                          <Badge className="bg-white/5 text-white/40 border-white/10 cursor-pointer hover:bg-white/10 transition-colors">
-                            Skriveno
-                          </Badge>
-                        )}
-                      </button>
+                      <Badge className="bg-white/5 text-white/50 border-white/10">
+                        {lesson.section ?? '—'}
+                      </Badge>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">

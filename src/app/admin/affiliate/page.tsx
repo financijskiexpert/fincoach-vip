@@ -18,7 +18,7 @@ export default async function AdminAffiliate() {
     .from('affiliates')
     .select(`
       id, user_id, code, commission_percent, is_active, created_at,
-      total_sales, total_commission, total_conversions,
+      total_clicks, total_sales, total_earned,
       profiles(full_name, email),
       affiliate_conversions(id, commission_amount, status, created_at,
         purchases(amount_paid)
@@ -47,13 +47,13 @@ export default async function AdminAffiliate() {
           { label: 'Ukupno partnera', value: affiliates?.length ?? 0 },
           { label: 'Aktivnih', value: affiliates?.filter(a => a.is_active).length ?? 0 },
           {
-            label: 'Ukupno konverzija',
-            value: affiliates?.reduce((s, a) => s + (a.total_conversions ?? 0), 0) ?? 0,
+            label: 'Ukupno prodaja',
+            value: affiliates?.reduce((s, a) => s + (a.total_sales ?? 0), 0) ?? 0,
           },
           {
             label: 'Ukupne provizije',
             value: formatCurrency(
-              (affiliates?.reduce((s, a) => s + (a.total_commission ?? 0), 0) ?? 0)
+              (affiliates?.reduce((s, a) => s + (a.total_earned ?? 0), 0) ?? 0)
             ),
           },
         ].map(stat => (
@@ -76,8 +76,8 @@ export default async function AdminAffiliate() {
                   <th className="text-left px-6 py-3 text-white/40 font-medium">Partner</th>
                   <th className="text-left px-6 py-3 text-white/40 font-medium">Kod</th>
                   <th className="text-right px-6 py-3 text-white/40 font-medium">Provizija</th>
-                  <th className="text-right px-6 py-3 text-white/40 font-medium">Konverzije</th>
-                  <th className="text-right px-6 py-3 text-white/40 font-medium">Zarada</th>
+                  <th className="text-right px-6 py-3 text-white/40 font-medium">Prodaje</th>
+                  <th className="text-right px-6 py-3 text-white/40 font-medium">Zarađeno</th>
                   <th className="text-right px-6 py-3 text-white/40 font-medium">Status</th>
                 </tr>
               </thead>
@@ -92,9 +92,9 @@ export default async function AdminAffiliate() {
                       <span className="font-mono bg-white/5 px-2 py-1 rounded text-xs text-gold">{a.code}</span>
                     </td>
                     <td className="px-6 py-4 text-right text-white/70">{a.commission_percent}%</td>
-                    <td className="px-6 py-4 text-right text-white/70">{a.total_conversions ?? 0}</td>
+                    <td className="px-6 py-4 text-right text-white/70">{a.total_sales ?? 0}</td>
                     <td className="px-6 py-4 text-right text-gold font-semibold">
-                      {formatCurrency(a.total_commission ?? 0)}
+                      {formatCurrency(a.total_earned ?? 0)}
                     </td>
                     <td className="px-6 py-4 text-right">
                       {a.is_active ? (

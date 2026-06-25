@@ -35,17 +35,32 @@ export async function POST(request: NextRequest) {
 
   const videoKey = body.video_key ?? `courses/volim-svojnovac/day-${body.day_number}.mp4`
 
+  // Resolve course_id from slug if not given (volim-svojnovac is default)
+  let courseId: string | null = body.course_id ?? null
+  if (!courseId) {
+    const { data: course } = await supabase
+      .from('courses').select('id').eq('slug', 'volim-svojnovac').single()
+    courseId = course?.id ?? null
+  }
+
+  const section = body.section ?? (
+    body.day_number === 0 ? 'priprema'
+    : body.day_number <= 30 ? '1-30'
+    : body.day_number <= 60 ? '31-60'
+    : '61-90'
+  )
+
   const { data, error } = await supabase
     .from('lessons')
     .insert({
       title: body.title,
       description: body.description,
       day_number: body.day_number,
-      video_url: body.video_url,
       video_key: videoKey,
       duration_seconds: body.duration_seconds,
-      is_published: body.is_published ?? true,
-      course_id: body.course_id ?? null,
+      section,
+      sort_order: body.sort_order ?? body.day_number,
+      course_id: courseId,
     })
     .select()
     .single()
@@ -65,17 +80,19 @@ export async function PUT(request: NextRequest) {
 
   const videoKey = body.video_key ?? `courses/volim-svojnovac/day-${body.day_number}.mp4`
 
+  const updatePayload: any = {
+    title: body.title,
+    description: body.description,
+    day_number: body.day_number,
+    video_key: videoKey,
+    duration_seconds: body.duration_seconds,
+  }
+  if (body.section) updatePayload.section = body.section
+  if (body.sort_order !== undefined) updatePayload.sort_order = body.sort_order
+
   const { data, error } = await supabase
     .from('lessons')
-    .update({
-      title: body.title,
-      description: body.description,
-      day_number: body.day_number,
-      video_url: body.video_url,
-      video_key: videoKey,
-      duration_seconds: body.duration_seconds,
-      is_published: body.is_published,
-    })
+    .update(updatePayload)
     .eq('id', body.id)
     .select()
     .single()
