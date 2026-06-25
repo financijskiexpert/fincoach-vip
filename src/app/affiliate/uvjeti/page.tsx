@@ -56,10 +56,14 @@ export default function AffiliateUvjetiPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3">6. Isplata provizije</h2>
-            <p>Isplata se vrši <strong className="text-white">jednom mjesečno</strong>, do 15. u tekućem mjesecu za sve konverzije koje su dozrele (prošlo 30 dana) u prethodnom kalendnom mjesecu.</p>
-            <p>Minimalni iznos za isplatu je <strong className="text-white">€50</strong>. Iznosi ispod praga prenose se u sljedeći mjesec.</p>
-            <p>Isplata se vrši bankovnim nakazom ili putem PayPala, na podatke koje Partner navede u postavkama. Partner je odgovoran za točnost bankovnih podataka.</p>
-            <p>Partner je sam odgovoran za prijavu prihoda od provizija poreznim tijelima prema zakonodavstvu zemlje u kojoj je porezni obveznik.</p>
+            <p>Isplata se vrši <strong className="text-white">najkasnije 31. dan od datuma svake prodaje</strong> — nakon isteka roka za povrat kupovnine.</p>
+            <p>Uvjet za prvu i svaku sljedeću isplatu: Partner mora imati <strong className="text-white">najmanje 2 dozrele konverzije</strong> (2 prodaje kod kojih je prošlo 30 kalendarskih dana bez zahtjeva za povratom). Konverzije ispod tog praga prenose se u sljedeći obračunski period.</p>
+            <p><strong className="text-white">Način isplate prema zemlji Partnera:</strong></p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><strong className="text-white">Hrvatska, Slovenija, Srbija:</strong> SEPA bankovni prijenos — isplaćuje se puni iznos provizije</li>
+              <li><strong className="text-white">BiH, Crna Gora, Makedonija, Albanija:</strong> Wise prijenos — od provizije se oduzimaju stvarni troškovi transfera, najviše €10</li>
+            </ul>
+            <p>Isplata se vrši na IBAN koji Partner navede u postavkama svog profila. Partner je odgovoran za točnost bankovnih podataka i za prijavu prihoda poreznim tijelima prema zakonodavstvu vlastite zemlje.</p>
           </section>
 
           <section>

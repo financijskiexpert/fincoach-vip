@@ -127,7 +127,7 @@ export default function PortalAffiliatePage() {
                 { icon: '🔗', title: 'Dobiš unikatnu affiliate vezu', desc: 'Tvoja osobna veza s kodom. Dijeli je gdje god hoćeš — Instagram, Facebook, email, WhatsApp.' },
                 { icon: '🎁', title: 'Tvoji prijatelji kupuju s 10% popustom', desc: 'Svaki tko kupi putem tvoje veze automatski dobiva 10% popusta. Oni štede, a ti zarađuješ.' },
                 { icon: '💰', title: 'Ti zarađuješ 30% provizije', desc: `Tečaj košta €397. Tvoji pratitelji plaćaju €357 (−10%). Ti zarađuješ €107 po prodaji.` },
-                { icon: '📅', title: 'Isplata 30 dana nakon prodaje', desc: 'Provizija se isplaćuje 30 dana nakon kupnje (po isteku roka za povrat). Isplata jednom mjesečno na bankovni račun ili PayPal.' },
+                { icon: '📅', title: 'Isplata najkasnije 31. dan od prodaje', desc: 'Provizija se isplaćuje nakon isteka 30-dnevnog roka za povrat. Uvjet: najmanje 2 dozrele prodaje. Isplata SEPA nakazom (HR/SI/SRB) ili Wise (ostali Balkan).' },
               ].map(item => (
                 <div key={item.icon} className="flex gap-4">
                   <span className="text-2xl shrink-0">{item.icon}</span>
@@ -221,8 +221,9 @@ export default function PortalAffiliatePage() {
             <div className="bg-[#0D1B2A] rounded-lg p-4 text-sm space-y-2 text-gray-400">
               <p>✅ Kupci koji kupe putem tvoje veze automatski dobivaju <strong className="text-white">10% popusta</strong></p>
               <p>✅ Ti zarađuješ <strong className="text-white">€107,10</strong> (30%) po svakoj prodaji</p>
-              <p>✅ Provizija se isplaćuje <strong className="text-white">30 dana</strong> nakon kupnje — po isteku roka za povrat</p>
-              <p>✅ Isplata jednom mjesečno za sve dozrele konverzije</p>
+              <p>✅ Provizija se isplaćuje <strong className="text-white">najkasnije 31. dan</strong> od kupnje — po isteku roka za povrat</p>
+              <p>✅ Uvjet za isplatu: najmanje <strong className="text-white">2 dozrele prodaje</strong></p>
+              <p>✅ Isplata SEPA nakazom (HR/SI/SRB) ili Wise (BiH/MNE/MK/AL)</p>
             </div>
           </div>
 
