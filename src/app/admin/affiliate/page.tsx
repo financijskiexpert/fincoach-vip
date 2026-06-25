@@ -17,8 +17,9 @@ export default async function AdminAffiliate() {
   const { data: affiliates } = await service
     .from('affiliates')
     .select(`
-      id, name, email, code, commission_percent, is_active, created_at,
+      id, user_id, code, commission_percent, is_active, created_at,
       total_sales, total_commission, total_conversions,
+      profiles(full_name, email),
       affiliate_conversions(id, commission_amount, status, created_at,
         purchases(amount_paid)
       )
@@ -84,8 +85,8 @@ export default async function AdminAffiliate() {
                 {affiliates.map((a: any) => (
                   <tr key={a.id} className="border-b border-white/5 hover:bg-white/2 transition-colors">
                     <td className="px-6 py-4">
-                      <p className="text-white font-medium">{a.name}</p>
-                      <p className="text-white/40 text-xs">{a.email}</p>
+                      <p className="text-white font-medium">{(a.profiles as any)?.full_name ?? '—'}</p>
+                      <p className="text-white/40 text-xs">{(a.profiles as any)?.email ?? '—'}</p>
                     </td>
                     <td className="px-6 py-4">
                       <span className="font-mono bg-white/5 px-2 py-1 rounded text-xs text-gold">{a.code}</span>
@@ -118,7 +119,7 @@ export default async function AdminAffiliate() {
             const pending = affiliates?.flatMap((a: any) =>
               (a.affiliate_conversions ?? [])
                 .filter((c: any) => c.status === 'pending')
-                .map((c: any) => ({ ...c, affiliate_name: a.name, affiliate_email: a.email }))
+                .map((c: any) => ({ ...c, affiliate_name: (a.profiles as any)?.full_name, affiliate_email: (a.profiles as any)?.email }))
             ) ?? []
 
             if (!pending.length) {
