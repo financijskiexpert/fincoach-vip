@@ -197,21 +197,72 @@ export default function PortalSidebar({
               {/* Divider */}
               <div className="my-2 border-t border-white/10" />
 
-              {/* View as student */}
+              {/* Affiliate kreative */}
               <Link
-                href="/portal"
-                title={collapsed ? 'Gledaj kao student' : undefined}
+                href="/portal/affiliate"
+                title={collapsed ? 'Affiliate materijali' : undefined}
                 className={cn(
                   'flex items-center gap-3 py-2.5 text-sm transition-colors',
                   collapsed ? 'justify-center px-2' : 'px-4',
-                  pathname === '/portal'
+                  pathname === '/portal/affiliate'
                     ? 'bg-white/10 text-white'
                     : 'text-white/50 hover:text-white hover:bg-white/5'
                 )}
               >
-                <PlayCircle className="w-5 h-5 shrink-0" />
-                {!collapsed && <span>Gledaj kao student</span>}
+                <Link2 className="w-5 h-5 shrink-0" />
+                {!collapsed && <span>Affiliate materijali</span>}
               </Link>
+
+              {/* Divider */}
+              <div className="my-2 border-t border-white/10" />
+
+              {/* Lesson list for admin */}
+              {!collapsed && lessons.length > 0 && (
+                <div className="px-4 py-1">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-white/30 mb-1">Tečaj</p>
+                </div>
+              )}
+              {!collapsed && lessons.length > 0 && SECTIONS.map(section => {
+                const sectionLessons = lessons.filter(l => l.section === section.key)
+                if (sectionLessons.length === 0) return null
+                const isOpen = openSections.has(section.key)
+                return (
+                  <div key={section.key}>
+                    <button
+                      onClick={() => toggleSection(section.key)}
+                      className="w-full flex items-center justify-between px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors"
+                    >
+                      <span>{section.label}</span>
+                      {isOpen ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+                    </button>
+                    {isOpen && sectionLessons.sort((a, b) => a.day_number - b.day_number).map(lesson => (
+                      <Link
+                        key={lesson.id}
+                        href={`/portal/dan/${lesson.day_number}`}
+                        className={cn(
+                          'flex items-center gap-3 px-4 py-1.5 text-xs transition-colors hover:bg-white/5',
+                          pathname === `/portal/dan/${lesson.day_number}` ? 'text-[#D4AF37]' : 'text-white/40 hover:text-white/70'
+                        )}
+                      >
+                        <PlayCircle className="w-3 h-3 shrink-0" />
+                        <span className="truncate">Dan {lesson.day_number} — {lesson.title}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )
+              })}
+              {collapsed && (
+                <Link
+                  href="/portal"
+                  title="Gledaj kao student"
+                  className={cn(
+                    'flex items-center justify-center px-2 py-2.5 text-sm transition-colors',
+                    'text-white/50 hover:text-white hover:bg-white/5'
+                  )}
+                >
+                  <PlayCircle className="w-5 h-5 shrink-0" />
+                </Link>
+              )}
             </>
           ) : (
             <>
