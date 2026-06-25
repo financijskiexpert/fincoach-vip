@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getSignedVideoUrl } from '@/lib/r2'
 
 export async function GET(request: NextRequest) {
@@ -20,27 +20,41 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing video key' }, { status: 400 })
     }
 
-    // Verify user has purchased the course that contains this video
-    const { data: lesson } = await supabase
+    const service = await createServiceClient()
+
+    // Najdi lekcijo po video_key
+    const { data: lesson } = await service
       .from('lessons')
       .select('course_id')
       .eq('video_key', videoKey)
-      .single()
+      .maybeSingle()
 
     if (!lesson) {
       return NextResponse.json({ error: 'Video not found' }, { status: 404 })
     }
 
-    const { data: purchase } = await supabase
-      .from('purchases')
-      .select('id')
-      .eq('user_id', user.id)
-      .eq('course_id', lesson.course_id)
-      .eq('status', 'completed')
-      .single()
+    // Admin ima dostop do vseh videov
+    const { data: profile } = await service
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+    const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'
 
-    if (!purchase) {
-      return NextResponse.json({ error: 'Access denied' }, { status: 403 })
+    if (!isAdmin) {
+      // Sicer mora imeti completed purchase tečaja
+      const { data: purchase } = await service
+        .from('purchases')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('course_id', lesson.course_id)
+        .eq('status', 'completed')
+        .limit(1)
+        .maybeSingle()
+
+      if (!purchase) {
+        return NextResponse.json({ error: 'Access denied' }, { status: 403 })
+      }
     }
 
     const url = await getSignedVideoUrl(videoKey, 3600)
