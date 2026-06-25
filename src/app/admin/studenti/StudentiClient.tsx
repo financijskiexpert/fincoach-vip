@@ -1,8 +1,8 @@
 'use client'
 
 import { useTransition, useState } from 'react'
-import { addStudent, deleteStudent, grantAccess } from './actions'
-import { UserPlus, Trash2, Unlock, Loader2 } from 'lucide-react'
+import { addStudent, deleteStudent, grantAccess, revokeAccess, revokeAffiliate, grantAffiliate } from './actions'
+import { UserPlus, Trash2, Unlock, Loader2, Lock, UserMinus } from 'lucide-react'
 
 export function AddStudentForm() {
   const [pending, startTransition] = useTransition()
@@ -135,6 +135,60 @@ export function GrantAccessButton({ userId, name }: { userId: string; name: stri
     >
       {pending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Unlock className="w-3 h-3" />}
       Aktiviraj
+    </button>
+  )
+}
+
+export function RevokeAccessButton({ userId, name }: { userId: string; name: string }) {
+  const [pending, startTransition] = useTransition()
+  return (
+    <button
+      onClick={() => {
+        if (!confirm(`Oduzmi pristup tečaju studentu ${name}?`)) return
+        startTransition(() => revokeAccess(userId))
+      }}
+      disabled={pending}
+      title="Oduzmi pristup tečaju"
+      className="flex items-center gap-1 px-2 py-1 text-xs text-red-400 border border-red-500/30 rounded hover:bg-red-500/10 transition disabled:opacity-40"
+    >
+      {pending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Lock className="w-3 h-3" />}
+      Oduzmi pristup
+    </button>
+  )
+}
+
+export function RevokeAffiliateButton({ userId, name }: { userId: string; name: string }) {
+  const [pending, startTransition] = useTransition()
+  return (
+    <button
+      onClick={() => {
+        if (!confirm(`Oduzmi affiliate status studentu ${name}?`)) return
+        startTransition(() => revokeAffiliate(userId))
+      }}
+      disabled={pending}
+      title="Oduzmi affiliate"
+      className="flex items-center gap-1 px-2 py-1 text-xs text-orange-400 border border-orange-500/30 rounded hover:bg-orange-500/10 transition disabled:opacity-40"
+    >
+      {pending ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserMinus className="w-3 h-3" />}
+      Oduzmi affiliate
+    </button>
+  )
+}
+
+export function GrantAffiliateButton({ userId, name }: { userId: string; name: string }) {
+  const [pending, startTransition] = useTransition()
+  return (
+    <button
+      onClick={() => {
+        if (!confirm(`Daj affiliate status studentu ${name}?`)) return
+        startTransition(() => grantAffiliate(userId))
+      }}
+      disabled={pending}
+      title="Daj affiliate"
+      className="flex items-center gap-1 px-2 py-1 text-xs text-green-400 border border-green-500/30 rounded hover:bg-green-500/10 transition disabled:opacity-40"
+    >
+      {pending ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserPlus className="w-3 h-3" />}
+      Daj affiliate
     </button>
   )
 }

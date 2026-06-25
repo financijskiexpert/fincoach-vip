@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
-import Sidebar from '@/components/Sidebar'
+import PortalSidebar from '@/components/PortalSidebar'
 
-async function getLessonsAndProgress(userId: string, courseSlug = 'volim-svojnovac') {
+async function getLessonsAndProgress(userId: string, userEmail: string, courseSlug = 'volim-svojnovac') {
   const service = await createServiceClient()
 
   const { data: course } = await service
@@ -28,7 +28,7 @@ async function getLessonsAndProgress(userId: string, courseSlug = 'volim-svojnov
       .eq('id', userId)
       .single()
 
-    if (profile?.role !== 'admin') return { lessons: [], completedIds: [] }
+    if (profile?.role !== 'admin' && userEmail !== 'brane.recek@gmail.com') return { lessons: [], completedIds: [] }
 
     const { data: adminLessons } = await service
       .from('lessons')
@@ -68,16 +68,35 @@ export default async function PortalLayout({
     redirect('/prijava?redirect=/portal')
   }
 
-  const { lessons, completedIds } = await getLessonsAndProgress(user.id)
+  const service = await createServiceClient()
+  const { data: profile } = await service
+    .from('profiles')
+    .select('role, full_name, email')
+    .eq('id', user.id)
+    .single()
+
+  const role = (profile?.role === 'admin' || user.email === 'brane.recek@gmail.com') ? 'admin' : 'student'
+
+  const { data: affiliateRecord } = await service
+    .from('affiliates')
+    .select('id, is_active')
+    .eq('email', user.email ?? '')
+    .maybeSingle()
+  const hasAffiliate = !!affiliateRecord?.is_active
+
+  const { lessons, completedIds } = await getLessonsAndProgress(user.id, user.email ?? '')
 
   return (
     <div className="flex h-screen bg-navy overflow-hidden">
-      <Sidebar
+      <PortalSidebar
+        role={role as 'admin' | 'student'}
+        hasAffiliate={hasAffiliate}
         lessons={lessons}
         completedLessonIds={completedIds}
-        totalDays={90}
+        userName={profile?.full_name ?? undefined}
+        userEmail={user.email ?? undefined}
       />
-      <main className="flex-1 overflow-y-auto">
+      <main className="relative flex-1 overflow-y-auto">
         {children}
       </main>
     </div>

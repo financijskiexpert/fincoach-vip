@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
-import { AddStudentForm, DeleteStudentButton, GrantAccessButton } from './StudentiClient'
+import { AddStudentForm, DeleteStudentButton, GrantAccessButton, RevokeAccessButton, RevokeAffiliateButton, GrantAffiliateButton } from './StudentiClient'
 
 export default async function AdminStudenti() {
   const supabase = await createClient()
@@ -30,6 +30,8 @@ export default async function AdminStudenti() {
   const { data: affiliates } = await service
     .from('affiliates')
     .select('email, code, total_sales, total_commission, is_active')
+
+  const affiliateEmailSet = new Set(affiliates?.filter(a => a.is_active).map(a => a.email) ?? [])
 
   // Dohvati progress count
   const { data: progressData } = await service
@@ -82,6 +84,7 @@ export default async function AdminStudenti() {
                 const progressCount = progressByUser.get(s.id) ?? 0
                 const progressPct = Math.round((progressCount / 90) * 100)
                 const hasAccess = !!purchase
+                const hasAffiliate = affiliateEmailSet.has(s.email)
                 const isAdmin = s.role === 'admin'
 
                 return (
@@ -105,11 +108,12 @@ export default async function AdminStudenti() {
                       {isAdmin ? (
                         <Badge className="bg-gold/20 text-gold border-gold/30 text-xs">Super admin</Badge>
                       ) : hasAccess ? (
-                        <div>
+                        <div className="space-y-1">
                           <Badge className="bg-green-500/10 text-green-400 border-green-500/20 text-xs">Aktivan</Badge>
                           {purchase.amount_paid > 0 && (
-                            <p className="text-white/30 text-xs mt-0.5">{formatCurrency(purchase.amount_paid)}</p>
+                            <p className="text-white/30 text-xs">{formatCurrency(purchase.amount_paid)}</p>
                           )}
+                          <RevokeAccessButton userId={s.id} name={s.full_name ?? s.email} />
                         </div>
                       ) : (
                         <GrantAccessButton userId={s.id} name={s.full_name ?? s.email} />
@@ -119,12 +123,12 @@ export default async function AdminStudenti() {
                     {/* Affiliate */}
                     <td className="px-5 py-4">
                       {aff ? (
-                        <div>
+                        <div className="space-y-1">
                           <div className="flex items-center gap-1.5">
                             <div className={`w-1.5 h-1.5 rounded-full ${aff.is_active ? 'bg-green-400' : 'bg-white/20'}`} />
                             <span className="font-mono text-xs text-gold">{aff.code}</span>
                           </div>
-                          <p className="text-white/30 text-xs mt-0.5">
+                          <p className="text-white/30 text-xs">
                             {aff.total_commission > 0 ? `€${Number(aff.total_commission).toFixed(0)} zarade` : 'Bez konverzija'}
                           </p>
                           <a
@@ -134,9 +138,21 @@ export default async function AdminStudenti() {
                           >
                             ↗ link
                           </a>
+                          {!isAdmin && (
+                            hasAffiliate
+                              ? <RevokeAffiliateButton userId={s.id} name={s.full_name ?? s.email} />
+                              : <GrantAffiliateButton userId={s.id} name={s.full_name ?? s.email} />
+                          )}
                         </div>
                       ) : (
-                        <span className="text-white/20 text-xs">—</span>
+                        <div>
+                          <span className="text-white/20 text-xs">—</span>
+                          {!isAdmin && (
+                            <div className="mt-1">
+                              <GrantAffiliateButton userId={s.id} name={s.full_name ?? s.email} />
+                            </div>
+                          )}
+                        </div>
                       )}
                     </td>
 

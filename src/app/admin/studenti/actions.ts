@@ -210,3 +210,38 @@ export async function grantAccess(userId: string) {
 
   revalidatePath('/admin/studenti')
 }
+
+export async function revokeAccess(userId: string) {
+  const service = await assertAdmin()
+  const { data: course } = await service.from('courses').select('id').eq('slug', 'volim-svojnovac').single()
+  if (!course) return
+  await service.from('purchases').delete().eq('user_id', userId).eq('course_id', course.id)
+  revalidatePath('/admin/studenti')
+}
+
+export async function revokeAffiliate(userId: string) {
+  const service = await assertAdmin()
+  const { data: profile } = await service.from('profiles').select('email').eq('id', userId).single()
+  if (!profile) return
+  await service.from('affiliates').update({ is_active: false }).eq('email', profile.email)
+  revalidatePath('/admin/studenti')
+}
+
+export async function grantAffiliate(userId: string) {
+  const service = await assertAdmin()
+  const { data: profile } = await service.from('profiles').select('email, full_name').eq('id', userId).single()
+  if (!profile) return
+  const { data: existing } = await service.from('affiliates').select('id').eq('email', profile.email).single()
+  if (existing) {
+    await service.from('affiliates').update({ is_active: true }).eq('email', profile.email)
+  } else {
+    const name = profile.full_name ?? profile.email
+    const first = name.split(' ')[0].toUpperCase().replace(/[^A-Z]/g, '').slice(0, 8)
+    const suffix = Math.random().toString(36).substring(2, 6).toUpperCase()
+    const code = first + suffix
+    await service.from('affiliates').insert({
+      name, email: profile.email, code, commission_percent: 30, is_active: true
+    })
+  }
+  revalidatePath('/admin/studenti')
+}
