@@ -118,6 +118,7 @@ export default function DailyLessonPage() {
   const router = useRouter()
   const dayNumber = parseInt(id as string, 10)
 
+  const autoMarkedRef = useRef(false)
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   const [isCompleted, setIsCompleted] = useState(false)
@@ -159,9 +160,10 @@ export default function DailyLessonPage() {
         .select('id')
         .eq('user_id', user.id)
         .eq('lesson_id', lessonData.id)
-        .single()
+        .maybeSingle()
 
       setIsCompleted(!!progress)
+      autoMarkedRef.current = !!progress
 
       // Get prev/next days
       const { data: neighbors } = await supabase
@@ -196,31 +198,39 @@ export default function DailyLessonPage() {
     fetchLesson()
   }, [fetchLesson])
 
-  async function markComplete() {
+  async function markComplete(silent = false) {
     if (isCompleted || markingComplete || !lesson) return
     setMarkingComplete(true)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      const { error } = await supabase
-        .from('progress')
-        .upsert({ user_id: user.id, lesson_id: lesson.id }, { onConflict: 'user_id,lesson_id' })
-
-      if (error) throw error
+      const res = await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lesson_id: lesson.id }),
+      })
+      if (!res.ok) throw new Error('save failed')
 
       setIsCompleted(true)
-      toast.success('Lekcija označena kao završena! 🎉')
-
-      // Auto-navigate to next day after a moment
-      if (nextDay) {
-        setTimeout(() => router.push(`/portal/dan/${nextDay}`), 1500)
+      if (!silent) {
+        toast.success('Lekcija označena kao završena! 🎉')
+        if (nextDay) {
+          setTimeout(() => router.push(`/portal/dan/${nextDay}`), 1500)
+        }
+      } else {
+        toast.success('Napredak zabilježen automatski (gledao si > 80%).')
       }
     } catch (err) {
       console.error(err)
-      toast.error('Greška pri bilježenju napretka.')
+      if (!silent) toast.error('Greška pri bilježenju napretka.')
     } finally {
       setMarkingComplete(false)
+    }
+  }
+
+  // Auto-mark ko user pogleda >= 80% videa
+  function handleVideoProgress(percent: number) {
+    if (percent >= 80 && !autoMarkedRef.current && !isCompleted) {
+      autoMarkedRef.current = true
+      markComplete(true)
     }
   }
 
@@ -312,7 +322,8 @@ export default function DailyLessonPage() {
           src={videoUrl}
           title={lesson.title}
           className="mb-8"
-          onEnded={markComplete}
+          onProgress={handleVideoProgress}
+          onEnded={() => markComplete(false)}
         />
       ) : (
         <div className="aspect-video bg-navy-50 border border-white/10 rounded-2xl flex items-center justify-center mb-8">
@@ -339,7 +350,7 @@ export default function DailyLessonPage() {
       <div className="flex items-center justify-between mb-8">
         {!isCompleted ? (
           <Button
-            onClick={markComplete}
+            onClick={() => markComplete(false)}
             loading={markingComplete}
             size="lg"
             className="flex items-center gap-2"

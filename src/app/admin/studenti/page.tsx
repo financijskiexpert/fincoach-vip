@@ -13,6 +13,13 @@ export default async function AdminStudenti() {
   const { data: profile } = await service.from('profiles').select('role').eq('id', user.id).single()
   if (profile?.role !== 'admin' && user.email !== 'brane.recek@gmail.com') redirect('/portal')
 
+  // Dohvati sve dostupne tečaje (za AddStudentForm selector)
+  const { data: courses } = await service
+    .from('courses')
+    .select('id, slug, title')
+    .eq('is_active', true)
+    .order('created_at')
+
   // Svi studenti + admin (za testiranje)
   const { data: students } = await service
     .from('profiles')
@@ -26,12 +33,12 @@ export default async function AdminStudenti() {
     .select('user_id, status, amount_paid, purchased_at')
     .eq('status', 'completed')
 
-  // Dohvati affiliates
+  // Dohvati affiliates (s pravilnimi polji: total_sales, total_earned — NE total_commission)
   const { data: affiliates } = await service
     .from('affiliates')
-    .select('email, code, total_sales, total_commission, is_active')
+    .select('user_id, code, total_sales, total_earned, is_active')
 
-  const affiliateEmailSet = new Set(affiliates?.filter(a => a.is_active).map(a => a.email) ?? [])
+  const affiliateUserSet = new Set(affiliates?.filter(a => a.is_active).map(a => a.user_id) ?? [])
 
   // Dohvati progress count
   const { data: progressData } = await service
@@ -39,7 +46,7 @@ export default async function AdminStudenti() {
     .select('user_id')
 
   const purchaseByUser = new Map(purchases?.map(p => [p.user_id, p]) ?? [])
-  const affiliateByEmail = new Map(affiliates?.map(a => [a.email, a]) ?? [])
+  const affiliateByUser = new Map(affiliates?.map(a => [a.user_id, a]) ?? [])
   const progressByUser = new Map<string, number>()
   for (const p of progressData ?? []) {
     progressByUser.set(p.user_id, (progressByUser.get(p.user_id) ?? 0) + 1)
@@ -57,7 +64,7 @@ export default async function AdminStudenti() {
           <h1 className="text-3xl font-bold text-white">Studenti</h1>
           <p className="text-white/50 mt-1">{totalStudents} studenata · {totalActive} s aktivnim pristupom</p>
         </div>
-        <AddStudentForm />
+        <AddStudentForm courses={courses ?? []} />
       </div>
 
       <div className="bg-navy-50 border border-white/10 rounded-2xl overflow-hidden">
@@ -80,12 +87,13 @@ export default async function AdminStudenti() {
                 </tr>
               ) : students.map((s: any) => {
                 const purchase = purchaseByUser.get(s.id)
-                const aff = affiliateByEmail.get(s.email)
+                const aff = affiliateByUser.get(s.id)
                 const progressCount = progressByUser.get(s.id) ?? 0
                 const progressPct = Math.round((progressCount / 90) * 100)
                 const hasAccess = !!purchase
-                const hasAffiliate = affiliateEmailSet.has(s.email)
+                const hasAffiliate = affiliateUserSet.has(s.id)
                 const isAdmin = s.role === 'admin'
+                const isSelf = s.id === user.id
 
                 return (
                   <tr key={s.id} className="border-b border-white/5 hover:bg-white/2 transition-colors">
@@ -129,7 +137,7 @@ export default async function AdminStudenti() {
                             <span className="font-mono text-xs text-gold">{aff.code}</span>
                           </div>
                           <p className="text-white/30 text-xs">
-                            {aff.total_commission > 0 ? `€${Number(aff.total_commission).toFixed(0)} zarade` : 'Bez konverzija'}
+                            {aff.total_earned > 0 ? `€${(Number(aff.total_earned) / 100).toFixed(2)} zarade` : 'Bez konverzija'}
                           </p>
                           <a
                             href={`${siteUrl}?ref=${aff.code}`}
@@ -173,7 +181,7 @@ export default async function AdminStudenti() {
 
                     {/* Akcije */}
                     <td className="px-5 py-4">
-                      {!isAdmin && (
+                      {!isSelf && (
                         <DeleteStudentButton userId={s.id} name={s.full_name ?? s.email} />
                       )}
                     </td>

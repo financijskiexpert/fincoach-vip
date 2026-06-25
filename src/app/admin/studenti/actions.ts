@@ -26,6 +26,8 @@ export async function addStudent(formData: FormData) {
   const fullName = (formData.get('full_name') as string ?? '').trim()
   const email = (formData.get('email') as string ?? '').toLowerCase().trim()
   const paid = formData.get('paid') === 'true'
+  const withAffiliate = formData.get('with_affiliate') === 'true'
+  const courseSlug = (formData.get('course_slug') as string ?? 'volim-svojnovac').trim()
 
   if (!email || !fullName) throw new Error('Ime i email su obavezni.')
 
@@ -63,14 +65,14 @@ export async function addStudent(formData: FormData) {
     })
   }
 
-  // 2. Ako je plaćeno — kreiraj purchase record
+  // 2. Ako je plaćeno — kreiraj purchase record za izabrani tečaj
   if (paid) {
     const { data: course } = await service
-      .from('courses').select('id').eq('slug', 'volim-svojnovac').single()
+      .from('courses').select('id').eq('slug', courseSlug).maybeSingle()
 
     if (course) {
       const { data: existingPurchase } = await service
-        .from('purchases').select('id').eq('user_id', userId).eq('course_id', course.id).single()
+        .from('purchases').select('id').eq('user_id', userId).eq('course_id', course.id).limit(1).maybeSingle()
 
       if (!existingPurchase) {
         await service.from('purchases').insert({
@@ -84,15 +86,15 @@ export async function addStudent(formData: FormData) {
     }
   }
 
-  // 3. Kreiraj affiliate kod automatski (ako kupac)
-  if (paid) {
+  // 3. Affiliate kod — samo ako admin označi da želi affiliate ZA tega studenta
+  if (paid && withAffiliate) {
     const { data: existingAff } = await service
-      .from('affiliates').select('id').eq('user_id', userId).single()
+      .from('affiliates').select('id').eq('user_id', userId).maybeSingle()
 
     if (!existingAff) {
       let code = generateAffiliateCode(fullName)
       for (let i = 0; i < 5; i++) {
-        const { data: taken } = await service.from('affiliates').select('id').eq('code', code).single()
+        const { data: taken } = await service.from('affiliates').select('id').eq('code', code).maybeSingle()
         if (!taken) break
         code = generateAffiliateCode(fullName)
       }
@@ -102,6 +104,9 @@ export async function addStudent(formData: FormData) {
         commission_percent: 30,
         is_active: true,
       })
+    } else {
+      // Če zapis že obstaja a je deaktiviran, ga ponovno aktiviraj
+      await service.from('affiliates').update({ is_active: true }).eq('user_id', userId)
     }
   }
 

@@ -4,15 +4,25 @@ import { useTransition, useState } from 'react'
 import { addStudent, deleteStudent, grantAccess, revokeAccess, revokeAffiliate, grantAffiliate } from './actions'
 import { UserPlus, Trash2, Unlock, Loader2, Lock, UserMinus } from 'lucide-react'
 
-export function AddStudentForm() {
+interface CourseOption {
+  id: string
+  slug: string
+  title: string
+}
+
+export function AddStudentForm({ courses }: { courses: CourseOption[] }) {
   const [pending, startTransition] = useTransition()
   const [open, setOpen] = useState(false)
   const [paid, setPaid] = useState(true)
+  const [withAffiliate, setWithAffiliate] = useState(true)
+  const [courseSlug, setCourseSlug] = useState(courses[0]?.slug ?? 'volim-svojnovac')
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     fd.set('paid', String(paid))
+    fd.set('with_affiliate', String(withAffiliate))
+    fd.set('course_slug', courseSlug)
     startTransition(async () => {
       await addStudent(fd)
       setOpen(false)
@@ -30,8 +40,8 @@ export function AddStudentForm() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-navy border border-white/20 rounded-2xl p-8 w-full max-w-md shadow-2xl">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-navy border border-white/20 rounded-2xl p-8 w-full max-w-md shadow-2xl my-8">
             <h2 className="text-xl font-bold text-white mb-6">Dodaj novog studenta</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -53,15 +63,33 @@ export function AddStudentForm() {
                   className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none focus:border-gold text-sm"
                 />
               </div>
+
+              {/* Izbor tečaja */}
               <div>
-                <label className="block text-sm text-white/60 mb-2">Tečaj plaćen?</label>
+                <label className="block text-sm text-white/60 mb-1.5">Koji tečaj dodjeljuješ? *</label>
+                <select
+                  value={courseSlug}
+                  onChange={e => setCourseSlug(e.target.value)}
+                  className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-gold text-sm"
+                >
+                  {courses.map(c => (
+                    <option key={c.slug} value={c.slug} className="bg-navy">{c.title}</option>
+                  ))}
+                </select>
+                {courses.length === 1 && (
+                  <p className="text-xs text-white/30 mt-1.5">Trenutno je dostupan samo jedan tečaj. Kad dodaš druge, izabrat ćeš ovdje.</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm text-white/60 mb-2">Pristup tečaju</label>
                 <div className="flex gap-3">
                   <button
                     type="button"
                     onClick={() => setPaid(true)}
                     className={`flex-1 py-2.5 rounded-lg text-sm font-semibold border transition ${paid ? 'bg-green-500/20 border-green-500/50 text-green-400' : 'bg-white/5 border-white/10 text-white/40'}`}
                   >
-                    ✓ Da — plaćeno
+                    ✓ Aktivan
                   </button>
                   <button
                     type="button"
@@ -71,8 +99,34 @@ export function AddStudentForm() {
                     Nije plaćeno
                   </button>
                 </div>
+              </div>
+
+              {/* Affiliate toggle */}
+              <div>
+                <label className="block text-sm text-white/60 mb-2">Partnerski program (affiliate)</label>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setWithAffiliate(true)}
+                    disabled={!paid}
+                    className={`flex-1 py-2.5 rounded-lg text-sm font-semibold border transition disabled:opacity-40 disabled:cursor-not-allowed ${withAffiliate && paid ? 'bg-gold/20 border-gold/50 text-gold' : 'bg-white/5 border-white/10 text-white/40'}`}
+                  >
+                    ✓ Dodijeli affiliate
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWithAffiliate(false)}
+                    className={`flex-1 py-2.5 rounded-lg text-sm font-semibold border transition ${!withAffiliate ? 'bg-white/10 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white/40'}`}
+                  >
+                    Bez affiliate
+                  </button>
+                </div>
                 <p className="text-xs text-white/30 mt-1.5">
-                  {paid ? 'Student dobiva pristup portalu i affiliate linku.' : 'Student je kreiran ali nema pristup tečaju dok ne plati.'}
+                  {!paid
+                    ? 'Affiliate je dostupan samo kupcima tečaja.'
+                    : withAffiliate
+                      ? 'Student dobiva affiliate kod i 30% provizije po prodaji.'
+                      : 'Student nema affiliate pristupa. Možeš ga aktivirati kasnije iz liste.'}
                 </p>
               </div>
 
