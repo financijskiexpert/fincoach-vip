@@ -17,7 +17,7 @@ const TABS = [
 // ─── Calculator 1: Proračun ───────────────────────────────────────────────────
 
 const DEFAULT_EXPENSES = [
-  { label: 'Stanovanje', amount: 500 },
+  { label: 'Stan / stanarina', amount: 500 },
   { label: 'Hrana', amount: 300 },
   { label: 'Prijevoz', amount: 150 },
   { label: 'Odjeća', amount: 100 },

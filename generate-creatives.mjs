@@ -54,15 +54,15 @@ function igA() {
   <rect width="1080" height="1080" fill="${NAVY}"/>
   <rect x="0" y="0" width="8" height="1080" fill="${GOLD}"/>
   ${logo(80, 72)}
-  <text x="80" y="310" font-family="${F}" font-size="92" fill="${WHITE}" font-weight="900">Zasto na kraju</text>
+  <text x="80" y="310" font-family="${F}" font-size="92" fill="${WHITE}" font-weight="900">Za&#353;to na kraju</text>
   <text x="80" y="415" font-family="${F}" font-size="92" fill="${WHITE}" font-weight="900">svakog mjeseca</text>
   <text x="80" y="520" font-family="${F}" font-size="92" fill="${GOLD}" font-weight="900">nema dovoljno?</text>
   ${divider(80, 568, 1000)}
-  <text x="80" y="630" font-family="${F}" font-size="46" fill="${MUTED}">Jer te nitko nije naucio sto raditi s novcem.</text>
+  <text x="80" y="630" font-family="${F}" font-size="46" fill="${MUTED}">Jer te nitko nije nau&#269;io &#353;to raditi s novcem.</text>
   <text x="80" y="692" font-family="${F}" font-size="52" fill="${WHITE}" font-weight="700">FinCoach VIP to mijenja.</text>
   ${divider(80, 730, 1000)}
-  <text x="80" y="790" font-family="${F}" font-size="42" fill="${WHITE}">&#10003; Pronadji gdje novac nestaje</text>
-  <text x="80" y="850" font-family="${F}" font-size="42" fill="${WHITE}">&#10003; Steduj automatski svaki mj.</text>
+  <text x="80" y="790" font-family="${F}" font-size="42" fill="${WHITE}">&#10003; Prona&#273;i gdje novac nestaje</text>
+  <text x="80" y="850" font-family="${F}" font-size="42" fill="${WHITE}">&#10003; &#352;teduj automatski svaki mj.</text>
   <text x="80" y="910" font-family="${F}" font-size="42" fill="${WHITE}">&#10003; Investiraj bez straha</text>
   ${divider(80, 948, 1000)}
   <text x="80" y="1000" font-family="${F}" font-size="38" fill="${DIM}">90 dana · Link u biu &#128070;</text>
@@ -79,7 +79,7 @@ function igB() {
   <circle cx="540" cy="480" r="280" fill="none" stroke="${GOLD}" stroke-width="1" opacity="0.12"/>
   <circle cx="540" cy="480" r="200" fill="none" stroke="${GOLD}" stroke-width="0.5" opacity="0.08"/>
   <text x="540" y="390" text-anchor="middle" font-family="${F}" font-size="88" fill="${WHITE}" font-weight="900">Nitko te nije</text>
-  <text x="540" y="490" text-anchor="middle" font-family="${F}" font-size="88" fill="${WHITE}" font-weight="900">naucio sto raditi</text>
+  <text x="540" y="490" text-anchor="middle" font-family="${F}" font-size="88" fill="${WHITE}" font-weight="900">nau&#269;io &#353;to raditi</text>
   <text x="540" y="600" text-anchor="middle" font-family="${F}" font-size="96" fill="${GOLD}" font-weight="900">s novcem.</text>
   ${divider(200, 660, 880)}
   <text x="540" y="730" text-anchor="middle" font-family="${F}" font-size="52" fill="${MUTED}">Mi jesmo.</text>
@@ -93,16 +93,16 @@ function storyA() {
   <rect width="1080" height="1920" fill="${NAVY}"/>
   <rect x="0" y="0" width="8" height="1920" fill="${GOLD}"/>
   ${logo(80, 100)}
-  <text x="80" y="480" font-family="${F}" font-size="100" fill="${WHITE}" font-weight="900">Zasto na kraju</text>
+  <text x="80" y="480" font-family="${F}" font-size="100" fill="${WHITE}" font-weight="900">Za&#353;to na kraju</text>
   <text x="80" y="600" font-family="${F}" font-size="100" fill="${WHITE}" font-weight="900">svakog mjeseca</text>
   <text x="80" y="720" font-family="${F}" font-size="100" fill="${GOLD}" font-weight="900">nema dovoljno?</text>
   ${divider(80, 780, 1000)}
-  <text x="80" y="860" font-family="${F}" font-size="52" fill="${MUTED}">Jer te nitko nije naucio</text>
-  <text x="80" y="930" font-family="${F}" font-size="52" fill="${MUTED}">sto raditi s novcem.</text>
+  <text x="80" y="860" font-family="${F}" font-size="52" fill="${MUTED}">Jer te nitko nije nau&#269;io</text>
+  <text x="80" y="930" font-family="${F}" font-size="52" fill="${MUTED}">&#353;to raditi s novcem.</text>
   <text x="80" y="1020" font-family="${F}" font-size="56" fill="${WHITE}" font-weight="700">FinCoach VIP to mijenja.</text>
   ${divider(80, 1075, 1000)}
-  <text x="80" y="1140" font-family="${F}" font-size="48" fill="${WHITE}">&#10003; Pronadji gdje novac nestaje</text>
-  <text x="80" y="1215" font-family="${F}" font-size="48" fill="${WHITE}">&#10003; Steduj automatski svaki mj.</text>
+  <text x="80" y="1140" font-family="${F}" font-size="48" fill="${WHITE}">&#10003; Prona&#273;i gdje novac nestaje</text>
+  <text x="80" y="1215" font-family="${F}" font-size="48" fill="${WHITE}">&#10003; &#352;teduj automatski svaki mj.</text>
   <text x="80" y="1290" font-family="${F}" font-size="48" fill="${WHITE}">&#10003; Investiraj bez straha</text>
   ${divider(80, 1348, 1000)}
   <rect x="80" y="1390" width="920" height="120" rx="16" fill="${GOLD}" opacity="0.12"/>
@@ -126,24 +126,24 @@ function storyB() {
   <rect x="80" y="590" width="920" height="260" rx="16" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"/>
   <text x="110" y="640" font-family="${F}" font-size="36" fill="#fca5a5" font-weight="700">PRIJE FinCoach VIP</text>
   <text x="110" y="695" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Novac nestajao bez traga</text>
-  <text x="110" y="745" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Nula stednje, puno stresa</text>
-  <text x="110" y="795" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Investiranje? Previse rizicno</text>
-  <text x="110" y="830" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Kraj mj. — uvijek kriza</text>
+  <text x="110" y="745" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Nula &#353;tednje, puno stresa</text>
+  <text x="110" y="795" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Investiranje? Previ&#353;e rizi&#269;no</text>
+  <text x="110" y="845" font-family="${F}" font-size="38" fill="#fca5a5">&#x2717; Kraj mj. &#8212; uvijek kriza</text>
   <!-- arrow -->
-  <text x="540" y="920" text-anchor="middle" font-family="${F}" font-size="52" fill="${GOLD}" font-weight="700">&#8595; 90 dana kasnije</text>
+  <text x="540" y="930" text-anchor="middle" font-family="${F}" font-size="52" fill="${GOLD}" font-weight="700">&#8595; 90 dana kasnije</text>
   <!-- NAKON box -->
-  <rect x="80" y="960" width="920" height="260" rx="16" fill="#14532d" opacity="0.35"/>
-  <rect x="80" y="960" width="920" height="260" rx="16" fill="none" stroke="#22c55e" stroke-width="1.5" opacity="0.5"/>
-  <text x="110" y="1010" font-family="${F}" font-size="36" fill="#86efac" font-weight="700">NAKON FinCoach VIP</text>
-  <text x="110" y="1065" font-family="${F}" font-size="38" fill="#86efac">&#10003; Znam tocno kamo ide novac</text>
-  <text x="110" y="1115" font-family="${F}" font-size="38" fill="#86efac">&#10003; Automatski stedim svaki mj.</text>
-  <text x="110" y="1165" font-family="${F}" font-size="38" fill="#86efac">&#10003; Investiram bez straha</text>
-  <text x="110" y="1215" font-family="${F}" font-size="38" fill="#86efac">&#10003; Financijska sloboda — plan</text>
+  <rect x="80" y="970" width="920" height="260" rx="16" fill="#14532d" opacity="0.35"/>
+  <rect x="80" y="970" width="920" height="260" rx="16" fill="none" stroke="#22c55e" stroke-width="1.5" opacity="0.5"/>
+  <text x="110" y="1020" font-family="${F}" font-size="36" fill="#86efac" font-weight="700">NAKON FinCoach VIP</text>
+  <text x="110" y="1075" font-family="${F}" font-size="38" fill="#86efac">&#10003; Znam to&#269;no kamo ide novac</text>
+  <text x="110" y="1125" font-family="${F}" font-size="38" fill="#86efac">&#10003; Automatski &#353;tedim svaki mj.</text>
+  <text x="110" y="1175" font-family="${F}" font-size="38" fill="#86efac">&#10003; Investiram bez straha</text>
+  <text x="110" y="1225" font-family="${F}" font-size="38" fill="#86efac">&#10003; Financijska sloboda &#8212; plan</text>
   <!-- CTA -->
-  <rect x="80" y="1280" width="920" height="120" rx="16" fill="${GOLD}" opacity="0.15"/>
-  <rect x="80" y="1280" width="920" height="120" rx="16" fill="none" stroke="${GOLD}" stroke-width="1.5" opacity="0.5"/>
-  <text x="540" y="1328" text-anchor="middle" font-family="${F}" font-size="40" fill="${WHITE}">Zeli i tvoja transformacija?</text>
-  <text x="540" y="1380" text-anchor="middle" font-family="${F}" font-size="44" fill="${GOLD}" font-weight="700">&#128070; Link u biu / swipe up</text>
+  <rect x="80" y="1290" width="920" height="120" rx="16" fill="${GOLD}" opacity="0.15"/>
+  <rect x="80" y="1290" width="920" height="120" rx="16" fill="none" stroke="${GOLD}" stroke-width="1.5" opacity="0.5"/>
+  <text x="540" y="1338" text-anchor="middle" font-family="${F}" font-size="40" fill="${WHITE}">&#381;eli&#353; i tvoja transformacija?</text>
+  <text x="540" y="1390" text-anchor="middle" font-family="${F}" font-size="44" fill="${GOLD}" font-weight="700">&#128070; Link u biu / swipe up</text>
 </svg>`
 }
 
@@ -159,12 +159,12 @@ function fbA() {
   <text x="80" y="260" font-family="${F}" font-size="96" fill="${WHITE}" font-weight="900">Novac</text>
   <text x="80" y="365" font-family="${F}" font-size="96" fill="${WHITE}" font-weight="900">ne radi</text>
   <text x="80" y="468" font-family="${F}" font-size="96" fill="${GOLD}" font-weight="900">za tebe?</text>
-  <text x="80" y="535" font-family="${F}" font-size="38" fill="${MUTED}">Jer te nitko nije naucio kako.</text>
+  <text x="80" y="535" font-family="${F}" font-size="38" fill="${MUTED}">Jer te nitko nije nau&#269;io kako.</text>
   <!-- Right side -->
   <text x="600" y="185" font-family="${F}" font-size="46" fill="${GOLD}" font-weight="700">FinCoach VIP to mijenja.</text>
   ${divider(600, 210, 1140, 0.3)}
-  <text x="600" y="272" font-family="${F}" font-size="40" fill="${WHITE}">&#10003; Pronadji gdje novac nestaje</text>
-  <text x="600" y="335" font-family="${F}" font-size="40" fill="${WHITE}">&#10003; Steduj automatski svaki mj.</text>
+  <text x="600" y="272" font-family="${F}" font-size="40" fill="${WHITE}">&#10003; Prona&#273;i gdje novac nestaje</text>
+  <text x="600" y="335" font-family="${F}" font-size="40" fill="${WHITE}">&#10003; &#352;teduj automatski svaki mj.</text>
   <text x="600" y="398" font-family="${F}" font-size="40" fill="${WHITE}">&#10003; Investiraj bez straha</text>
   ${divider(600, 430, 1140, 0.3)}
   <text x="600" y="490" font-family="${F}" font-size="36" fill="${MUTED}">90 dana · Korak po korak</text>
@@ -178,11 +178,11 @@ function fbB() {
   <rect width="1200" height="630" fill="${NAVY}"/>
   <rect x="0" y="0" width="8" height="630" fill="${GOLD}"/>
   ${logo(64, 48, 0.85)}
-  <text x="80" y="240" font-family="${F}" font-size="72" fill="${GOLD}" font-weight="900">"Za 90 dana naucio/la sam</text>
-  <text x="80" y="328" font-family="${F}" font-size="72" fill="${WHITE}" font-weight="900">vise o novcu nego</text>
-  <text x="80" y="416" font-family="${F}" font-size="72" fill="${WHITE}" font-weight="900">za cijeli zivot."</text>
+  <text x="80" y="240" font-family="${F}" font-size="72" fill="${GOLD}" font-weight="900">&#8220;Za 90 dana nau&#269;io/la sam</text>
+  <text x="80" y="328" font-family="${F}" font-size="72" fill="${WHITE}" font-weight="900">vi&#353;e o novcu nego</text>
+  <text x="80" y="416" font-family="${F}" font-size="72" fill="${WHITE}" font-weight="900">za cijeli &#382;ivot.&#8221;</text>
   ${divider(80, 455, 1140)}
-  <text x="80" y="510" font-family="${F}" font-size="38" fill="${MUTED}">— polaznik FinCoach VIP programa</text>
+  <text x="80" y="510" font-family="${F}" font-size="38" fill="${MUTED}">&#8212; polaznik FinCoach VIP programa</text>
   <text x="900" y="510" font-family="${F}" font-size="44" fill="${GOLD}">&#9733;&#9733;&#9733;&#9733;&#9733;</text>
   <text x="80" y="570" font-family="${F}" font-size="36" fill="${DIM}">Link u komentarima &#128071;</text>
 </svg>`
@@ -194,12 +194,12 @@ function waA() {
   <rect width="1080" height="1080" fill="${NAVY}"/>
   <rect x="0" y="0" width="8" height="1080" fill="${GOLD}"/>
   ${logo(80, 72)}
-  <text x="80" y="360" font-family="${F}" font-size="80" fill="${GOLD}" font-weight="900">"Ovo je program</text>
-  <text x="80" y="455" font-family="${F}" font-size="80" fill="${WHITE}" font-weight="900">koji sam zelio</text>
+  <text x="80" y="360" font-family="${F}" font-size="80" fill="${GOLD}" font-weight="900">&#8220;Ovo je program</text>
+  <text x="80" y="455" font-family="${F}" font-size="80" fill="${WHITE}" font-weight="900">koji sam &#382;elio</text>
   <text x="80" y="550" font-family="${F}" font-size="80" fill="${WHITE}" font-weight="900">imati kad sam</text>
-  <text x="80" y="645" font-family="${F}" font-size="80" fill="${GOLD}" font-weight="900">pocinjao."</text>
+  <text x="80" y="645" font-family="${F}" font-size="80" fill="${GOLD}" font-weight="900">po&#269;injao.&#8221;</text>
   ${divider(80, 690, 1000)}
-  <text x="80" y="760" font-family="${F}" font-size="48" fill="${MUTED}">Iskreno ga preporucujem.</text>
+  <text x="80" y="760" font-family="${F}" font-size="48" fill="${MUTED}">Iskreno ga preporu&#269;ujem.</text>
   <text x="80" y="840" font-family="${F}" font-size="48" fill="${MUTED}">90 dana · Korak po korak.</text>
   ${divider(80, 890, 1000)}
   <text x="80" y="960" font-family="${F}" font-size="42" fill="${DIM}">Link u poruci &#128071;</text>
