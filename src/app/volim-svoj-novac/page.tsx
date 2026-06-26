@@ -37,11 +37,12 @@ const faqs = [
     q: 'Dobivam li certifikat?',
     a: 'Da! Po završetku svih 90 dana, automatski generiramo personalizirani certifikat o završetku koji možeš podijeliti na LinkedInu ili ispisati.',
   },
-  {
-    q: 'Mogu li koristiti kod PRILIKA?',
-    a: 'Kod PRILIKA daje pristup po cijeni 197 € umjesto 397 €, bez vremenskog ograničenja. Napomena: kod se NE može kombinirati s affiliate (partner) popustom — ako si došao putem partner linka, već imaš popust od 10% i kod PRILIKA se ne primjenjuje.',
-  },
 ]
+
+const faqPrilika = {
+  q: 'Mogu li koristiti kod PRILIKA?',
+  a: 'Kod PRILIKA daje pristup po cijeni 197 € umjesto 397 €, bez vremenskog ograničenja.',
+}
 
 const testimonials = [
   { name: 'Marija K.', role: 'Učiteljica, Split', stars: 5, text: 'Za 3 mjeseca uštedjela sam više nego za cijelu prethodnu godinu. Konačno razumijem kamo odlazi svaka kuna i imam plan. Ovo stvarno funkcionira!' },
@@ -567,7 +568,7 @@ export default function SalesPage() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-10 text-center">Često postavljana pitanja</h2>
           <div className="space-y-3">
-            {faqs.map((faq, i) => (
+            {(hasAffiliate ? faqs : [...faqs, faqPrilika]).map((faq, i) => (
               <div key={i} className="bg-navy border border-white/10 rounded-xl overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
