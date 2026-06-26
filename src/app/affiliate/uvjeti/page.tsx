@@ -22,7 +22,7 @@ export default function AffiliateUvjetiPage() {
             <h2 className="text-xl font-bold text-white mb-3">1. Definicije i sudionici</h2>
             <p><strong className="text-white">Organizator programa:</strong> Expert s.p., Kidričeva 2, 2000 Maribor, Slovenija, davčna številka: 83099131 — prodavač tečaja "Volim Svoj Novac" putem platforme fincoach.vip.</p>
             <p><strong className="text-white">Affiliate partner (Partner):</strong> fizička ili pravna osoba koja se prijavila u affiliate program i prihvatila ove uvjete.</p>
-            <p><strong className="text-white">Kupac:</strong> osoba koja je kupila tečaj putem affiliate veze Partnera.</p>
+            <p><strong className="text-white">Kupac:</strong> osoba koja je kupila tečaj putem affiliate linka Partnera.</p>
             <p><strong className="text-white">Provizija:</strong> novčana naknada koja se Partneru isplaćuje za uspješno posredovanu prodaju.</p>
           </section>
 
@@ -34,16 +34,16 @@ export default function AffiliateUvjetiPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3">3. Mehanizam praćenja i atribucija</h2>
-            <p>Svakom Partneru dodjeljuje se unikatni affiliate kod (npr. <em>MARKO7F3K</em>) i veza oblika <em>fincoach.vip?ref=KOD</em>.</p>
-            <p>Klikom na affiliate vezu, u pregledniku Kupca postavlja se kolačić (cookie) koji vrijedi <strong className="text-white">30 kalendarskih dana</strong>. Ako Kupac kupi tečaj unutar tog perioda, prodaja se pripisuje Partneru.</p>
-            <p>Atribucija je moguća samo ako Kupac nije prethodno koristio affiliate vezu drugog Partnera. U slučaju višestrukih klikova, vrijedi <strong className="text-white">zadnji klik</strong> (last-click atribucija).</p>
-            <p>Partner ne smije koristiti vlastitu affiliate vezu za kupnju tečaja za sebe (samoreferenciranje). Takva transakcija neće biti nagrađena provizijom.</p>
+            <p>Svakom Partneru dodjeljuje se unikatni affiliate kod (npr. <em>MARKO7F3K</em>) i link oblika <em>fincoach.vip?ref=KOD</em>.</p>
+            <p>Klikom na affiliate link, u pregledniku Kupca postavlja se kolačić (cookie) koji vrijedi <strong className="text-white">30 kalendarskih dana</strong>. Ako Kupac kupi tečaj unutar tog perioda, prodaja se pripisuje Partneru.</p>
+            <p>Atribucija je moguća samo ako Kupac nije prethodno koristio affiliate link drugog Partnera. U slučaju višestrukih klikova, vrijedi <strong className="text-white">zadnji klik</strong> (last-click atribucija).</p>
+            <p>Partner ne smije koristiti vlastitu affiliate link za kupnju tečaja za sebe (samoreferenciranje). Takva transakcija neće biti nagrađena provizijom.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3">4. Visina provizije i popust za kupca</h2>
-            <p>Partner ostvaruje proviziju u iznosu od <strong className="text-white">30% od iznosa koji Kupac plati</strong> putem affiliate veze.</p>
-            <p>Kupac koji kupi putem affiliate veze automatski dobiva <strong className="text-white">popust od 10%</strong> na redovnu cijenu tečaja (€397), tj. plaća €357. Partner tada zarađuje <strong className="text-white">€107,10</strong> po prodaji.</p>
+            <p>Partner ostvaruje proviziju u iznosu od <strong className="text-white">30% od iznosa koji Kupac plati</strong> putem affiliate linka.</p>
+            <p>Kupac koji kupi putem affiliate linka automatski dobiva <strong className="text-white">popust od 10%</strong> na redovnu cijenu tečaja (€397), tj. plaća €357,30. Partner tada zarađuje <strong className="text-white">€107,19</strong> po prodaji.</p>
             <p>Affiliate popust <strong className="text-white">ne kombinira</strong> se s drugim promotivnim kodovima ili kuponcima. Ako Kupac posjeduje drugi kupon, primjenjuje se samo affiliate popust od 10%.</p>
           </section>
 

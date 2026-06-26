@@ -56,12 +56,24 @@ export default function SalesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [countdownExpires, setCountdownExpires] = useState<string | null>(null)
+  const [affiliateRef, setAffiliateRef] = useState<string | null>(null)
 
   useEffect(() => {
+    // Affiliate ref: iz ?ref= query ali iz cookie (postavlja middleware)
+    const params = new URLSearchParams(window.location.search)
+    const refFromUrl = params.get('ref')
+    const refFromCookie = document.cookie.match(/(?:^|;\s*)aff_ref=([^;]+)/)?.[1]
+    const ref = refFromUrl ?? refFromCookie ?? null
+    if (ref) {
+      setAffiliateRef(ref.toUpperCase())
+      // Persist v cookie za 30 dana (če pride iz URL)
+      if (refFromUrl) {
+        document.cookie = `aff_ref=${refFromUrl.toUpperCase()}; path=/; max-age=${30 * 24 * 60 * 60}`
+      }
+    }
+
     // Countdown velja SAMO za leade, ki so naročili PDF in imajo aktivnih 24h.
-    // Email/ID dobimo iz query parametra (povezava iz emaila) ali iz auth user-ja.
     async function loadCountdown() {
-      const params = new URLSearchParams(window.location.search)
       const emailFromUrl = params.get('email')
       try {
         const res = await fetch('/api/countdown' + (emailFromUrl ? `?email=${encodeURIComponent(emailFromUrl)}` : ''), {
@@ -82,8 +94,7 @@ export default function SalesPage() {
   async function handleCheckout() {
     setLoading(true)
     try {
-      const affiliateCode = new URLSearchParams(window.location.search).get('ref') ??
-                            document.cookie.match(/affiliate_code=([^;]+)/)?.[1] ?? ''
+      const affiliateCode = affiliateRef ?? ''
 
       const res = await fetch('/api/checkout', {
         method: 'POST',
@@ -105,9 +116,10 @@ export default function SalesPage() {
   }
 
   const showLaunchPrice = !!countdownExpires && new Date(countdownExpires) > new Date()
-  // Cenovna politika: €397 redna · €97 launch (24h countdown za leade) · €197 s kuponom PRILIKA
-  const currentPrice = showLaunchPrice ? '€97' : '€397'
-  const strikePrice = showLaunchPrice ? '€397' : null
+  const hasAffiliate = !!affiliateRef && !showLaunchPrice  // launch promo prevalira nad affiliate diskontom
+  // Cenovna politika: €397 redna · €97 launch (24h countdown) · €357,30 affiliate −10% · €197 s kuponom PRILIKA
+  const currentPrice = showLaunchPrice ? '€97' : hasAffiliate ? '€357,30' : '€397'
+  const strikePrice = showLaunchPrice || hasAffiliate ? '€397' : null
 
   return (
     <div className="min-h-screen bg-navy">
@@ -132,8 +144,17 @@ export default function SalesPage() {
         </div>
       )}
 
+      {/* Affiliate banner — kupuješ preko partner linka, dobivaš 10% popusta */}
+      {hasAffiliate && (
+        <div className="fixed top-16 left-0 right-0 z-40 bg-green-500/10 border-b border-green-500/30 py-2 px-4 text-center">
+          <p className="text-green-400 text-sm font-medium">
+            🎁 Kupuješ preko partner linka <span className="font-mono font-bold text-green-300">{affiliateRef}</span> — automatski popust <strong>−10%</strong> (€397 → €357,30)
+          </p>
+        </div>
+      )}
+
       {/* Hero */}
-      <section className={`px-4 sm:px-6 ${showLaunchPrice ? 'pt-32' : 'pt-24'} pb-16`}>
+      <section className={`px-4 sm:px-6 ${showLaunchPrice || hasAffiliate ? 'pt-32' : 'pt-24'} pb-16`}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <Badge className="mb-6 bg-gold/10 text-gold border-gold/30 text-sm px-4 py-1.5">

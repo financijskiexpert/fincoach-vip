@@ -80,20 +80,20 @@ export default function AffiliatePage() {
               {
                 step: '1',
                 icon: '🔗',
-                title: 'Dobiš unikatnu vezu',
-                desc: 'Tvoja osobna affiliate veza i kod. Dijeli na društvenim mrežama, u emailu, gdje god hoćeš.',
+                title: 'Dobiš unikatni link',
+                desc: 'Tvoj osobni affiliate link i kod. Dijeli na društvenim mrežama, u emailu, gdje god hoćeš.',
               },
               {
                 step: '2',
                 icon: '💰',
                 title: 'Tvoji prijatelji štede',
-                desc: 'Svaki tko kupi putem tvoje veze automatski dobiva 10% popusta — bez da mora raditi ništa posebno.',
+                desc: 'Svatko tko kupi putem tvog linka automatski dobiva 10% popusta — bez da mora raditi ništa posebno.',
               },
               {
                 step: '3',
                 icon: '🎯',
                 title: 'Ti zarađuješ',
-                desc: '30% od svake prodaje stižu na tvoj račun. Isplata jednom mjesečno, direktno na bankovni račun.',
+                desc: '30% od svake prodaje. Isplata najkasnije 31. dan od prodaje, SEPA (HR/SI/SRB) ili Wise (ostali Balkan).',
               },
             ].map((item) => (
               <div key={item.step} className="bg-[#0D1B2A] border border-white/10 rounded-xl p-6 text-center">
@@ -109,12 +109,12 @@ export default function AffiliatePage() {
       {/* Zarada kalkulator */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-black text-center mb-3">Koliko možeš zaraditi?</h2>
-        <p className="text-gray-400 text-center mb-10">Tečaj košta €197. Ti zarađuješ €59,10 po prodaji.</p>
+        <p className="text-gray-400 text-center mb-10">Tečaj košta €397. Kupac uz tvoj link plaća €357,30 (−10%). Ti zarađuješ €107,19 po prodaji.</p>
         <div className="grid md:grid-cols-3 gap-4">
           {[
-            { sales: 5, earning: '€295,50', label: '5 prodaja/mj.' },
-            { sales: 15, earning: '€886,50', label: '15 prodaja/mj.' },
-            { sales: 30, earning: '€1.773', label: '30 prodaja/mj.' },
+            { sales: 5, earning: '€535,95', label: '5 prodaja/mj.' },
+            { sales: 15, earning: '€1.607,85', label: '15 prodaja/mj.' },
+            { sales: 30, earning: '€3.215,70', label: '30 prodaja/mj.' },
           ].map((row) => (
             <div key={row.sales} className="bg-[#091623] border border-[#D4AF37]/30 rounded-xl p-6 text-center">
               <div className="text-gray-400 text-sm mb-1">{row.label}</div>
@@ -124,7 +124,7 @@ export default function AffiliatePage() {
           ))}
         </div>
         <p className="text-center text-gray-500 text-sm mt-6">
-          * 30% od €197. Isplata jednom mjesečno za sve akumulirane konverzije.
+          * 30% od €357,30. Isplata najkasnije 31. dan od svake prodaje (po isteku 30-dnevnog roka za povrat).
         </p>
       </section>
 
@@ -135,10 +135,10 @@ export default function AffiliatePage() {
           <div className="space-y-4">
             {[
               { q: 'Tko može biti FinCoach partner?', a: 'Samo kupci tečaja "Volim Svoj Novac". Vjerujemo da je najautentičniji ambasador netko tko je osobno prošao program i vidio rezultate.' },
-              { q: 'Kada i kako se isplaćuje provizija?', a: 'Jednom mjesečno, za sve konverzije iz prethodnog mjeseca. Isplata na bankovni račun ili PayPal. Minimalni iznos za isplatu je €50.' },
-              { q: 'Koliko dugo traje affiliate cookie?', a: 'Ako netko klikne tvoju vezu, pratimo ga 30 dana. Ako kupi unutar 30 dana — provizija je tvoja.' },
+              { q: 'Kada i kako se isplaćuje provizija?', a: 'Najkasnije 31. dan od svake prodaje (po isteku 30-dnevnog roka za povrat). Uvjet: najmanje 2 dozrele prodaje. Isplata SEPA nakazom (HR/SI/SRB) ili Wise (BiH/MNE/MK/AL).' },
+              { q: 'Koliko dugo traje affiliate cookie?', a: 'Ako netko klikne tvoj link, pratimo ga 30 dana. Ako kupi unutar 30 dana — provizija je tvoja.' },
               { q: 'Što ako kupac traži povrat?', a: 'Ako kupac iskoristi 30-dnevnu garanciju i traži povrat, ta konverzija se poništava i provizija se ne isplaćuje.' },
-              { q: 'Kako pratim svoje rezultate?', a: 'Imaš vlastiti dashboard na /affiliate/dashboard — vidiš klikove, konverzije, zarade i status isplata u realnom vremenu.' },
+              { q: 'Kako pratim svoje rezultate?', a: 'Imaš vlastiti dashboard na /portal/affiliate — vidiš klikove, prodaje, zarade i status isplata u realnom vremenu.' },
             ].map((item) => (
               <details key={item.q} className="bg-[#0D1B2A] border border-white/10 rounded-xl p-5 group">
                 <summary className="font-semibold text-white cursor-pointer list-none flex justify-between items-center">
@@ -155,7 +155,7 @@ export default function AffiliatePage() {
       {/* CTA */}
       <section className="max-w-2xl mx-auto px-6 py-16 text-center">
         <h2 className="text-3xl font-black mb-4">Spreman/na početi?</h2>
-        <p className="text-gray-400 mb-8">Prijavljivanje traje manje od minute. Tvoja affiliate veza čeka.</p>
+        <p className="text-gray-400 mb-8">Prijavljivanje traje manje od minute. Tvoj affiliate link čeka.</p>
         {!applied && (
           <button
             onClick={handleApply}

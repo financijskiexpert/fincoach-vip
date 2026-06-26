@@ -72,8 +72,8 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
             <h2 className="text-xl font-bold text-[#D4AF37] mb-5">Kako funkcionira?</h2>
             <div className="space-y-4">
               {[
-                { icon: '🔗', title: 'Dobiš unikatnu affiliate vezu', desc: 'Tvoja osobna veza s kodom. Dijeli je gdje god hoćeš — Instagram, Facebook, email, WhatsApp.' },
-                { icon: '🎁', title: 'Tvoji prijatelji kupuju s 10% popustom', desc: 'Svaki tko kupi putem tvoje veze automatski dobiva 10% popusta. Oni štede, a ti zarađuješ.' },
+                { icon: '🔗', title: 'Dobiš unikatni affiliate link', desc: 'Tvoj osobni link s kodom. Dijeli ga gdje god hoćeš — Instagram, Facebook, email, WhatsApp.' },
+                { icon: '🎁', title: 'Tvoji prijatelji kupuju s 10% popustom', desc: 'Svatko tko kupi putem tvog linka automatski dobiva 10% popusta. Oni štede, a ti zarađuješ.' },
                 { icon: '💰', title: 'Ti zarađuješ 30% provizije', desc: 'Tečaj košta €397. Tvoji pratitelji plaćaju €357,30 (−10%). Ti zarađuješ €107,19 po prodaji.' },
                 { icon: '📅', title: 'Isplata najkasnije 31. dan od prodaje', desc: 'Provizija se isplaćuje nakon isteka 30-dnevnog roka za povrat. Uvjet: najmanje 2 dozrele prodaje. Isplata SEPA nakazom (HR/SI/SRB) ili Wise (ostali Balkan).' },
               ].map(item => (
@@ -149,7 +149,7 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
           </div>
 
           <div className="bg-[#091623] border border-[#D4AF37]/30 rounded-xl p-6">
-            <h2 className="text-lg font-bold text-[#D4AF37] mb-4">Tvoja affiliate veza</h2>
+            <h2 className="text-lg font-bold text-[#D4AF37] mb-4">Tvoj affiliate link</h2>
             <div className="flex gap-3 items-center flex-wrap mb-4">
               <div className="flex-1 bg-[#0D1B2A] border border-white/20 rounded-lg px-4 py-3 font-mono text-sm text-gray-300 min-w-0 truncate">
                 {siteUrl}?ref={affiliate.code}
@@ -162,7 +162,7 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
               </button>
             </div>
             <div className="bg-[#0D1B2A] rounded-lg p-4 text-sm space-y-2 text-gray-400">
-              <p>✅ Kupci koji kupe putem tvoje veze automatski dobivaju <strong className="text-white">10% popusta</strong> (€357,30)</p>
+              <p>✅ Kupci koji kupe putem tvog linka automatski dobivaju <strong className="text-white">10% popusta</strong> (€357,30)</p>
               <p>✅ Ti zarađuješ <strong className="text-white">€107,19</strong> (30%) po svakoj prodaji</p>
               <p>✅ Provizija se isplaćuje <strong className="text-white">najkasnije 31. dan</strong> od kupnje — po isteku roka za povrat</p>
               <p>✅ Uvjet za isplatu: najmanje <strong className="text-white">2 dozrele prodaje</strong></p>
@@ -225,7 +225,7 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
             </div>
             {conversions.length === 0 ? (
               <div className="px-6 py-10 text-center text-gray-500 text-sm">
-                Još nema konverzija. Podijeli svoju vezu i počni zarađivati! 🚀
+                Još nema konverzija. Podijeli svoj link i počni zarađivati! 🚀
               </div>
             ) : (
               <table className="w-full text-sm">
