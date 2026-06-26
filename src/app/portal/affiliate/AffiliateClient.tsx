@@ -312,7 +312,7 @@ function ShareBlock({
   note?: string
   format?: CreativeFormat
 }) {
-  const pngUrl = format ? `/api/affiliate/creative?format=${format}` : null
+  const pngUrl = format ? `/creatives/fincoach-${format}.png` : null
   return (
     <details className="group bg-[#0D1B2A] border border-white/10 rounded-xl">
       <summary className="px-5 py-4 cursor-pointer flex justify-between items-center list-none">
