@@ -39,7 +39,7 @@ const faqs = [
   },
   {
     q: 'Mogu li koristiti kod PRILIKA?',
-    a: 'Kod PRILIKA daje pristup po cijeni €197 umjesto €397, bez vremenskog ograničenja. Napomena: kod se NE može kombinirati s affiliate (partner) popustom — ako si došao putem partner linka, već imaš popust od 10% i kod PRILIKA se ne primjenjuje.',
+    a: 'Kod PRILIKA daje pristup po cijeni 197 € umjesto 397 €, bez vremenskog ograničenja. Napomena: kod se NE može kombinirati s affiliate (partner) popustom — ako si došao putem partner linka, već imaš popust od 10% i kod PRILIKA se ne primjenjuje.',
   },
 ]
 
@@ -85,7 +85,7 @@ export default function SalesPage() {
           setCountdownExpires(data.expires_at)
         }
       } catch {
-        // Brez countdowna — redna cijena €397
+        // Brez countdowna — redna cijena 397 €
       }
     }
     loadCountdown()
@@ -99,7 +99,7 @@ export default function SalesPage() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseSlug: 'volim-svojnovac', affiliateCode }),
+        body: JSON.stringify({ courseSlug: 'volim-svoj-novac', affiliateCode }),
       })
 
       const data = await res.json()
@@ -117,9 +117,9 @@ export default function SalesPage() {
 
   const showLaunchPrice = !!countdownExpires && new Date(countdownExpires) > new Date()
   const hasAffiliate = !!affiliateRef && !showLaunchPrice  // launch promo prevalira nad affiliate diskontom
-  // Cenovna politika: €397 redna · €97 launch (24h countdown) · €357,30 affiliate −10% · €197 s kuponom PRILIKA
-  const currentPrice = showLaunchPrice ? '€97' : hasAffiliate ? '€357,30' : '€397'
-  const strikePrice = showLaunchPrice || hasAffiliate ? '€397' : null
+  // Cenovna politika: 397 € redna · 97 € launch (24h countdown) · 357,30 € affiliate −10% · 197 € s kuponom PRILIKA
+  const currentPrice = showLaunchPrice ? '97 €' : hasAffiliate ? '357,30 €' : '397 €'
+  const strikePrice = showLaunchPrice || hasAffiliate ? '397 €' : null
 
   return (
     <div className="min-h-screen bg-navy">
@@ -139,7 +139,7 @@ export default function SalesPage() {
       {showLaunchPrice && (
         <div className="fixed top-16 left-0 right-0 z-40 bg-gold/10 border-b border-gold/20 py-2 px-4 text-center">
           <p className="text-gold text-sm font-medium">
-            ⚡ Tvoja osobna cijena od €97 ističe za: <span className="font-bold"><CountdownTimer expiresAt={countdownExpires!} inline /></span>
+            ⚡ Tvoja osobna cijena od 97 € ističe za: <span className="font-bold"><CountdownTimer expiresAt={countdownExpires!} inline /></span>
           </p>
         </div>
       )}
@@ -183,7 +183,7 @@ export default function SalesPage() {
             {showLaunchPrice && (
               <div className="mb-6">
                 <CountdownTimer expiresAt={countdownExpires!} className="mb-2" />
-                <p className="text-gold/70 text-xs">Nakon isteka, cijena raste na €197</p>
+                <p className="text-gold/70 text-xs">Nakon isteka, cijena raste na 197 €</p>
               </div>
             )}
 
@@ -206,7 +206,7 @@ export default function SalesPage() {
 
             {!showLaunchPrice && !hasAffiliate && (
               <p className="text-white/30 text-xs">
-                Imaš kod? Unesi <span className="text-gold font-mono">PRILIKA</span> na blagajni za cijenu €197
+                Imaš kod? Unesi <span className="text-gold font-mono">PRILIKA</span> na blagajni za cijenu 197 €
               </p>
             )}
 
@@ -603,7 +603,7 @@ export default function SalesPage() {
           {showLaunchPrice && (
             <div className="mb-6">
               <CountdownTimer expiresAt={countdownExpires!} className="mb-2" />
-              <p className="text-gold/60 text-xs">Nakon isteka, cijena raste na €197</p>
+              <p className="text-gold/60 text-xs">Nakon isteka, cijena raste na 197 €</p>
             </div>
           )}
           <div className="bg-navy-50 border border-white/10 rounded-2xl p-8">
@@ -623,7 +623,7 @@ export default function SalesPage() {
             </div>
             {!showLaunchPrice && !hasAffiliate && (
               <p className="text-white/30 text-xs">
-                Kod <span className="text-gold font-mono">PRILIKA</span> = cijena €197 uvijek
+                Kod <span className="text-gold font-mono">PRILIKA</span> = cijena 197 € uvijek
               </p>
             )}
             <div className="mt-4 flex flex-wrap justify-center gap-4 text-xs text-white/30">

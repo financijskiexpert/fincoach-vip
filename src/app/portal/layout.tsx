@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import PortalSidebar from '@/components/PortalSidebar'
 
-async function getLessonsAndProgress(userId: string, userEmail: string, courseSlug = 'volim-svojnovac') {
+async function getLessonsAndProgress(userId: string, userEmail: string, courseSlug = 'volim-svoj-novac') {
   const service = await createServiceClient()
 
   const { data: course } = await service

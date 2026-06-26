@@ -122,8 +122,8 @@ export async function POST() {
       <p style="margin:0 0 6px;">🔗 <strong style="color:#fff;">Affiliate link:</strong></p>
       <p style="font-family:monospace;background:#0D1B2A;padding:8px 12px;border-radius:6px;font-size:13px;margin:0 0 12px;word-break:break-all;">${affiliateLink}</p>
       <p style="margin:0 0 6px;">🏷️ <strong style="color:#fff;">Tvoj kod:</strong> <span style="font-family:monospace;font-size:18px;color:#D4AF37;">${code}</span></p>
-      <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Tvoja provizija:</strong> 30% × €357,30 = €107,19 po prodaji</p>
-      <p style="margin:0;">🎁 <strong style="color:#fff;">Popust za tvoje kupce:</strong> 10% (€397 → €357,30)</p>
+      <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Tvoja provizija:</strong> 30% × 357,30 € = 107,19 € po prodaji</p>
+      <p style="margin:0;">🎁 <strong style="color:#fff;">Popust za tvoje kupce:</strong> 10% (397 € → 357,30 €)</p>
     </div>
     <p>Sve statistike, kreative i tekstove za objave nadeš na partnerskoj stranici:</p>
     <div style="text-align:center;margin:24px 0;">

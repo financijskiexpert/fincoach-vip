@@ -1,4 +1,4 @@
-﻿const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 const CODE = 'PRILIKA'
 const CODE_VIP = 'PRIJATELJ'
 
@@ -27,7 +27,7 @@ export const EMAIL_SEQUENCE: Array<{
   { dayOffset: 15,  subject: 'Pogledaj što te čeka iznutra',                                   type: 'educational',  skipIfPurchased: true,  phase: 1 },
   { dayOffset: 16,  subject: 'Što se dogodi za 5 godina ako se ništa ne promijeni?',           type: 'educational',  skipIfPurchased: false, phase: 1 },
   { dayOffset: 17,  subject: 'Marija je platila 3 kredita odjednom — evo kako',                type: 'social_proof', skipIfPurchased: false, phase: 1 },
-  { dayOffset: 18,  subject: '⏰ Zadnja šansa — cijena se vraća na €397 u ponoć',              type: 'sales',        skipIfPurchased: true,  phase: 1 },
+  { dayOffset: 18,  subject: '⏰ Zadnja šansa — cijena se vraća na 397 € u ponoć',              type: 'sales',        skipIfPurchased: true,  phase: 1 },
   { dayOffset: 19,  subject: 'Nisam te zaboravio/la — i imam razlog što pišem',                type: 'reengagement', skipIfPurchased: true,  phase: 1 },
   { dayOffset: 20,  subject: 'Neurološki razlog zašto 90 dana mijenja sve',                    type: 'educational',  skipIfPurchased: false, phase: 1 },
   { dayOffset: 21,  subject: '🔒 Samo za tebe — kod koji ne objavljujem nigdje',               type: 'sales',        skipIfPurchased: true,  phase: 1 },
@@ -162,13 +162,13 @@ export function buildEmailContent(
     <div class="box" style="border-color:#D4AF37;text-align:center;">
       <p style="color:#D4AF37;font-weight:800;font-size:15px;margin:0 0 8px;">Tvoja cijena uz kod:</p>
       <p style="font-family:monospace;font-size:28px;font-weight:900;color:#fff;background:#1a2f47;padding:8px 24px;border-radius:8px;display:inline-block;letter-spacing:3px;margin:0 0 12px;">${code}</p>
-      <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">€197</p>
-      <p style="color:#718096;font-size:12px;margin:0 0 16px;">Umjesto redovnih €397 · Doživotni pristup · 90 lekcija</p>
+      <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">197 €</p>
+      <p style="color:#718096;font-size:12px;margin:0 0 16px;">Umjesto redovnih 397 € · Doživotni pristup · 90 lekcija</p>
     </div>
-    <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Upiši se sada →</a></div>
+    <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Upiši se sada →</a></div>
     <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata novca. Nema rizika.</p>`
 
-  const softCta = `<p class="soft-cta">Još nisi dio programa? Upiši se s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> i počni transformaciju danas → <a href="${SITE_URL}/volim-svojnovac" style="color:#D4AF37;">fincoach.vip/volim-svojnovac</a></p>`
+  const softCta = `<p class="soft-cta">Još nisi dio programa? Upiši se s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> i počni transformaciju danas → <a href="${SITE_URL}/volim-svoj-novac" style="color:#D4AF37;">fincoach.vip/volim-svoj-novac</a></p>`
 
   const cases: Record<number, () => string> = {
 
@@ -220,7 +220,7 @@ export function buildEmailContent(
       <p>Počeo sam od nule. Naučio sam sustav. I danas živim financijsku slobodu o kojoj sam nekad samo sanjao.</p>
       <p>Taj isti sustav — komprimiran u 90 dana — čeka i tebe.</p>
       <p>Ako si spreman/na napraviti korak, počni ovdje s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong>:</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Pogledaj program →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Pogledaj program →</a></div>
       ${sig}`,
 
     // Dan 4 — Future pacing + PRILIKA
@@ -253,7 +253,7 @@ export function buildEmailContent(
       </div>
       <p>Bogati ne štede ostatak od potrošnje. <strong style="color:#fff;">Troše ostatak od štednje.</strong> Taj jedan uvid — primijenjen — mijenja sve.</p>
       <p>U programu ti pokazujem kako postaviti sustav koji radi za tebe dok spavaš. Počni s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong>:</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Postavi sustav danas →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Postavi sustav danas →</a></div>
       ${sig}`,
 
     // Dan 6 — Tomislav social proof + PRILIKA
@@ -386,7 +386,7 @@ export function buildEmailContent(
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Darko V., inženjer, Ljubljana ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Nije kasno. <strong style="color:#fff;">Jedino što košta skuplje od programa — je čekanje.</strong></p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Počni danas →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Počni danas →</a></div>
       ${sig}`,
 
     // Dan 14 — Zašto danas (skipIfPurchased: true)
@@ -445,7 +445,7 @@ export function buildEmailContent(
         <p style="margin:0 0 8px;color:#22c55e;">→ Investicije koje rastu bez tvojeg napora</p>
         <p style="margin:0;color:#22c55e;">→ I osjećaj kontrole koji nema cijenu</p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Odaberi drugu verziju budućnosti →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Odaberi drugu verziju budućnosti →</a></div>
       ${sig}`,
 
     // Dan 17 — Marija social proof (skipIfPurchased: false)
@@ -459,15 +459,15 @@ export function buildEmailContent(
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Marija K., Split ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Marija nije dobila povišicu. Nije dobila nasljedstvo. Dobila je <strong style="color:#fff;">pravi sustav</strong>.</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Saznaj više o programu →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Saznaj više o programu →</a></div>
       ${sig}`,
 
     // Dan 18 — Zadnja šansa PRILIKA (skipIfPurchased: true)
     17: () => `
-      <h2>⏰ Zadnja šansa — vraćam cijenu na €397 u ponoć</h2>
+      <h2>⏰ Zadnja šansa — vraćam cijenu na 397 € u ponoć</h2>
       <p>Dragi/a ${n},</p>
       <p>Ozbiljno. Ovo nije marketing taktika.</p>
-      <p>Kod <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> koji ti daje cijenu €197 umjesto €397 — večeras ga povlačim.</p>
+      <p>Kod <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> koji ti daje cijenu 197 € umjesto 397 € — večeras ga povlačim.</p>
       <p>Znam da razmišljaš. Znam da imaš pitanja. Ali postoji jedna stvar koju znam sigurno:</p>
       <div class="box" style="border-color:#ef4444;">
         <p style="color:#fff;font-weight:700;font-size:17px;margin:0 0 8px;text-align:center;">Svaki dan čekanja je dan koji gubim.</p>
@@ -485,7 +485,7 @@ export function buildEmailContent(
       <p>Ne osuđujem. Svaka promjena zahtijeva odluku — a odluke nisu uvijek lagane.</p>
       <p>Ali pitam te iskreno: <strong style="color:#fff;">što te koči?</strong></p>
       <div class="box">
-        <p style="margin:0 0 8px;">💭 Je li to cijena? Kod PRILIKA daje €197 — i garancija povrata postoji.</p>
+        <p style="margin:0 0 8px;">💭 Je li to cijena? Kod PRILIKA daje 197 € — i garancija povrata postoji.</p>
         <p style="margin:0 0 8px;">💭 Je li to vrijeme? Program traje 20-30 min dnevno.</p>
         <p style="margin:0 0 8px;">💭 Je li to sumnja: "možda to nije za mene"? Svaki polaznik je mislio isto.</p>
         <p style="margin:0;">💭 Je li nešto drugo? Odgovori na ovaj email — osobno ću ti odgovoriti.</p>
@@ -507,7 +507,7 @@ export function buildEmailContent(
         <p style="margin:0;">→ Novi automatizmi (štednja, planiranje) postaju default</p>
       </div>
       <p>Program je dizajniran točno za taj vremenski okvir. Ne 30 dana. Ne 60. <strong style="color:#fff;">90 dana — jer to je koliko mozgu treba.</strong></p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Pokreni svoju transformaciju →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Pokreni svoju transformaciju →</a></div>
       ${sig}`,
 
     // Dan 21 — Ekskluzivni PRIJATELJ (skipIfPurchased: true)
@@ -520,10 +520,10 @@ export function buildEmailContent(
       <div class="box" style="border-color:#D4AF37;text-align:center;">
         <p style="color:#718096;margin:0 0 8px;font-size:13px;">Ekskluzivni kod — samo za tebe:</p>
         <p style="font-family:monospace;font-size:32px;font-weight:900;color:#D4AF37;background:#1a2f47;padding:12px 28px;border-radius:8px;display:inline-block;letter-spacing:4px;margin:0 0 12px;">${CODE_VIP}</p>
-        <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">€197</p>
+        <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">197 €</p>
         <p style="color:#718096;font-size:12px;margin:0;">Ista cijena kao PRILIKA — ali ovaj kod je samo tvoj.</p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Upiši se s kodom PRIJATELJ →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Upiši se s kodom PRIJATELJ →</a></div>
       <p style="color:#718096;font-size:13px;text-align:center;">30-dnevna garancija. Ako ne vidiš razliku — vraćam ti novac. Osobno.</p>
       ${sig}`,
 
@@ -646,7 +646,7 @@ export function buildEmailContent(
       <h2>Jesi li znao/la da PRILIKA kod vrijedi i dalje?</h2>
       <p>Dragi/a ${n},</p>
       <p>Mnogi misle da je posebna cijena istekla. Nije.</p>
-      <p>Kod <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> daje ti cijenu €197 — i to je stalna cijena za čitatelje vodiča.</p>
+      <p>Kod <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> daje ti cijenu 197 € — i to je stalna cijena za čitatelje vodiča.</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Što još uvijek dobivaš:</p>
         <p style="margin:0 0 6px;">✅ 90 video lekcija u 3 faze (90 dana transformacije)</p>
@@ -1379,11 +1379,11 @@ export function buildEmailContent(
       <p>Ali ono što ostaje — to je matematika složenog efekta. I ona ne čeka.</p>
       <div class="box">
         <p style="text-align:center;margin:0;">
-          <span style="font-size:40px;font-weight:900;color:#D4AF37;">€197</span><br>
+          <span style="font-size:40px;font-weight:900;color:#D4AF37;">197 €</span><br>
           <span style="color:#718096;font-size:13px;">Kod PRILIKA · Doživotni pristup · 30-dnevna garancija</span>
         </p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Da — krećem s promjenom →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Da — krećem s promjenom →</a></div>
       ${sig}`,
 
     // Dan 135 — 10 navika (edu, svima)
@@ -1516,7 +1516,7 @@ export function buildEmailContent(
       <div class="box" style="border-color:#D4AF37;">
         <p style="color:#D4AF37;font-weight:800;font-size:15px;text-align:center;margin:0 0 12px;">Ono što je sigurno:</p>
         <p style="margin:0 0 6px;">✅ Program postoji i funkcionira</p>
-        <p style="margin:0 0 6px;">✅ Kod PRILIKA daje ti €197 umjesto €397</p>
+        <p style="margin:0 0 6px;">✅ Kod PRILIKA daje ti 197 € umjesto 397 €</p>
         <p style="margin:0 0 6px;">✅ 30-dnevna garancija eliminira svaki rizik</p>
         <p style="margin:0;">✅ Složeni efekt počinje raditi prvog dana kad počneš</p>
       </div>
@@ -1615,13 +1615,13 @@ export function buildEmailContent(
       <p>Ali neću te više pozivati na program. Jer — ili si spreman/na ili nisi. I oboje je u redu.</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Ako jesi spreman/na — ovo su tvoji podaci:</p>
-        <p style="margin:0 0 6px;">💻 <strong style="color:#fff;">Stranica:</strong> fincoach.vip/volim-svojnovac</p>
+        <p style="margin:0 0 6px;">💻 <strong style="color:#fff;">Stranica:</strong> fincoach.vip/volim-svoj-novac</p>
         <p style="margin:0 0 6px;">🏷️ <strong style="color:#fff;">Kod:</strong> PRILIKA</p>
-        <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Cijena:</strong> €197 (umjesto €397)</p>
+        <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Cijena:</strong> 197 € (umjesto 397 €)</p>
         <p style="margin:0;">🛡️ <strong style="color:#fff;">Garancija:</strong> 30 dana, bez pitanja</p>
       </div>
       <p>Hvala ti na pažnji. Hvala na povjerenju. Bez obzira na tvoju odluku — vrijedno si proveo/la ovo vrijema.</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Upiši se — zadnji put nudim →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Upiši se — zadnji put nudim →</a></div>
       ${sig}`,
 
     // Dan 165 — Valutni rizik (edu, svima)

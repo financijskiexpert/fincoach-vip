@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -74,7 +74,7 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
               {[
                 { icon: '🔗', title: 'Dobiš unikatni affiliate link', desc: 'Tvoj osobni link s kodom. Dijeli ga gdje god hoćeš — Instagram, Facebook, email, WhatsApp.' },
                 { icon: '🎁', title: 'Tvoji prijatelji kupuju s 10% popustom', desc: 'Svatko tko kupi putem tvog linka automatski dobiva 10% popusta. Oni štede, a ti zarađuješ.' },
-                { icon: '💰', title: 'Ti zarađuješ 30% provizije', desc: 'Tečaj košta €397. Tvoji pratitelji plaćaju €357,30 (−10%). Ti zarađuješ €107,19 po prodaji.' },
+                { icon: '💰', title: 'Ti zarađuješ 30% provizije', desc: 'Tečaj košta 397 €. Tvoji pratitelji plaćaju 357,30 € (−10%). Ti zarađuješ 107,19 € po prodaji.' },
                 { icon: '📅', title: 'Isplata najkasnije 31. dan od prodaje', desc: 'Provizija se isplaćuje nakon isteka 30-dnevnog roka za povrat. Uvjet: najmanje 2 dozrele prodaje. Isplata SEPA nakazom (HR/SI/SRB) ili Wise (ostali Balkan).' },
               ].map(item => (
                 <div key={item.icon} className="flex gap-4">
@@ -92,9 +92,9 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
             <h3 className="font-bold text-[#D4AF37] mb-4">Koliko možeš zaraditi?</h3>
             <div className="grid grid-cols-3 gap-3 text-center">
               {[
-                { sales: '5 prodaja', earn: '€535' },
-                { sales: '10 prodaja', earn: '€1.071' },
-                { sales: '20 prodaja', earn: '€2.143' },
+                { sales: '5 prodaja', earn: '535 €' },
+                { sales: '10 prodaja', earn: '1.071 €' },
+                { sales: '20 prodaja', earn: '2.143 €' },
               ].map(r => (
                 <div key={r.sales} className="bg-[#091623] rounded-lg p-4">
                   <div className="text-[#D4AF37] font-black text-xl">{r.earn}</div>
@@ -102,7 +102,7 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
                 </div>
               ))}
             </div>
-            <p className="text-gray-600 text-xs mt-3 text-center">30% od €357,30 = €107,19 po prodaji</p>
+            <p className="text-gray-600 text-xs mt-3 text-center">30% od 357,30 € = 107,19 € po prodaji</p>
           </div>
 
           {error && (
@@ -162,8 +162,8 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
               </button>
             </div>
             <div className="bg-[#0D1B2A] rounded-lg p-4 text-sm space-y-2 text-gray-400">
-              <p>✅ Kupci koji kupe putem tvog linka automatski dobivaju <strong className="text-white">10% popusta</strong> (€357,30)</p>
-              <p>✅ Ti zarađuješ <strong className="text-white">€107,19</strong> (30%) po svakoj prodaji</p>
+              <p>✅ Kupci koji kupe putem tvog linka automatski dobivaju <strong className="text-white">10% popusta</strong> (357,30 €)</p>
+              <p>✅ Ti zarađuješ <strong className="text-white">107,19 €</strong> (30%) po svakoj prodaji</p>
               <p>✅ Provizija se isplaćuje <strong className="text-white">najkasnije 31. dan</strong> od kupnje — po isteku roka za povrat</p>
               <p>✅ Uvjet za isplatu: najmanje <strong className="text-white">2 dozrele prodaje</strong></p>
               <p>✅ Isplata SEPA nakazom (HR/SI/SRB) ili Wise (BiH/MNE/MK/AL)</p>
@@ -180,42 +180,42 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
                 title="Instagram — kvadrat 1:1 · Varianta A (problem → rješenje)"
                 format="square" variant="a" code={affiliate.code}
                 text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak:\n\n✓ Pronađeš gdje ti novac nestaje\n✓ Počneš štedjeti automatski\n✓ Investiraš bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije #financijskaedukacija`}
-                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram — kvadrat 1:1 · Varianta B (minimalistica)"
                 format="square" variant="b" code={affiliate.code}
                 text={`Nitko me nije naučio što raditi s novcem.\n\nNi škola. Ni roditelji. Ni faksi.\n\nTek kroz FinCoach VIP program shvatio sam kako novac zapravo funkcionira — i promijenilo mi je život.\n\n90 dana. Korak po korak. Link u biu. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije`}
-                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram Story / TikTok · Varianta A (pitanje)"
                 format="story" variant="a" code={affiliate.code}
                 text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak, naučio sam:\n\n✓ Gdje mi novac "curi" svaki dan\n✓ Kako automatski štedjeti bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #tiktokfinance #financijskaedukacija`}
-                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram Story / TikTok · Varianta B (before/after)"
                 format="story" variant="b" code={affiliate.code}
                 text={`Ovo je moja financijska transformacija za 90 dana 👇\n\nPRIJE: novac nestajao, nula štednje, stres na kraju svakog mjeseca.\n\nNAKON FinCoach VIP programa: znam točno kamo ide svaki euro, štedim automatski, počeo sam investirati.\n\nNije magija — to je sustav koji svima može raditi.\n\nLink u biu za direktan pristup programu. 👆\n\n#ad #fincoach #financijskasvoboda #beforeafter #novac #stednja #tiktokfinance`}
-                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Facebook / LinkedIn · Varianta A (edukacijska)"
                 format="fb" variant="a" code={affiliate.code}
                 text={`Zašto na kraju svakog mjeseca nikad nema dovoljno?\n\nJer nas nitko nije naučio što raditi s novcem. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja — za 90 dana, korak po korak, naučio sam:\n✓ Gdje mi novac zapravo nestaje\n✓ Kako štedjeti automatski, bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u komentarima 👇\n\n#ad #fincoach #financijskasvoboda #novac #osobnifinancije`}
-                link={`👉 ${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
+                link={`👉 ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
                 note="Na Facebooku link stavi u prvi komentar — tako algoritam ne kažnjava doseg objave."
               />
 
               <ShareBlock
                 title="WhatsApp / osobna poruka (neformalni ton)"
                 format="whatsapp" variant="a" code={affiliate.code}
-                text={`Hej! Šaljem ti ovo jer mislim da bi ti moglo promijeniti pogled na novac.\n\nProšao sam FinCoach VIP program — za 90 dana naučio sam više o osobnim financijama nego za cijeli život. Sada znam gdje mi novac odlazi, štedim automatski i počeo sam investirati.\n\nUz moj link imaš 10% popusta: ${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
+                text={`Hej! Šaljem ti ovo jer mislim da bi ti moglo promijeniti pogled na novac.\n\nProšao sam FinCoach VIP program — za 90 dana naučio sam više o osobnim financijama nego za cijeli život. Sada znam gdje mi novac odlazi, štedim automatski i počeo sam investirati.\n\nUz moj link imaš 10% popusta: ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
                 note="Za WhatsApp šalješ sliku + ovu poruku zajedno. Nema potrebe za #ad oznakom u privatnim porukama."
               />
             </div>

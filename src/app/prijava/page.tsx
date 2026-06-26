@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -121,7 +121,7 @@ function LoginForm() {
               Pristup portalu dobivaju isključivo kupci tečaja.<br />
               Prijavne podatke smo ti poslali emailom nakon kupnje.
             </p>
-            <Link href="/volim-svojnovac" className="text-gold text-xs hover:underline mt-2 inline-block">
+            <Link href="/volim-svoj-novac" className="text-gold text-xs hover:underline mt-2 inline-block">
               Kupi tečaj →
             </Link>
           </div>

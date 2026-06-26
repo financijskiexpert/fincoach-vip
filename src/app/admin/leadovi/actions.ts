@@ -36,7 +36,7 @@ function generateAffiliateCode(name: string): string {
 export async function convertLeadToStudent(formData: FormData) {
   const service = await assertAdmin()
   const leadId = formData.get('lead_id') as string
-  const courseSlug = (formData.get('course_slug') as string ?? 'volim-svojnovac').trim()
+  const courseSlug = (formData.get('course_slug') as string ?? 'volim-svoj-novac').trim()
   const withAffiliate = formData.get('with_affiliate') === 'true'
 
   if (!leadId) throw new Error('lead_id required')

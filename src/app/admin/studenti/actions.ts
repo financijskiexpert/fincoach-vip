@@ -27,7 +27,7 @@ export async function addStudent(formData: FormData) {
   const email = (formData.get('email') as string ?? '').toLowerCase().trim()
   const paid = formData.get('paid') === 'true'
   const withAffiliate = formData.get('with_affiliate') === 'true'
-  const courseSlug = (formData.get('course_slug') as string ?? 'volim-svojnovac').trim()
+  const courseSlug = (formData.get('course_slug') as string ?? 'volim-svoj-novac').trim()
 
   if (!email || !fullName) throw new Error('Ime i email su obavezni.')
 
@@ -180,7 +180,7 @@ export async function grantAccess(userId: string) {
   const { data: profile } = await service.from('profiles').select('email, full_name').eq('id', userId).single()
   if (!profile) return
 
-  const { data: course } = await service.from('courses').select('id').eq('slug', 'volim-svojnovac').single()
+  const { data: course } = await service.from('courses').select('id').eq('slug', 'volim-svoj-novac').single()
   if (!course) return
 
   const { data: existing } = await service.from('purchases').select('id').eq('user_id', userId).eq('course_id', course.id).single()
@@ -216,7 +216,7 @@ export async function grantAccess(userId: string) {
 
 export async function revokeAccess(userId: string) {
   const service = await assertAdmin()
-  const { data: course } = await service.from('courses').select('id').eq('slug', 'volim-svojnovac').single()
+  const { data: course } = await service.from('courses').select('id').eq('slug', 'volim-svoj-novac').single()
   if (!course) return
   await service.from('purchases').delete().eq('user_id', userId).eq('course_id', course.id)
   revalidatePath('/admin/studenti')

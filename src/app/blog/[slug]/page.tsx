@@ -87,7 +87,7 @@ export default async function BlogPostPage({ params }: Props) {
             FinCoach VIP
           </Link>
           <Link
-            href="/volim-svojnovac"
+            href="/volim-svoj-novac"
             className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >
@@ -192,7 +192,7 @@ export default async function BlogPostPage({ params }: Props) {
             90 dana strukturiranog programa koji te vodi od financijskog kaosa do sustava koji radi sam — čak i kad nisi motiviran/a.
           </p>
           <Link
-            href="/volim-svojnovac"
+            href="/volim-svoj-novac"
             className="inline-block px-8 py-4 rounded-xl font-bold text-lg transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >

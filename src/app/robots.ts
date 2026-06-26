@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
       // AI bots dobrodošli na javnem delu (GEO)
       {
         userAgent: ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'ClaudeBot', 'Claude-Web', 'PerplexityBot', 'Google-Extended', 'CCBot'],
-        allow: ['/', '/volim-svojnovac', '/blog', '/affiliate'],
+        allow: ['/', '/volim-svoj-novac', '/blog', '/affiliate'],
         disallow: ['/admin', '/portal', '/api', '/auth'],
       },
     ],

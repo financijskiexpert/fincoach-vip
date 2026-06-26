@@ -1,4 +1,4 @@
-﻿const BREVO_API_KEY = process.env.BREVO_API_KEY!
+const BREVO_API_KEY = process.env.BREVO_API_KEY!
 const BREVO_API_URL = 'https://api.brevo.com/v3'
 
 interface BrevoContact {
@@ -199,7 +199,7 @@ export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: stri
           </div>
           <p class="p">Kao poseban bonus, za sljedeća <strong>3 dana</strong> imaš pristup posebnoj cijeni za naš kompletan 90-dnevni program.</p>
           <div style="text-align: center; margin-top: 8px;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/volim-svojnovac" style="color: #D4AF37;">Pogledaj kompletan tečaj →</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/volim-svoj-novac" style="color: #D4AF37;">Pogledaj kompletan tečaj →</a>
           </div>
           <p class="p" style="margin-top: 24px; font-size: 13px; color: #718096;">
             Primio/la si ovaj email jer si preuzeo/la besplatni vodič s fincoach.vip.<br>

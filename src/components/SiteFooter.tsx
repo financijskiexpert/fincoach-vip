@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -14,7 +14,7 @@ export default function SiteFooter() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} />
           <div className="flex flex-wrap justify-center gap-6 text-sm text-white/40">
-            <Link href="/volim-svojnovac" className="hover:text-white transition-colors">Tečaj</Link>
+            <Link href="/volim-svoj-novac" className="hover:text-white transition-colors">Tečaj</Link>
             <Link href="/uvjetiposlovanja" className="hover:text-white transition-colors">Uvjeti</Link>
             <Link href="/politikaprivatnosti" className="hover:text-white transition-colors">Privatnost</Link>
             <button

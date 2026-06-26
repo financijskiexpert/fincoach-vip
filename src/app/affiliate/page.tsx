@@ -109,12 +109,12 @@ export default function AffiliatePage() {
       {/* Zarada kalkulator */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-black text-center mb-3">Koliko možeš zaraditi?</h2>
-        <p className="text-gray-400 text-center mb-10">Tečaj košta €397. Kupac uz tvoj link plaća €357,30 (−10%). Ti zarađuješ €107,19 po prodaji.</p>
+        <p className="text-gray-400 text-center mb-10">Tečaj košta 397 €. Kupac uz tvoj link plaća 357,30 € (−10%). Ti zarađuješ 107,19 € po prodaji.</p>
         <div className="grid md:grid-cols-3 gap-4">
           {[
-            { sales: 5, earning: '€535,95', label: '5 prodaja/mj.' },
-            { sales: 15, earning: '€1.607,85', label: '15 prodaja/mj.' },
-            { sales: 30, earning: '€3.215,70', label: '30 prodaja/mj.' },
+            { sales: 5, earning: '535,95 €', label: '5 prodaja/mj.' },
+            { sales: 15, earning: '1.607,85 €', label: '15 prodaja/mj.' },
+            { sales: 30, earning: '3.215,70 €', label: '30 prodaja/mj.' },
           ].map((row) => (
             <div key={row.sales} className="bg-[#091623] border border-[#D4AF37]/30 rounded-xl p-6 text-center">
               <div className="text-gray-400 text-sm mb-1">{row.label}</div>
@@ -124,7 +124,7 @@ export default function AffiliatePage() {
           ))}
         </div>
         <p className="text-center text-gray-500 text-sm mt-6">
-          * 30% od €357,30. Isplata najkasnije 31. dan od svake prodaje (po isteku 30-dnevnog roka za povrat).
+          * 30% od 357,30 €. Isplata najkasnije 31. dan od svake prodaje (po isteku 30-dnevnog roka za povrat).
         </p>
       </section>
 

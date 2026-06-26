@@ -1,4 +1,4 @@
-﻿import { createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Metadata } from 'next'
 
@@ -49,7 +49,7 @@ export default async function BlogPage() {
             FinCoach VIP
           </Link>
           <Link
-            href="/volim-svojnovac"
+            href="/volim-svoj-novac"
             className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >
@@ -132,7 +132,7 @@ export default async function BlogPage() {
             Pridruži se FinCoach VIP programu i u 90 dana izgradi sustav koji radi za tebe.
           </p>
           <Link
-            href="/volim-svojnovac"
+            href="/volim-svoj-novac"
             className="inline-block px-8 py-4 rounded-xl font-bold text-lg transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >

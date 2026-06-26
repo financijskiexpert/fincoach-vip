@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createServiceClient()
 
-    // Po dogovoru: 24h countdown za launch promo cijenu (€97) — od trenutka oddaje PDF prijave
+    // Po dogovoru: 24h countdown za launch promo cijenu (97 €) — od trenutka oddaje PDF prijave
     const countdownExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
 
     // Upsert lead in Supabase

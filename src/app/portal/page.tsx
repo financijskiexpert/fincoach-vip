@@ -1,4 +1,4 @@
-﻿import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
@@ -26,7 +26,7 @@ export default async function PortalDashboard() {
   const { data: course } = await service
     .from('courses')
     .select('id, title, slug')
-    .eq('slug', 'volim-svojnovac')
+    .eq('slug', 'volim-svoj-novac')
     .single()
 
   const hasPurchase = course ? await service
@@ -41,7 +41,7 @@ export default async function PortalDashboard() {
 
   const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'
   if (!hasPurchase && !isAdmin) {
-    redirect('/volim-svojnovac')
+    redirect('/volim-svoj-novac')
   }
 
   // Get progress

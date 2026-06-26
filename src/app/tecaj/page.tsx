@@ -4,5 +4,5 @@ import { redirect } from 'next/navigation'
 // Ko bo več tečajev, /tecaj postane seznam tečajev.
 export default function TecajRedirect({ searchParams }: { searchParams: Record<string, string> }) {
   const qs = new URLSearchParams(searchParams).toString()
-  redirect(`/volim-svojnovac${qs ? `?${qs}` : ''}`)
+  redirect(`/volim-svoj-novac${qs ? `?${qs}` : ''}`)
 }

@@ -31,7 +31,7 @@ export default async function CertifikatPage() {
   const { data: course } = await service
     .from('courses')
     .select('id')
-    .eq('slug', 'volim-svojnovac')
+    .eq('slug', 'volim-svoj-novac')
     .single()
 
   let completedCount = 0

@@ -1,6 +1,6 @@
 /**
  * JSON-LD structured data komponente za SEO/GEO.
- * Vstavi <CourseSchema /> na /volim-svojnovac, <FAQSchema /> kjer so FAQ-i, itd.
+ * Vstavi <CourseSchema /> na /volim-svoj-novac, <FAQSchema /> kjer so FAQ-i, itd.
  */
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
@@ -60,7 +60,7 @@ export function CourseSchema() {
           '@type': 'Person',
           name: 'Brane Recek',
         },
-        url: `${SITE_URL}/volim-svojnovac`,
+        url: `${SITE_URL}/volim-svoj-novac`,
         inLanguage: 'hr',
         educationalLevel: 'Beginner',
         timeRequired: 'P90D',
@@ -69,7 +69,7 @@ export function CourseSchema() {
           price: '397',
           priceCurrency: 'EUR',
           availability: 'https://schema.org/InStock',
-          url: `${SITE_URL}/volim-svojnovac`,
+          url: `${SITE_URL}/volim-svoj-novac`,
         },
         aggregateRating: {
           '@type': 'AggregateRating',

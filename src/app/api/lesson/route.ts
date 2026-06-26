@@ -19,12 +19,12 @@ export async function GET(request: NextRequest) {
   // Use service client to bypass RLS
   const service = await createServiceClient()
 
-  // Find lesson by day_number for course 'volim-svojnovac'
+  // Find lesson by day_number for course 'volim-svoj-novac'
   const { data: lesson, error } = await service
     .from('lessons')
     .select('*, courses!inner(slug)')
     .eq('day_number', dayNumber)
-    .eq('courses.slug', 'volim-svojnovac')
+    .eq('courses.slug', 'volim-svoj-novac')
     .single()
 
   if (error || !lesson) {

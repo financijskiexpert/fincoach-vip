@@ -43,7 +43,7 @@ export default function AffiliateUvjetiPage() {
           <section>
             <h2 className="text-xl font-bold text-white mb-3">4. Visina provizije i popust za kupca</h2>
             <p>Partner ostvaruje proviziju u iznosu od <strong className="text-white">30% od iznosa koji Kupac plati</strong> putem affiliate linka.</p>
-            <p>Kupac koji kupi putem affiliate linka automatski dobiva <strong className="text-white">popust od 10%</strong> na redovnu cijenu tečaja (€397), tj. plaća €357,30. Partner tada zarađuje <strong className="text-white">€107,19</strong> po prodaji.</p>
+            <p>Kupac koji kupi putem affiliate linka automatski dobiva <strong className="text-white">popust od 10%</strong> na redovnu cijenu tečaja (397 €), tj. plaća 357,30 €. Partner tada zarađuje <strong className="text-white">107,19 €</strong> po prodaji.</p>
             <p>Affiliate popust <strong className="text-white">ne kombinira</strong> se s drugim promotivnim kodovima ili kuponcima. Ako Kupac posjeduje drugi kupon, primjenjuje se samo affiliate popust od 10%.</p>
           </section>
 
@@ -61,7 +61,7 @@ export default function AffiliateUvjetiPage() {
             <p><strong className="text-white">Način isplate prema zemlji Partnera:</strong></p>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong className="text-white">Hrvatska, Slovenija, Srbija:</strong> SEPA bankovni prijenos — isplaćuje se puni iznos provizije</li>
-              <li><strong className="text-white">BiH, Crna Gora, Makedonija, Albanija:</strong> Wise prijenos — od provizije se oduzimaju stvarni troškovi transfera, najviše €10</li>
+              <li><strong className="text-white">BiH, Crna Gora, Makedonija, Albanija:</strong> Wise prijenos — od provizije se oduzimaju stvarni troškovi transfera, najviše 10 €</li>
             </ul>
             <p>Isplata se vrši na IBAN koji Partner navede u postavkama svog profila. Partner je odgovoran za točnost bankovnih podataka i za prijavu prihoda poreznim tijelima prema zakonodavstvu vlastite zemlje.</p>
           </section>
