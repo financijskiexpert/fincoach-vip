@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Pencil, Trash2, Save, X, Eye } from 'lucide-react'
+import { Plus, Pencil, Trash2, Save, X, Eye, Sparkles, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Post {
@@ -111,10 +111,13 @@ export default function AdminBlog() {
           <h1 className="text-3xl font-bold text-white">Blog</h1>
           <p className="text-white/50 mt-1">{posts.filter(p => p.is_published).length} objavljenih · {posts.length} ukupno</p>
         </div>
-        <Button onClick={startNew} className="gap-2">
-          <Plus className="w-4 h-4" />
-          Nova objava
-        </Button>
+        <div className="flex gap-2">
+          <GenerateNowButton onDone={fetchPosts} />
+          <Button onClick={startNew} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Nova objava
+          </Button>
+        </div>
       </div>
 
       {showForm && (
@@ -227,5 +230,35 @@ export default function AdminBlog() {
         )}
       </div>
     </div>
+  )
+}
+
+function GenerateNowButton({ onDone }: { onDone: () => void }) {
+  const [pending, setPending] = useState(false)
+  async function generate() {
+    if (!confirm('Generiraj novi članak iz queue tema?\n\nClaude AI će napisati osnutek za pregled (NE objavljuje automatski).')) return
+    setPending(true)
+    try {
+      const res = await fetch('/api/cron/generate-blog', {
+        headers: { 'x-cron-secret': prompt('CRON_SECRET (iz .env)?') ?? '' },
+      })
+      const data = await res.json()
+      if (data.ok) {
+        toast.success(`✓ Generiran: ${data.topic}. Otvori za pregled i objavu.`)
+        onDone()
+      } else {
+        toast.error(data.error ?? data.message ?? 'Greška.')
+      }
+    } catch (e: any) {
+      toast.error(e.message ?? 'Greška.')
+    } finally {
+      setPending(false)
+    }
+  }
+  return (
+    <Button onClick={generate} disabled={pending} variant="outline" className="gap-2">
+      {pending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+      Generiraj sad (AI)
+    </Button>
   )
 }
