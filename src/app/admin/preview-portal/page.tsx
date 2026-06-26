@@ -101,6 +101,7 @@ export default async function PreviewPortalPage() {
               { href: '/portal/affiliate', label: '🔗 Affiliate stranica (student view)' },
               { href: '/portal/certifikat', label: '🏆 Certifikat stranica' },
               { href: '/portal/dan/1', label: '📹 Dan 1 lekcija' },
+              { href: '/portal/kalkulatori', label: '🧮 Financijski kalkulatori' },
               { href: '/affiliate/uvjeti', label: '📄 Uvjeti affiliate programa' },
             ].map(l => (
               <a
