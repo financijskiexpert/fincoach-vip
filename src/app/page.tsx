@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -56,7 +56,7 @@ export default function LandingPage() {
           <Link href="/" className="flex items-center">
             <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={150} height={47} priority />
           </Link>
-          <Link href="/tecaj">
+          <Link href="/volim-svojnovac">
             <Button size="sm" variant="outline">
               Pogledaj tečaj →
             </Button>
@@ -143,6 +143,20 @@ export default function LandingPage() {
                 </p>
               </div>
             </form>
+          )}
+
+          {/* Sekundarna pot — direktno na tečaj za "hot" obiskovalce */}
+          {!submitted && (
+            <div className="max-w-md mx-auto mt-6 text-center">
+              <p className="text-white/40 text-sm mb-2">Već znaš što tražiš?</p>
+              <Link
+                href="/volim-svojnovac"
+                className="inline-flex items-center gap-2 text-gold hover:text-yellow-400 text-sm font-semibold transition-colors group"
+              >
+                Prelistaj tečaj odmah
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+            </div>
           )}
         </div>
       </section>
@@ -379,7 +393,7 @@ export default function LandingPage() {
           )}
           <p className="mt-6 text-white/30 text-sm">
             Ili{' '}
-            <Link href="/tecaj" className="text-gold hover:underline">
+            <Link href="/volim-svojnovac" className="text-gold hover:underline">
               odmah pogledaj kompletan tečaj →
             </Link>
           </p>

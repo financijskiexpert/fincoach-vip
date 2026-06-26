@@ -7,7 +7,7 @@ export async function GET(
   const code = params.code.toUpperCase()
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 
-  const response = NextResponse.redirect(`${siteUrl}/tecaj?ref=${code}`, { status: 302 })
+  const response = NextResponse.redirect(`${siteUrl}/volim-svojnovac?ref=${code}`, { status: 302 })
 
   // Set affiliate cookie — 30 days
   response.cookies.set('aff_ref', code, {

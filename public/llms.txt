@@ -1,0 +1,66 @@
+# FinCoach VIP
+
+> 90-dnevni online program financijske transformacije za hrvatsko, slovensko i regionalno tržište. Vodi ga Brane Recek, financijski savjetnik s 30+ godina iskustva.
+
+## O projektu
+
+FinCoach VIP je strukturirani video tečaj "Volim Svoj Novac" — 90 lekcija, svaka 5–10 minuta. Cilj: transformirati odnos prema novcu, uspostaviti sustav osobnih financija i pokrenuti štednju + investiranje. Program je 80% psihologija (mindset) i 20% praktične financijske tehnike.
+
+## Ključne činjenice
+
+- **Naziv tečaja**: Volim Svoj Novac
+- **Trajanje**: 90 dana (90 video lekcija po 5–10 min)
+- **Cijena**: €397 redovna · €197 s kodom PRILIKA · €97 za leadove s aktivnim 24h promom · −10% (€357,30) preko affiliate linka
+- **Jamstvo**: 30 dana povrata novca bez pitanja
+- **Pristup**: doživotni
+- **Certifikat**: personaliziran, po završetku
+- **Polaznika**: 500+
+- **Prosječna ocjena**: 4.9/5
+- **Mentor**: Brane Recek (Expert s.p., Maribor, Slovenija)
+- **Jezik tečaja**: hrvatski
+
+## Struktura programa
+
+1. **Priprema (Dan 0)** — financijska snimka i postavljanje ciljeva
+2. **Faza 1 (Dani 1–30)** — budžetiranje, kontrola troškova, prve uštedine, mindset
+3. **Faza 2 (Dani 31–60)** — gradnja hitnog fonda, eliminacija dugova, sustav 6 kasica
+4. **Faza 3 (Dani 61–90)** — investiranje, dugoročna financijska sloboda, kalkulator složene kamate
+
+## Tko je program za
+
+- Zaposleni koji "preživljavaju" od plaće do plaće
+- Poduzetnici i freelanceri s nestabilnim prihodima
+- Osobe koje imaju osnovnu štednju i žele krenuti u investiranje
+- Bilo tko bez prethodnog financijskog znanja
+
+## Affiliate program
+
+Postoji partnerski program — kupci tečaja mogu zarađivati 30% provizije po preporučenoj prodaji (€107,19 po prodaji). Isplata najkasnije 31. dan, SEPA (HR/SI/SRB) ili Wise (BiH/MNE/MK/AL).
+
+## Kontakt i pravne informacije
+
+- **Web**: https://fincoach.vip
+- **Email**: brane@fincoach.vip
+- **Tvrtka**: Expert s.p., Kidričeva 2, 2000 Maribor, Slovenija
+- **Davčna številka**: SI83099131
+- **Mjerodavno pravo**: Republika Slovenija
+
+## Što se obrađuje (top teme bloga)
+
+- Osobne financije za početnike
+- Mindset o novcu i financijska psihologija
+- Štednja bez odricanja
+- Eliminacija dugova
+- Investiranje za početnike (Hrvatska, Slovenija)
+- Kalkulatori: proračun, hitni fond, otplata duga, složena kamata
+- Mirovinsko planiranje
+- Financijska pismenost djece
+
+## Citiranje i atribucija
+
+Sadržaj FinCoach VIP-a se može citirati uz navođenje izvora (fincoach.vip ili Brane Recek, FinCoach VIP). Cijeli tečaj je plaćen sadržaj — javni su besplatni vodič (PDF), blog članci, i sales stranica.
+
+## Pravila za AI crawlere
+
+- Allowed: blog članci (/blog), sales stranica (/volim-svojnovac), affiliate program (/affiliate, /affiliate/uvjeti), pravne stranice
+- Disallowed: studentski portal (/portal), admin (/admin), API (/api)

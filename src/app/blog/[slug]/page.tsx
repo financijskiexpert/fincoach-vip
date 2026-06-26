@@ -2,8 +2,12 @@ import { createServiceClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import BlogActions from './BlogActions'
+import { BlogPostingSchema, BreadcrumbSchema } from '@/components/StructuredData'
 
 export const dynamic = 'force-dynamic'
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 
 interface BlogPost {
   id: string
@@ -13,6 +17,8 @@ interface BlogPost {
   content: string | null
   published_at: string | null
   is_published: boolean
+  like_count?: number | null
+  cover_image_url?: string | null
 }
 
 interface Props {
@@ -32,7 +38,7 @@ async function getPost(slug: string): Promise<BlogPost | null> {
   const supabase = await createServiceClient()
   const { data, error } = await supabase
     .from('blog_posts')
-    .select('id, title, slug, excerpt, content, published_at, is_published')
+    .select('id, title, slug, excerpt, content, published_at, is_published, like_count, cover_image_url')
     .eq('slug', slug)
     .single()
 
@@ -81,7 +87,7 @@ export default async function BlogPostPage({ params }: Props) {
             FinCoach VIP
           </Link>
           <Link
-            href="/tecaj"
+            href="/volim-svojnovac"
             className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >
@@ -136,7 +142,29 @@ export default async function BlogPostPage({ params }: Props) {
         ) : (
           <p style={{ color: 'rgba(255,255,255,0.5)' }}>Sadržaj nije dostupan.</p>
         )}
+
+        {/* Like + Share */}
+        <BlogActions
+          postId={post.id}
+          postTitle={post.title}
+          postUrl={`${SITE_URL}/blog/${post.slug}`}
+          initialLikes={post.like_count ?? 0}
+        />
       </article>
+
+      {/* JSON-LD za SEO/GEO */}
+      <BlogPostingSchema
+        title={post.title}
+        excerpt={post.excerpt ?? ''}
+        slug={post.slug}
+        publishedAt={post.published_at}
+        image={post.cover_image_url}
+      />
+      <BreadcrumbSchema items={[
+        { name: 'Početna', url: SITE_URL },
+        { name: 'Blog', url: `${SITE_URL}/blog` },
+        { name: post.title, url: `${SITE_URL}/blog/${post.slug}` },
+      ]} />
 
       {/* CTA Card */}
       <section className="max-w-3xl mx-auto px-4 pb-20">
@@ -164,7 +192,7 @@ export default async function BlogPostPage({ params }: Props) {
             90 dana strukturiranog programa koji te vodi od financijskog kaosa do sustava koji radi sam — čak i kad nisi motiviran/a.
           </p>
           <Link
-            href="/tecaj"
+            href="/volim-svojnovac"
             className="inline-block px-8 py-4 rounded-xl font-bold text-lg transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >

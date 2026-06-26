@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { createCheckoutSession } from '@/lib/stripe'
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       userId: user?.id,
       userEmail: user?.email,
       successUrl: `${siteUrl}/hvala?session_id={CHECKOUT_SESSION_ID}`,
-      cancelUrl: `${siteUrl}/tecaj`,
+      cancelUrl: `${siteUrl}/volim-svojnovac`,
       affiliateCode,
       couponCode,
       stripeCouponId,

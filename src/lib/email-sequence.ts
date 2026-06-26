@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+﻿const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 const CODE = 'PRILIKA'
 const CODE_VIP = 'PRIJATELJ'
 
@@ -165,10 +165,10 @@ export function buildEmailContent(
       <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">€197</p>
       <p style="color:#718096;font-size:12px;margin:0 0 16px;">Umjesto redovnih €397 · Doživotni pristup · 90 lekcija</p>
     </div>
-    <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Upiši se sada →</a></div>
+    <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Upiši se sada →</a></div>
     <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata novca. Nema rizika.</p>`
 
-  const softCta = `<p class="soft-cta">Još nisi dio programa? Upiši se s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> i počni transformaciju danas → <a href="${SITE_URL}/tecaj" style="color:#D4AF37;">fincoach.vip/tecaj</a></p>`
+  const softCta = `<p class="soft-cta">Još nisi dio programa? Upiši se s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> i počni transformaciju danas → <a href="${SITE_URL}/volim-svojnovac" style="color:#D4AF37;">fincoach.vip/volim-svojnovac</a></p>`
 
   const cases: Record<number, () => string> = {
 
@@ -220,7 +220,7 @@ export function buildEmailContent(
       <p>Počeo sam od nule. Naučio sam sustav. I danas živim financijsku slobodu o kojoj sam nekad samo sanjao.</p>
       <p>Taj isti sustav — komprimiran u 90 dana — čeka i tebe.</p>
       <p>Ako si spreman/na napraviti korak, počni ovdje s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong>:</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pogledaj program →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Pogledaj program →</a></div>
       ${sig}`,
 
     // Dan 4 — Future pacing + PRILIKA
@@ -253,7 +253,7 @@ export function buildEmailContent(
       </div>
       <p>Bogati ne štede ostatak od potrošnje. <strong style="color:#fff;">Troše ostatak od štednje.</strong> Taj jedan uvid — primijenjen — mijenja sve.</p>
       <p>U programu ti pokazujem kako postaviti sustav koji radi za tebe dok spavaš. Počni s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong>:</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Postavi sustav danas →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Postavi sustav danas →</a></div>
       ${sig}`,
 
     // Dan 6 — Tomislav social proof + PRILIKA
@@ -386,7 +386,7 @@ export function buildEmailContent(
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Darko V., inženjer, Ljubljana ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Nije kasno. <strong style="color:#fff;">Jedino što košta skuplje od programa — je čekanje.</strong></p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Počni danas →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Počni danas →</a></div>
       ${sig}`,
 
     // Dan 14 — Zašto danas (skipIfPurchased: true)
@@ -445,7 +445,7 @@ export function buildEmailContent(
         <p style="margin:0 0 8px;color:#22c55e;">→ Investicije koje rastu bez tvojeg napora</p>
         <p style="margin:0;color:#22c55e;">→ I osjećaj kontrole koji nema cijenu</p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Odaberi drugu verziju budućnosti →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Odaberi drugu verziju budućnosti →</a></div>
       ${sig}`,
 
     // Dan 17 — Marija social proof (skipIfPurchased: false)
@@ -459,7 +459,7 @@ export function buildEmailContent(
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Marija K., Split ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Marija nije dobila povišicu. Nije dobila nasljedstvo. Dobila je <strong style="color:#fff;">pravi sustav</strong>.</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Saznaj više o programu →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Saznaj više o programu →</a></div>
       ${sig}`,
 
     // Dan 18 — Zadnja šansa PRILIKA (skipIfPurchased: true)
@@ -507,7 +507,7 @@ export function buildEmailContent(
         <p style="margin:0;">→ Novi automatizmi (štednja, planiranje) postaju default</p>
       </div>
       <p>Program je dizajniran točno za taj vremenski okvir. Ne 30 dana. Ne 60. <strong style="color:#fff;">90 dana — jer to je koliko mozgu treba.</strong></p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Pokreni svoju transformaciju →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Pokreni svoju transformaciju →</a></div>
       ${sig}`,
 
     // Dan 21 — Ekskluzivni PRIJATELJ (skipIfPurchased: true)
@@ -523,7 +523,7 @@ export function buildEmailContent(
         <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">€197</p>
         <p style="color:#718096;font-size:12px;margin:0;">Ista cijena kao PRILIKA — ali ovaj kod je samo tvoj.</p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Upiši se s kodom PRIJATELJ →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Upiši se s kodom PRIJATELJ →</a></div>
       <p style="color:#718096;font-size:13px;text-align:center;">30-dnevna garancija. Ako ne vidiš razliku — vraćam ti novac. Osobno.</p>
       ${sig}`,
 
@@ -1383,7 +1383,7 @@ export function buildEmailContent(
           <span style="color:#718096;font-size:13px;">Kod PRILIKA · Doživotni pristup · 30-dnevna garancija</span>
         </p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Da — krećem s promjenom →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Da — krećem s promjenom →</a></div>
       ${sig}`,
 
     // Dan 135 — 10 navika (edu, svima)
@@ -1615,13 +1615,13 @@ export function buildEmailContent(
       <p>Ali neću te više pozivati na program. Jer — ili si spreman/na ili nisi. I oboje je u redu.</p>
       <div class="box">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Ako jesi spreman/na — ovo su tvoji podaci:</p>
-        <p style="margin:0 0 6px;">💻 <strong style="color:#fff;">Stranica:</strong> fincoach.vip/tecaj</p>
+        <p style="margin:0 0 6px;">💻 <strong style="color:#fff;">Stranica:</strong> fincoach.vip/volim-svojnovac</p>
         <p style="margin:0 0 6px;">🏷️ <strong style="color:#fff;">Kod:</strong> PRILIKA</p>
         <p style="margin:0 0 6px;">💰 <strong style="color:#fff;">Cijena:</strong> €197 (umjesto €397)</p>
         <p style="margin:0;">🛡️ <strong style="color:#fff;">Garancija:</strong> 30 dana, bez pitanja</p>
       </div>
       <p>Hvala ti na pažnji. Hvala na povjerenju. Bez obzira na tvoju odluku — vrijedno si proveo/la ovo vrijema.</p>
-      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/tecaj" class="btn">Upiši se — zadnji put nudim →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svojnovac" class="btn">Upiši se — zadnji put nudim →</a></div>
       ${sig}`,
 
     // Dan 165 — Valutni rizik (edu, svima)

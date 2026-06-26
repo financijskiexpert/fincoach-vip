@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -178,38 +178,44 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
             <div className="space-y-4">
               <ShareBlock
                 title="Instagram — kvadrat 1:1 · Varianta A (problem → rješenje)"
+                format="square" variant="a" code={affiliate.code}
                 text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak:\n\n✓ Pronađeš gdje ti novac nestaje\n✓ Počneš štedjeti automatski\n✓ Investiraš bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije #financijskaedukacija`}
-                link={`${siteUrl}/tecaj?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram — kvadrat 1:1 · Varianta B (minimalistica)"
+                format="square" variant="b" code={affiliate.code}
                 text={`Nitko me nije naučio što raditi s novcem.\n\nNi škola. Ni roditelji. Ni faksi.\n\nTek kroz FinCoach VIP program shvatio sam kako novac zapravo funkcionira — i promijenilo mi je život.\n\n90 dana. Korak po korak. Link u biu. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije`}
-                link={`${siteUrl}/tecaj?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram Story / TikTok · Varianta A (pitanje)"
+                format="story" variant="a" code={affiliate.code}
                 text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak, naučio sam:\n\n✓ Gdje mi novac "curi" svaki dan\n✓ Kako automatski štedjeti bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #tiktokfinance #financijskaedukacija`}
-                link={`${siteUrl}/tecaj?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram Story / TikTok · Varianta B (before/after)"
+                format="story" variant="b" code={affiliate.code}
                 text={`Ovo je moja financijska transformacija za 90 dana 👇\n\nPRIJE: novac nestajao, nula štednje, stres na kraju svakog mjeseca.\n\nNAKON FinCoach VIP programa: znam točno kamo ide svaki euro, štedim automatski, počeo sam investirati.\n\nNije magija — to je sustav koji svima može raditi.\n\nLink u biu za direktan pristup programu. 👆\n\n#ad #fincoach #financijskasvoboda #beforeafter #novac #stednja #tiktokfinance`}
-                link={`${siteUrl}/tecaj?ref=${affiliate.code}`}
+                link={`${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Facebook / LinkedIn · Varianta A (edukacijska)"
+                format="fb" variant="a" code={affiliate.code}
                 text={`Zašto na kraju svakog mjeseca nikad nema dovoljno?\n\nJer nas nitko nije naučio što raditi s novcem. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja — za 90 dana, korak po korak, naučio sam:\n✓ Gdje mi novac zapravo nestaje\n✓ Kako štedjeti automatski, bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u komentarima 👇\n\n#ad #fincoach #financijskasvoboda #novac #osobnifinancije`}
-                link={`👉 ${siteUrl}/tecaj?ref=${affiliate.code}`}
+                link={`👉 ${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
                 note="Na Facebooku link stavi u prvi komentar — tako algoritam ne kažnjava doseg objave."
               />
 
               <ShareBlock
                 title="WhatsApp / osobna poruka (neformalni ton)"
-                text={`Hej! Šaljem ti ovo jer mislim da bi ti moglo promijeniti pogled na novac.\n\nProšao sam FinCoach VIP program — za 90 dana naučio sam više o osobnim financijama nego za cijeli život. Sada znam gdje mi novac odlazi, štedim automatski i počeo sam investirati.\n\nUz moj link imaš 10% popusta: ${siteUrl}/tecaj?ref=${affiliate.code}`}
+                format="whatsapp" variant="a" code={affiliate.code}
+                text={`Hej! Šaljem ti ovo jer mislim da bi ti moglo promijeniti pogled na novac.\n\nProšao sam FinCoach VIP program — za 90 dana naučio sam više o osobnim financijama nego za cijeli život. Sada znam gdje mi novac odlazi, štedim automatski i počeo sam investirati.\n\nUz moj link imaš 10% popusta: ${siteUrl}/volim-svojnovac?ref=${affiliate.code}`}
                 note="Za WhatsApp šalješ sliku + ovu poruku zajedno. Nema potrebe za #ad oznakom u privatnim porukama."
               />
             </div>
@@ -274,7 +280,24 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
   )
 }
 
-function ShareBlock({ title, text, link, note }: { title: string; text: string; link?: string; note?: string }) {
+function ShareBlock({
+  title,
+  text,
+  link,
+  note,
+  format,
+  variant,
+  code,
+}: {
+  title: string
+  text: string
+  link?: string
+  note?: string
+  format?: 'square' | 'story' | 'fb' | 'whatsapp'
+  variant?: 'a' | 'b'
+  code?: string
+}) {
+  const imgUrl = format && code ? `/api/affiliate/creative?format=${format}&variant=${variant ?? 'a'}&code=${code}` : null
   return (
     <details className="group bg-[#0D1B2A] border border-white/10 rounded-xl">
       <summary className="px-5 py-4 cursor-pointer flex justify-between items-center list-none">
@@ -283,6 +306,25 @@ function ShareBlock({ title, text, link, note }: { title: string; text: string; 
       </summary>
       <div className="px-5 pb-5 space-y-3 border-t border-white/10 pt-4">
         {note && <p className="text-yellow-600 text-xs">{note}</p>}
+        {imgUrl && (
+          <div className="bg-[#091623] border border-white/10 rounded-lg p-4">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-xs text-gray-500 font-medium">Slika za objavu</span>
+              <a
+                href={imgUrl}
+                download
+                className="text-xs text-[#D4AF37] hover:text-yellow-400 transition font-semibold"
+              >
+                ⬇ Preuzmi sliku (.svg)
+              </a>
+            </div>
+            <div className="bg-[#0D1B2A] rounded-md overflow-hidden flex items-center justify-center" style={{ maxHeight: 280 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={imgUrl} alt={title} className="max-w-full max-h-[280px] object-contain" />
+            </div>
+            <p className="text-gray-600 text-xs mt-2">Po preuzimanju otvori u Canvi/Photoshopu za daljnju personalizaciju, ili objavi direktno.</p>
+          </div>
+        )}
         <CopyBlock label="Tekst za objavu" text={text} />
         {link && <CopyBlock label="Tvoj link" text={link} mono />}
       </div>

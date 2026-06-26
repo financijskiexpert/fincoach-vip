@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'sonner'
 import CookieBanner from '@/components/CookieBanner'
+import { OrganizationSchema } from '@/components/StructuredData'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({
   return (
     <html lang="hr" className={inter.variable}>
       <body className="bg-navy text-white antialiased">
+        <OrganizationSchema />
         {children}
         <CookieBanner />
         <Toaster

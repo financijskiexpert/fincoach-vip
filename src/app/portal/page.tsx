@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+﻿import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
@@ -41,7 +41,7 @@ export default async function PortalDashboard() {
 
   const isAdmin = profile?.role === 'admin' || user.email === 'brane.recek@gmail.com'
   if (!hasPurchase && !isAdmin) {
-    redirect('/tecaj')
+    redirect('/volim-svojnovac')
   }
 
   // Get progress
