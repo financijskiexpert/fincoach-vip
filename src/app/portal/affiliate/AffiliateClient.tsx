@@ -178,35 +178,35 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
             <div className="space-y-4">
               <ShareBlock
                 title="Instagram — kvadrat 1:1 · Varianta A (problem → rješenje)"
-                format="square" variant="a" code={affiliate.code}
+                format="ig-a" code={affiliate.code}
                 text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak:\n\n✓ Pronađeš gdje ti novac nestaje\n✓ Počneš štedjeti automatski\n✓ Investiraš bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije #financijskaedukacija`}
                 link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram — kvadrat 1:1 · Varianta B (minimalistica)"
-                format="square" variant="b" code={affiliate.code}
+                format="ig-b" code={affiliate.code}
                 text={`Nitko me nije naučio što raditi s novcem.\n\nNi škola. Ni roditelji. Ni faksi.\n\nTek kroz FinCoach VIP program shvatio sam kako novac zapravo funkcionira — i promijenilo mi je život.\n\n90 dana. Korak po korak. Link u biu. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije`}
                 link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram Story / TikTok · Varianta A (pitanje)"
-                format="story" variant="a" code={affiliate.code}
+                format="story-a" code={affiliate.code}
                 text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak, naučio sam:\n\n✓ Gdje mi novac "curi" svaki dan\n✓ Kako automatski štedjeti bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #tiktokfinance #financijskaedukacija`}
                 link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Instagram Story / TikTok · Varianta B (before/after)"
-                format="story" variant="b" code={affiliate.code}
+                format="story-b" code={affiliate.code}
                 text={`Ovo je moja financijska transformacija za 90 dana 👇\n\nPRIJE: novac nestajao, nula štednje, stres na kraju svakog mjeseca.\n\nNAKON FinCoach VIP programa: znam točno kamo ide svaki euro, štedim automatski, počeo sam investirati.\n\nNije magija — to je sustav koji svima može raditi.\n\nLink u biu za direktan pristup programu. 👆\n\n#ad #fincoach #financijskasvoboda #beforeafter #novac #stednja #tiktokfinance`}
                 link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
               <ShareBlock
                 title="Facebook / LinkedIn · Varianta A (edukacijska)"
-                format="fb" variant="a" code={affiliate.code}
+                format="fb-a" code={affiliate.code}
                 text={`Zašto na kraju svakog mjeseca nikad nema dovoljno?\n\nJer nas nitko nije naučio što raditi s novcem. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja — za 90 dana, korak po korak, naučio sam:\n✓ Gdje mi novac zapravo nestaje\n✓ Kako štedjeti automatski, bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u komentarima 👇\n\n#ad #fincoach #financijskasvoboda #novac #osobnifinancije`}
                 link={`👉 ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
                 note="Na Facebooku link stavi u prvi komentar — tako algoritam ne kažnjava doseg objave."
@@ -214,7 +214,7 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
 
               <ShareBlock
                 title="WhatsApp / osobna poruka (neformalni ton)"
-                format="whatsapp" variant="a" code={affiliate.code}
+                format="whatsapp" code={affiliate.code}
                 text={`Hej! Šaljem ti ovo jer mislim da bi ti moglo promijeniti pogled na novac.\n\nProšao sam FinCoach VIP program — za 90 dana naučio sam više o osobnim financijama nego za cijeli život. Sada znam gdje mi novac odlazi, štedim automatski i počeo sam investirati.\n\nUz moj link imaš 10% popusta: ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
                 note="Za WhatsApp šalješ sliku + ovu poruku zajedno. Nema potrebe za #ad oznakom u privatnim porukama."
               />
@@ -286,18 +286,16 @@ function ShareBlock({
   link,
   note,
   format,
-  variant,
   code,
 }: {
   title: string
   text: string
   link?: string
   note?: string
-  format?: 'square' | 'story' | 'fb' | 'whatsapp'
-  variant?: 'a' | 'b'
+  format?: 'ig-a' | 'ig-b' | 'story-a' | 'story-b' | 'fb-a' | 'fb-b' | 'whatsapp'
   code?: string
 }) {
-  const baseUrl = format ? `/api/affiliate/creative?format=${format}&variant=${variant ?? 'a'}` : null
+  const baseUrl = format ? `/api/affiliate/creative?format=${format}` : null
   const pngUrl = baseUrl ? baseUrl : null
   const svgUrl = baseUrl ? `${baseUrl}&svg=1` : null
   return (
