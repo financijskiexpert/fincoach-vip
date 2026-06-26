@@ -173,50 +173,67 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
           {/* Materijali za dijeljenje */}
           <div className="bg-[#091623] border border-white/10 rounded-xl p-6">
             <h2 className="text-lg font-bold mb-1">Kreative i tekstovi za objave</h2>
-            <p className="text-gray-500 text-sm mb-5">Preuzmi sliku + kopiraj tekst + postavi link u bio. Gotovo.</p>
+            <p className="text-gray-500 text-sm mb-5">Po 2 varijante za svaku platformu — biraj koja ti je bolja. Preuzmi PNG → postavi tekst → link u bio.</p>
 
             <div className="space-y-4">
+              {/* INSTAGRAM / FACEBOOK FEED */}
               <ShareBlock
-                title="Instagram — kvadrat 1:1 · Varianta A (problem → rješenje)"
-                format="ig-a" code={affiliate.code}
-                text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak:\n\n✓ Pronađeš gdje ti novac nestaje\n✓ Počneš štedjeti automatski\n✓ Investiraš bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije #financijskaedukacija`}
+                title="Instagram / FB feed (1:1) · Varianta A — problem"
+                format="ig-a"
+                text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak:\n\n✓ Pronađeš gdje ti novac nestaje\n✓ Počneš štedjeti automatski\n✓ Investiraš bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije`}
+                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
+              />
+              <ShareBlock
+                title="Instagram / FB feed (1:1) · Varianta B — statistika (73%)"
+                format="ig-b"
+                text={`73% ljudi živi od plaće do plaće.\n\nNije zato što malo zarađuju. Nego zato što ih nitko nije naučio što raditi s novcem.\n\nZa 90 dana FinCoach VIP programa izgradio/la sam sustav koji radi za mene — bez stresa, bez odricanja.\n\nAko se prepoznaješ — link u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #osobnifinancije #stednja #investiranje`}
                 link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
               />
 
+              {/* INSTAGRAM / FACEBOOK / TIKTOK STORY */}
               <ShareBlock
-                title="Instagram — kvadrat 1:1 · Varianta B (minimalistica)"
-                format="ig-b" code={affiliate.code}
-                text={`Nitko me nije naučio što raditi s novcem.\n\nNi škola. Ni roditelji. Ni faksi.\n\nTek kroz FinCoach VIP program shvatio sam kako novac zapravo funkcionira — i promijenilo mi je život.\n\n90 dana. Korak po korak. Link u biu. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #investiranje #osobnifinancije`}
+                title="IG / FB / TikTok story (9:16) · Varianta A — pitanje"
+                format="story-a"
+                text={`Pitanje koje si postavljam svaki kraj mjeseca:\nkamo je otišao novac?\n\nProgram koji je promijenio moj odgovor → FinCoach VIP, 90 dana.\n\nSwipe up / link u biu 👆\n\n#ad #fincoach #financijskasvoboda`}
                 link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
+                note="Story je vizualan — kratak tekst u opisu / sticker preko slike."
+              />
+              <ShareBlock
+                title="IG / FB / TikTok story (9:16) · Varianta B — before/after"
+                format="story-b"
+                text={`Moja financijska transformacija za 90 dana 👇\n\nPRIJE: stres, nula štednje, kraj mj. uvijek kriza.\nNAKON: automatski štedim, investiram, znam točno kamo ide novac.\n\nNije magija — sustav. Link u biu 👆\n\n#ad #fincoach #beforeafter #financijskasvoboda`}
+                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
+                note="Idealno za TikTok / IG story s reels formatom."
               />
 
+              {/* FACEBOOK / LINKEDIN LANDSCAPE */}
               <ShareBlock
-                title="Instagram Story / TikTok · Varianta A (pitanje)"
-                format="story-a" code={affiliate.code}
-                text={`Na kraju svakog mjeseca postavljam si isto pitanje — kamo je otišao novac?\n\nJer nitko nas nije naučio što s njim raditi. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja. Za 90 dana, korak po korak, naučio sam:\n\n✓ Gdje mi novac "curi" svaki dan\n✓ Kako automatski štedjeti bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u biu vodi direktno na program. 👆\n\n#ad #fincoach #financijskasvoboda #novac #stednja #tiktokfinance #financijskaedukacija`}
-                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
-              />
-
-              <ShareBlock
-                title="Instagram Story / TikTok · Varianta B (before/after)"
-                format="story-b" code={affiliate.code}
-                text={`Ovo je moja financijska transformacija za 90 dana 👇\n\nPRIJE: novac nestajao, nula štednje, stres na kraju svakog mjeseca.\n\nNAKON FinCoach VIP programa: znam točno kamo ide svaki euro, štedim automatski, počeo sam investirati.\n\nNije magija — to je sustav koji svima može raditi.\n\nLink u biu za direktan pristup programu. 👆\n\n#ad #fincoach #financijskasvoboda #beforeafter #novac #stednja #tiktokfinance`}
-                link={`${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
-              />
-
-              <ShareBlock
-                title="Facebook / LinkedIn · Varianta A (edukacijska)"
-                format="fb-a" code={affiliate.code}
-                text={`Zašto na kraju svakog mjeseca nikad nema dovoljno?\n\nJer nas nitko nije naučio što raditi s novcem. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja — za 90 dana, korak po korak, naučio sam:\n✓ Gdje mi novac zapravo nestaje\n✓ Kako štedjeti automatski, bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u komentarima 👇\n\n#ad #fincoach #financijskasvoboda #novac #osobnifinancije`}
+                title="Facebook / LinkedIn (1200×630) · Varianta A — edukacijska"
+                format="fb-a"
+                text={`Zašto na kraju svakog mjeseca nikad nema dovoljno?\n\nJer nas nitko nije naučio što raditi s novcem. Ni škola, ni roditelji.\n\nFinCoach VIP program to mijenja — za 90 dana, korak po korak, naučio sam:\n✓ Gdje mi novac zapravo nestaje\n✓ Kako štedjeti automatski, bez odricanja\n✓ Kako početi investirati bez straha\n\nLink u prvom komentaru ↓\n\n#ad #fincoach #financijskasvoboda #novac #osobnifinancije`}
                 link={`👉 ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
-                note="Na Facebooku link stavi u prvi komentar — tako algoritam ne kažnjava doseg objave."
+                note="Facebook: stavi link u PRVI komentar (algoritam ne kažnjava doseg)."
+              />
+              <ShareBlock
+                title="Facebook / LinkedIn (1200×630) · Varianta B — social proof"
+                format="fb-b"
+                text={`"Za 90 dana naučio sam više o novcu nego za cijeli život."\n\nOvo čujem od gotovo svakog tko prođe FinCoach VIP program.\n\nNisam ni ja vjerovao dok nisam prošao sam. A onda se sve promijenilo — znam točno kamo ide novac, štedim automatski, investiram bez straha.\n\nAko si spreman/na — link u prvom komentaru ↓\n\n#ad #fincoach #financijskasvoboda #osobnifinancije`}
+                link={`👉 ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
+                note="LinkedIn: ova varijanta najbolje radi — profesionalan ton, citat + social proof."
               />
 
+              {/* WHATSAPP */}
               <ShareBlock
-                title="WhatsApp / osobna poruka (neformalni ton)"
-                format="whatsapp" code={affiliate.code}
+                title="WhatsApp (1:1) · Varianta A — osebno"
+                format="whatsapp-a"
                 text={`Hej! Šaljem ti ovo jer mislim da bi ti moglo promijeniti pogled na novac.\n\nProšao sam FinCoach VIP program — za 90 dana naučio sam više o osobnim financijama nego za cijeli život. Sada znam gdje mi novac odlazi, štedim automatski i počeo sam investirati.\n\nUz moj link imaš 10% popusta: ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}`}
-                note="Za WhatsApp šalješ sliku + ovu poruku zajedno. Nema potrebe za #ad oznakom u privatnim porukama."
+                note="Šalji sliku + tekst u istoj poruci. Bez #ad oznake u privatnim chatovima."
+              />
+              <ShareBlock
+                title="WhatsApp (1:1) · Varianta B — direktna preporuka"
+                format="whatsapp-b"
+                text={`Brate/sestro, znam da si me znala/o pitati za savjete o novcu.\n\nNajbolje što mogu napraviti je preporučiti ti program koji je promijenio moj pristup — FinCoach VIP. 90 dana, korak po korak, bez sranja i lažnih obećanja.\n\nUz moj link imaš 10% popusta: ${siteUrl}/volim-svoj-novac?ref=${affiliate.code}\n\nAko se odlučiš — javi mi, rado pomognem.`}
+                note="Najbolje za bliske prijatelje / obitelj — neformalan, osoban ton."
               />
             </div>
           </div>
@@ -280,24 +297,22 @@ export default function AffiliateClient({ hasPurchase, affiliate, conversions, s
   )
 }
 
+type CreativeFormat = 'ig-a' | 'ig-b' | 'story-a' | 'story-b' | 'fb-a' | 'fb-b' | 'whatsapp-a' | 'whatsapp-b'
+
 function ShareBlock({
   title,
   text,
   link,
   note,
   format,
-  code,
 }: {
   title: string
   text: string
   link?: string
   note?: string
-  format?: 'ig-a' | 'ig-b' | 'story-a' | 'story-b' | 'fb-a' | 'fb-b' | 'whatsapp'
-  code?: string
+  format?: CreativeFormat
 }) {
-  const baseUrl = format ? `/api/affiliate/creative?format=${format}` : null
-  const pngUrl = baseUrl ? baseUrl : null
-  const svgUrl = baseUrl ? `${baseUrl}&svg=1` : null
+  const pngUrl = format ? `/api/affiliate/creative?format=${format}` : null
   return (
     <details className="group bg-[#0D1B2A] border border-white/10 rounded-xl">
       <summary className="px-5 py-4 cursor-pointer flex justify-between items-center list-none">
@@ -306,33 +321,24 @@ function ShareBlock({
       </summary>
       <div className="px-5 pb-5 space-y-3 border-t border-white/10 pt-4">
         {note && <p className="text-yellow-600 text-xs">{note}</p>}
-        {pngUrl && svgUrl && (
+        {pngUrl && (
           <div className="bg-[#091623] border border-white/10 rounded-lg p-4">
             <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
               <span className="text-xs text-gray-500 font-medium">Slika za objavu</span>
-              <div className="flex gap-3">
-                <a
-                  href={pngUrl}
-                  download
-                  className="text-xs text-[#D4AF37] hover:text-yellow-400 transition font-semibold"
-                >
-                  ⬇ Preuzmi PNG (telefon/Instagram)
-                </a>
-                <a
-                  href={svgUrl}
-                  download
-                  className="text-xs text-gray-400 hover:text-white transition"
-                >
-                  SVG (za Canvu)
-                </a>
-              </div>
+              <a
+                href={pngUrl}
+                download
+                className="text-xs text-[#D4AF37] hover:text-yellow-400 transition font-semibold"
+              >
+                ⬇ Preuzmi sliku (PNG)
+              </a>
             </div>
-            <div className="bg-[#0D1B2A] rounded-md overflow-hidden flex items-center justify-center" style={{ maxHeight: 280 }}>
+            <div className="bg-[#0D1B2A] rounded-md overflow-hidden flex items-center justify-center" style={{ maxHeight: 320 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={pngUrl} alt={title} className="max-w-full max-h-[280px] object-contain" />
+              <img src={pngUrl} alt={title} className="max-w-full max-h-[320px] object-contain" />
             </div>
             <p className="text-gray-600 text-xs mt-2">
-              <strong className="text-gray-400">PNG</strong> = direktno na telefon i upload na Instagram/Facebook. Tvoj link postavi u tekst objave ili bio (NIJE na slici — zaštita od kopiranja).
+              Link NIJE na slici — postavi ga u tekst objave ili bio (zaštita tracking-a).
             </p>
           </div>
         )}
