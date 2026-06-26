@@ -39,7 +39,7 @@ const faqs = [
   },
   {
     q: 'Mogu li koristiti kod PRILIKA?',
-    a: 'Da — kod PRILIKA uvijek daje pristup po cijeni €197 umjesto €397, bez vremenskog ograničenja.',
+    a: 'Kod PRILIKA daje pristup po cijeni €197 umjesto €397, bez vremenskog ograničenja. Napomena: kod se NE može kombinirati s affiliate (partner) popustom — ako si došao putem partner linka, već imaš popust od 10% i kod PRILIKA se ne primjenjuje.',
   },
 ]
 
@@ -144,17 +144,9 @@ export default function SalesPage() {
         </div>
       )}
 
-      {/* Affiliate banner — kupuješ preko partner linka, dobivaš 10% popusta */}
-      {hasAffiliate && (
-        <div className="fixed top-16 left-0 right-0 z-40 bg-green-500/10 border-b border-green-500/30 py-2 px-4 text-center">
-          <p className="text-green-400 text-sm font-medium">
-            🎁 Kupuješ preko partner linka <span className="font-mono font-bold text-green-300">{affiliateRef}</span> — automatski popust <strong>−10%</strong> (€397 → €357,30)
-          </p>
-        </div>
-      )}
 
       {/* Hero */}
-      <section className={`px-4 sm:px-6 ${showLaunchPrice || hasAffiliate ? 'pt-32' : 'pt-24'} pb-16`}>
+      <section className={`px-4 sm:px-6 ${showLaunchPrice ? 'pt-32' : 'pt-24'} pb-16`}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <Badge className="mb-6 bg-gold/10 text-gold border-gold/30 text-sm px-4 py-1.5">
@@ -212,7 +204,7 @@ export default function SalesPage() {
               <span>30-dnevna garancija povrata novca</span>
             </div>
 
-            {!showLaunchPrice && (
+            {!showLaunchPrice && !hasAffiliate && (
               <p className="text-white/30 text-xs">
                 Imaš kod? Unesi <span className="text-gold font-mono">PRILIKA</span> na blagajni za cijenu €197
               </p>
@@ -537,7 +529,7 @@ export default function SalesPage() {
               <Shield className="w-4 h-4 text-green-400" />
               30-dnevna garancija povrata novca
             </div>
-            {!showLaunchPrice && (
+            {!showLaunchPrice && !hasAffiliate && (
               <p className="text-white/30 text-xs">
                 Kod <span className="text-gold font-mono">PRILIKA</span> = cijena €197 uvijek
               </p>

@@ -47,28 +47,30 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Affiliate discount: if affiliate code is valid, apply 10% buyer discount
-    // (Only if no explicit coupon already provided)
-    if (affiliateCode && !couponCode) {
+    // Affiliate discount: ako je affiliate kod važeći, primjeni 10% popust
+    // Pravilo: affiliate i coupon se NE kombiniraju — affiliate ima prednost
+    let affiliateActive = false
+    if (affiliateCode) {
       const { data: aff } = await serviceSupabase
         .from('affiliates')
         .select('id')
         .eq('code', affiliateCode)
         .eq('is_active', true)
-        .single()
+        .maybeSingle()
       if (aff) {
         priceAmountCents = Math.round(priceAmountCents * 0.9)
+        affiliateActive = true
       }
     }
 
-    // Apply coupon if provided
-    if (couponCode) {
+    // Coupon: aplicira se SAMO ako affiliate NIJE aktivan (zaštita provizije partnera)
+    if (couponCode && !affiliateActive) {
       const { data: coupon } = await serviceSupabase
         .from('coupons')
         .select('*')
         .eq('code', couponCode.toUpperCase())
         .eq('is_active', true)
-        .single()
+        .maybeSingle()
 
       if (coupon) {
         const notExpired = !coupon.expires_at || new Date(coupon.expires_at) > new Date()
@@ -96,6 +98,7 @@ export async function POST(request: NextRequest) {
       affiliateCode,
       couponCode,
       stripeCouponId,
+      allowPromotionCodes: !affiliateActive,  // Onemogoči PRILIKA na Stripeu ko je affiliate aktiven
     })
 
     return NextResponse.json({ url: session.url })
