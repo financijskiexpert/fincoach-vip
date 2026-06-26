@@ -1,33 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Resvg } from '@resvg/resvg-js'
+import { readFileSync } from 'fs'
 import path from 'path'
-import { buildCreativeSvg } from '@/lib/creative-svg'
 
 export const dynamic = 'force-dynamic'
-export const maxDuration = 30
-
-const fontsDir = path.join(process.cwd(), 'public', 'fonts')
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const format = searchParams.get('format') ?? 'ig-a'
-  const svg = buildCreativeSvg(format)
+
+  const allowed = ['ig-a','ig-b','story-a','story-b','fb-a','fb-b','whatsapp-a','whatsapp-b']
+  if (!allowed.includes(format)) {
+    return NextResponse.json({ error: 'Invalid format' }, { status: 400 })
+  }
 
   try {
-    const resvg = new Resvg(svg, {
-      font: {
-        fontFiles: [
-          path.join(fontsDir, 'inter-400.woff2'),
-          path.join(fontsDir, 'inter-700.woff2'),
-          path.join(fontsDir, 'inter-900.woff2'),
-        ],
-        loadSystemFonts: false,
-        defaultFontFamily: 'Inter',
-      },
-      fitTo: { mode: 'original' },
-    })
-    const pngBuffer = resvg.render().asPng()
-    return new NextResponse(new Uint8Array(pngBuffer), {
+    const filePath = path.join(process.cwd(), 'public', 'creatives', `fincoach-${format}.png`)
+    const png = readFileSync(filePath)
+    return new NextResponse(new Uint8Array(png), {
       headers: {
         'Content-Type': 'image/png',
         'Content-Disposition': `attachment; filename="fincoach-${format}.png"`,
@@ -35,7 +24,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (err) {
-    console.error('SVG→PNG conversion error:', err)
-    return NextResponse.json({ error: 'Conversion failed' }, { status: 500 })
+    console.error('Creative not found:', err)
+    return NextResponse.json({ error: 'Creative not found' }, { status: 404 })
   }
 }
