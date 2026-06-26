@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Mail, Users, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import { EMAIL_SEQUENCE } from '@/lib/email-sequence'
-import { DeleteLeadButton } from './DeleteLeadButton'
+import { DeleteLeadButton, ConvertLeadButton } from './DeleteLeadButton'
 
 export default async function LeadoviPage() {
   const supabase = await createClient()
@@ -19,6 +19,12 @@ export default async function LeadoviPage() {
     .from('leads')
     .select('*')
     .order('created_at', { ascending: false })
+
+  const { data: courses } = await service
+    .from('courses')
+    .select('slug, title')
+    .eq('is_active', true)
+    .order('created_at')
 
   const { data: queue } = await service
     .from('email_sequence_queue')
@@ -121,7 +127,15 @@ export default async function LeadoviPage() {
                     </div>
 
                     {/* Admin akcije */}
-                    <div className="flex gap-2 shrink-0">
+                    <div className="flex flex-col gap-2 shrink-0">
+                      {!lead.converted_to_purchase && (
+                        <ConvertLeadButton
+                          leadId={lead.id}
+                          leadEmail={lead.email}
+                          leadName={lead.full_name || lead.email}
+                          courses={courses ?? []}
+                        />
+                      )}
                       <DeleteLeadButton leadId={lead.id} email={lead.email} />
                     </div>
                   </div>
