@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Pencil, Trash2, Save, X, Eye, Sparkles, Loader2 } from 'lucide-react'
+import { Plus, Pencil, Trash2, Save, X, Eye, Sparkles, Loader2, Copy, Check } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Post {
@@ -13,9 +13,11 @@ interface Post {
   slug: string
   excerpt: string | null
   content: string | null
+  fb_caption: string | null
   is_published: boolean
   published_at: string | null
   created_at: string
+  is_auto_generated: boolean | null
 }
 
 export default function AdminBlog() {
@@ -206,6 +208,9 @@ export default function AdminBlog() {
                   {post.excerpt && (
                     <p className="text-white/40 text-xs mt-1 truncate">{post.excerpt}</p>
                   )}
+                  {post.fb_caption && (
+                    <FbCaptionCopy caption={post.fb_caption} />
+                  )}
                 </div>
                 <p className="text-white/30 text-xs shrink-0">
                   {new Date(post.created_at).toLocaleDateString('hr-HR')}
@@ -230,6 +235,25 @@ export default function AdminBlog() {
         )}
       </div>
     </div>
+  )
+}
+
+function FbCaptionCopy({ caption }: { caption: string }) {
+  const [copied, setCopied] = useState(false)
+  async function copy() {
+    await navigator.clipboard.writeText(caption)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <button
+      onClick={copy}
+      title={caption}
+      className="flex items-center gap-1.5 mt-1 text-[10px] text-blue-400/70 hover:text-blue-300 transition-colors"
+    >
+      {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+      {copied ? 'Kopirano!' : 'Kopiraj FB caption'}
+    </button>
   )
 }
 

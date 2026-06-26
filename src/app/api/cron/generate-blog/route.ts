@@ -60,6 +60,11 @@ export async function GET(request: NextRequest) {
       finalSlug = `${generated.slug}-${++suffix}`
     }
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+    const fbCaption = generated.fb_caption
+      ? generated.fb_caption.replace('[BLOG_URL]', `${siteUrl}/blog/${finalSlug}`)
+      : ''
+
     // Vstavi članek (NE objavljen — admin mora potrditi)
     const { data: post, error: insertErr } = await service
       .from('blog_posts')
@@ -70,6 +75,7 @@ export async function GET(request: NextRequest) {
         content: generated.content,
         meta_title: generated.meta_title,
         meta_description: generated.meta_description,
+        fb_caption: fbCaption || null,
         is_published: false,
         is_auto_generated: true,
         topic_id: topic.id,
