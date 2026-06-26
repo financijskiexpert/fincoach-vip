@@ -1,6 +1,8 @@
 import { createServiceClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Metadata } from 'next'
+import SiteFooter from '@/components/SiteFooter'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,13 +19,12 @@ interface BlogPost {
   published_at: string | null
 }
 
+const MONTHS = ['Januar', 'Februar', 'Mart', 'April', 'Maj', 'Jun', 'Jul', 'Avgust', 'Septembar', 'Oktobar', 'Novembar', 'Decembar']
+
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('hr-HR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  const d = new Date(dateStr)
+  return `${d.getDate()}. ${MONTHS[d.getMonth()]} ${d.getFullYear()}.`
 }
 
 export default async function BlogPage() {
@@ -40,20 +41,16 @@ export default async function BlogPage() {
     <main className="min-h-screen" style={{ backgroundColor: '#0f1e35', color: '#fff' }}>
       {/* Header */}
       <div className="border-b" style={{ borderColor: 'rgba(212,175,55,0.2)' }}>
-        <div className="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-xl font-bold tracking-tight"
-            style={{ color: '#D4AF37' }}
-          >
-            FinCoach VIP
+        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/">
+            <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} priority />
           </Link>
           <Link
             href="/volim-svoj-novac"
             className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >
-            Pridruži se programu
+            Kupi program
           </Link>
         </div>
       </div>
@@ -140,6 +137,7 @@ export default async function BlogPage() {
           </Link>
         </div>
       </section>
+      <SiteFooter />
     </main>
   )
 }

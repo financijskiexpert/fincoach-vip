@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { OrganizationSchema } from '@/components/StructuredData'
 import KontaktForm from './KontaktForm'
+import SiteFooter from '@/components/SiteFooter'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Kontakt — Brane Recek | FinCoach VIP',
@@ -41,6 +44,17 @@ export default function KontaktPage() {
     <>
       <OrganizationSchema />
       <div className="min-h-screen bg-[#0D1B2A] text-white">
+        {/* Header */}
+        <div className="border-b border-[#D4AF37]/20">
+          <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+            <Link href="/">
+              <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} priority />
+            </Link>
+            <Link href="/volim-svoj-novac" className="text-sm font-medium px-4 py-2 rounded-lg bg-[#D4AF37] text-[#0D1B2A]">
+              Kupi program
+            </Link>
+          </div>
+        </div>
         <div className="max-w-2xl mx-auto px-6 py-16">
 
           <div className="mb-10">
@@ -83,6 +97,7 @@ export default function KontaktPage() {
             </p>
           </div>
         </div>
+        <SiteFooter />
       </div>
     </>
   )

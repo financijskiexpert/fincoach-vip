@@ -1,9 +1,11 @@
 import { createServiceClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import BlogActions from './BlogActions'
 import { BlogPostingSchema, BreadcrumbSchema } from '@/components/StructuredData'
+import SiteFooter from '@/components/SiteFooter'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,13 +27,12 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
+const MONTHS = ['Januar', 'Februar', 'Mart', 'April', 'Maj', 'Jun', 'Jul', 'Avgust', 'Septembar', 'Oktobar', 'Novembar', 'Decembar']
+
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('hr-HR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  const d = new Date(dateStr)
+  return `${d.getDate()}. ${MONTHS[d.getMonth()]} ${d.getFullYear()}.`
 }
 
 async function getPost(slug: string): Promise<BlogPost | null> {
@@ -78,20 +79,16 @@ export default async function BlogPostPage({ params }: Props) {
     <main className="min-h-screen" style={{ backgroundColor: '#0f1e35', color: '#fff' }}>
       {/* Header */}
       <div className="border-b" style={{ borderColor: 'rgba(212,175,55,0.2)' }}>
-        <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-xl font-bold tracking-tight"
-            style={{ color: '#D4AF37' }}
-          >
-            FinCoach VIP
+        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/">
+            <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} priority />
           </Link>
           <Link
             href="/volim-svoj-novac"
             className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >
-            Pridruži se programu
+            Kupi program
           </Link>
         </div>
       </div>
@@ -200,6 +197,7 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
         </div>
       </section>
+      <SiteFooter />
     </main>
   )
 }
