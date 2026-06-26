@@ -156,16 +156,10 @@ export default function AdminBlog() {
                 className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-none"
               />
             </div>
-            <div>
-              <label className="block text-sm text-white/50 mb-1.5">Sadržaj (Markdown podržan)</label>
-              <textarea
-                value={form.content}
-                onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
-                placeholder="Piši sadržaj ovdje..."
-                rows={12}
-                className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-y font-mono"
-              />
-            </div>
+            <ContentEditor
+              value={form.content}
+              onChange={v => setForm(f => ({ ...f, content: v }))}
+            />
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
@@ -234,6 +228,42 @@ export default function AdminBlog() {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function ContentEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [tab, setTab] = useState<'edit' | 'preview'>('edit')
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1.5">
+        <label className="text-sm text-white/50">Sadržaj</label>
+        <div className="flex rounded-lg overflow-hidden border border-white/10 text-xs">
+          <button
+            onClick={() => setTab('edit')}
+            className={`px-3 py-1 transition-colors ${tab === 'edit' ? 'bg-gold text-navy font-semibold' : 'text-white/40 hover:text-white'}`}
+          >HTML</button>
+          <button
+            onClick={() => setTab('preview')}
+            className={`px-3 py-1 transition-colors ${tab === 'preview' ? 'bg-gold text-navy font-semibold' : 'text-white/40 hover:text-white'}`}
+          >Pregled</button>
+        </div>
+      </div>
+      {tab === 'edit' ? (
+        <textarea
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          placeholder="Sadržaj članka (HTML)..."
+          rows={14}
+          className="w-full bg-navy border border-white/10 rounded-xl px-4 py-3 text-white text-xs placeholder:text-white/20 focus:outline-none focus:border-gold/40 resize-y font-mono"
+        />
+      ) : (
+        <div
+          className="prose-blog min-h-[280px] bg-navy border border-white/10 rounded-xl px-6 py-4 overflow-y-auto"
+          style={{ maxHeight: '500px' }}
+          dangerouslySetInnerHTML={{ __html: value || '<p class="text-white/30">Nema sadržaja za pregled.</p>' }}
+        />
+      )}
     </div>
   )
 }
