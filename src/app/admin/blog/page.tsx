@@ -263,9 +263,7 @@ function GenerateNowButton({ onDone }: { onDone: () => void }) {
     if (!confirm('Generiraj novi članak iz queue tema?\n\nClaude AI će napisati osnutek za pregled (NE objavljuje automatski).')) return
     setPending(true)
     try {
-      const res = await fetch('/api/cron/generate-blog', {
-        headers: { 'x-cron-secret': prompt('CRON_SECRET (iz .env)?') ?? '' },
-      })
+      const res = await fetch('/api/admin/generate-blog', { method: 'POST' })
       const data = await res.json()
       if (data.ok) {
         toast.success(`✓ Generiran: ${data.topic}. Otvori za pregled i objavu.`)
