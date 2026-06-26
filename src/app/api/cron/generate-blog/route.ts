@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { generateBlogPost } from '@/lib/claude'
+import { injectImagesIntoContent } from '@/lib/blog-images'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
@@ -49,6 +50,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const generated = await generateBlogPost(topic)
+
+    // Umetni slike u sadržaj
+    generated.content = injectImagesIntoContent(generated.content, topic.category)
 
     // Preveri slug uniqueness
     let finalSlug = generated.slug

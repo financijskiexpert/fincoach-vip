@@ -47,3 +47,35 @@
     @apply bg-white/5 backdrop-blur-sm border border-white/10;
   }
 }
+
+/* Blog članak stilovi */
+.prose-blog h2 { @apply text-2xl font-bold text-white mt-10 mb-4; }
+.prose-blog h3 { @apply text-lg font-semibold text-white/90 mt-6 mb-3; }
+.prose-blog p { @apply text-white/70 leading-relaxed mb-4; }
+.prose-blog ul, .prose-blog ol { @apply text-white/70 mb-4 pl-6 space-y-2; }
+.prose-blog ul { @apply list-disc; }
+.prose-blog ol { @apply list-decimal; }
+.prose-blog li { @apply leading-relaxed; }
+.prose-blog strong { @apply text-white font-semibold; }
+.prose-blog em { @apply text-white/80 italic; }
+.prose-blog blockquote { @apply border-l-4 border-[#D4AF37] pl-5 py-1 my-6 text-white/60 italic; }
+.prose-blog a { @apply text-[#D4AF37] hover:underline; }
+
+/* Blog slike */
+.prose-blog figure.blog-image {
+  @apply my-8 rounded-2xl overflow-hidden;
+}
+.prose-blog figure.blog-image img {
+  @apply w-full object-cover rounded-2xl;
+  max-height: 400px;
+}
+.prose-blog figure.blog-image figcaption {
+  @apply text-white/30 text-xs text-center mt-2 italic;
+}
+
+/* Blog CTA blok */
+.prose-blog .blog-cta {
+  @apply bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-2xl p-6 my-8 space-y-3;
+}
+.prose-blog .blog-cta p { @apply text-white/80 mb-0; }
+.prose-blog .blog-cta a { @apply text-[#D4AF37] font-semibold hover:underline; }
