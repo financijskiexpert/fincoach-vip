@@ -297,7 +297,9 @@ function ShareBlock({
   variant?: 'a' | 'b'
   code?: string
 }) {
-  const imgUrl = format && code ? `/api/affiliate/creative?format=${format}&variant=${variant ?? 'a'}&code=${code}` : null
+  const baseUrl = format ? `/api/affiliate/creative?format=${format}&variant=${variant ?? 'a'}` : null
+  const pngUrl = baseUrl ? baseUrl : null
+  const svgUrl = baseUrl ? `${baseUrl}&svg=1` : null
   return (
     <details className="group bg-[#0D1B2A] border border-white/10 rounded-xl">
       <summary className="px-5 py-4 cursor-pointer flex justify-between items-center list-none">
@@ -306,27 +308,38 @@ function ShareBlock({
       </summary>
       <div className="px-5 pb-5 space-y-3 border-t border-white/10 pt-4">
         {note && <p className="text-yellow-600 text-xs">{note}</p>}
-        {imgUrl && (
+        {pngUrl && svgUrl && (
           <div className="bg-[#091623] border border-white/10 rounded-lg p-4">
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
               <span className="text-xs text-gray-500 font-medium">Slika za objavu</span>
-              <a
-                href={imgUrl}
-                download
-                className="text-xs text-[#D4AF37] hover:text-yellow-400 transition font-semibold"
-              >
-                ⬇ Preuzmi sliku (.svg)
-              </a>
+              <div className="flex gap-3">
+                <a
+                  href={pngUrl}
+                  download
+                  className="text-xs text-[#D4AF37] hover:text-yellow-400 transition font-semibold"
+                >
+                  ⬇ Preuzmi PNG (telefon/Instagram)
+                </a>
+                <a
+                  href={svgUrl}
+                  download
+                  className="text-xs text-gray-400 hover:text-white transition"
+                >
+                  SVG (za Canvu)
+                </a>
+              </div>
             </div>
             <div className="bg-[#0D1B2A] rounded-md overflow-hidden flex items-center justify-center" style={{ maxHeight: 280 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={imgUrl} alt={title} className="max-w-full max-h-[280px] object-contain" />
+              <img src={pngUrl} alt={title} className="max-w-full max-h-[280px] object-contain" />
             </div>
-            <p className="text-gray-600 text-xs mt-2">Po preuzimanju otvori u Canvi/Photoshopu za daljnju personalizaciju, ili objavi direktno.</p>
+            <p className="text-gray-600 text-xs mt-2">
+              <strong className="text-gray-400">PNG</strong> = direktno na telefon i upload na Instagram/Facebook. Tvoj link postavi u tekst objave ili bio (NIJE na slici — zaštita od kopiranja).
+            </p>
           </div>
         )}
         <CopyBlock label="Tekst za objavu" text={text} />
-        {link && <CopyBlock label="Tvoj link" text={link} mono />}
+        {link && <CopyBlock label="Tvoj link (postavi u bio ili tekst objave)" text={link} mono />}
       </div>
     </details>
   )
