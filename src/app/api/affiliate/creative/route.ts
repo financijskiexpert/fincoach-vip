@@ -6,7 +6,7 @@ import { buildCreativeSvg } from '@/lib/creative-svg'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
-const fontsDir = path.join(process.cwd(), 'node_modules', '@fontsource', 'inter', 'files')
+const fontsDir = path.join(process.cwd(), 'public', 'fonts')
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
     const resvg = new Resvg(svg, {
       font: {
         fontFiles: [
-          path.join(fontsDir, 'inter-latin-400-normal.woff2'),
-          path.join(fontsDir, 'inter-latin-700-normal.woff2'),
-          path.join(fontsDir, 'inter-latin-900-normal.woff2'),
+          path.join(fontsDir, 'inter-400.woff2'),
+          path.join(fontsDir, 'inter-700.woff2'),
+          path.join(fontsDir, 'inter-900.woff2'),
         ],
         loadSystemFonts: false,
         defaultFontFamily: 'Inter',
