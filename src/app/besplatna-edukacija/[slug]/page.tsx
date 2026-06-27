@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import BlogActions from './BlogActions'
+import ArticleActions from './ArticleActions'
 import { BlogPostingSchema, BreadcrumbSchema } from '@/components/StructuredData'
 import SiteFooter from '@/components/SiteFooter'
 
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 
-interface BlogPost {
+interface Article {
   id: string
   title: string
   slug: string
@@ -35,7 +35,7 @@ function formatDate(dateStr: string | null): string {
   return `${d.getDate()}. ${MONTHS[d.getMonth()]} ${d.getFullYear()}.`
 }
 
-async function getPost(slug: string): Promise<BlogPost | null> {
+async function getArticle(slug: string): Promise<Article | null> {
   const supabase = await createServiceClient()
   const { data, error } = await supabase
     .from('blog_posts')
@@ -44,39 +44,44 @@ async function getPost(slug: string): Promise<BlogPost | null> {
     .single()
 
   if (error || !data) return null
-  return data as BlogPost
+  return data as Article
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const post = await getPost(slug)
+  const article = await getArticle(slug)
 
-  if (!post || !post.is_published) {
-    return { title: 'Blog | FinCoach VIP' }
+  if (!article || !article.is_published) {
+    return { title: 'Besplatna edukacija | FinCoach VIP' }
   }
 
   return {
-    title: `${post.title} | FinCoach VIP Blog`,
-    description: post.excerpt ?? 'Članak o osobnim financijama i financijskoj slobodi.',
+    title: `${article.title} | FinCoach VIP`,
+    description: article.excerpt ?? 'Članak o osobnim financijama i financijskoj slobodi.',
+    alternates: { canonical: `${SITE_URL}/besplatna-edukacija/${slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt ?? undefined,
+      title: article.title,
+      description: article.excerpt ?? undefined,
       type: 'article',
-      publishedTime: post.published_at ?? undefined,
+      publishedTime: article.published_at ?? undefined,
+      url: `${SITE_URL}/besplatna-edukacija/${slug}`,
     },
   }
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function ArticlePage({ params }: Props) {
   const { slug } = await params
-  const post = await getPost(slug)
+  const article = await getArticle(slug)
 
-  if (!post || !post.is_published) {
+  if (!article || !article.is_published) {
     notFound()
   }
 
+  const articleUrl = `${SITE_URL}/besplatna-edukacija/${article.slug}`
+
   return (
     <main className="min-h-screen" style={{ backgroundColor: '#0f1e35', color: '#fff' }}>
+
       {/* Header */}
       <div className="border-b" style={{ borderColor: 'rgba(212,175,55,0.2)' }}>
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -85,7 +90,7 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
           <Link
             href="/volim-svoj-novac"
-            className="text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#D4AF37', color: '#0f1e35' }}
           >
             Kupi program
@@ -103,67 +108,59 @@ export default async function BlogPostPage({ params }: Props) {
           ← Natrag na edukaciju
         </Link>
 
-        {/* Meta */}
-        {post.published_at && (
+        {/* Datum */}
+        {article.published_at && (
           <time
-            dateTime={post.published_at}
+            dateTime={article.published_at}
             className="block text-xs font-medium uppercase tracking-widest mb-4"
             style={{ color: '#D4AF37' }}
           >
-            {formatDate(post.published_at)}
+            {formatDate(article.published_at)}
           </time>
         )}
 
-        {/* Title */}
+        {/* Naslov */}
         <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-8">
-          {post.title}
+          {article.title}
         </h1>
 
-        {/* Divider */}
-        <div
-          className="h-px mb-10"
-          style={{ backgroundColor: 'rgba(212,175,55,0.25)' }}
-        />
+        <div className="h-px mb-10" style={{ backgroundColor: 'rgba(212,175,55,0.25)' }} />
 
-        {/* Content */}
-        {post.content ? (
+        {/* Sadržaj */}
+        {article.content ? (
           <div
             className="prose-blog"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-            style={{
-              lineHeight: '1.8',
-              fontSize: '1.05rem',
-              color: 'rgba(255,255,255,0.85)',
-            }}
+            dangerouslySetInnerHTML={{ __html: article.content }}
+            style={{ lineHeight: '1.8', fontSize: '1.05rem', color: 'rgba(255,255,255,0.85)' }}
           />
         ) : (
           <p style={{ color: 'rgba(255,255,255,0.5)' }}>Sadržaj nije dostupan.</p>
         )}
 
         {/* Like + Share */}
-        <BlogActions
-          postId={post.id}
-          postTitle={post.title}
-          postUrl={`${SITE_URL}/blog/${post.slug}`}
-          initialLikes={post.like_count ?? 0}
+        <ArticleActions
+          postId={article.id}
+          postTitle={article.title}
+          postUrl={articleUrl}
+          initialLikes={article.like_count ?? 0}
         />
       </article>
 
-      {/* JSON-LD za SEO/GEO */}
+      {/* JSON-LD */}
       <BlogPostingSchema
-        title={post.title}
-        excerpt={post.excerpt ?? ''}
-        slug={post.slug}
-        publishedAt={post.published_at}
-        image={post.cover_image_url}
+        title={article.title}
+        excerpt={article.excerpt ?? ''}
+        slug={article.slug}
+        publishedAt={article.published_at}
+        image={article.cover_image_url}
       />
       <BreadcrumbSchema items={[
         { name: 'Početna', url: SITE_URL },
-        { name: 'Blog', url: `${SITE_URL}/blog` },
-        { name: post.title, url: `${SITE_URL}/blog/${post.slug}` },
+        { name: 'Besplatna edukacija', url: `${SITE_URL}/besplatna-edukacija` },
+        { name: article.title, url: articleUrl },
       ]} />
 
-      {/* CTA Card */}
+      {/* Program CTA */}
       <section className="max-w-3xl mx-auto px-4 pb-20">
         <div
           className="rounded-2xl p-8 md:p-10 text-center"
@@ -172,20 +169,14 @@ export default async function BlogPostPage({ params }: Props) {
             border: '1px solid rgba(212,175,55,0.35)',
           }}
         >
-          <p
-            className="text-xs font-semibold uppercase tracking-widest mb-4"
-            style={{ color: '#D4AF37' }}
-          >
+          <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#D4AF37' }}>
             FinCoach VIP Program
           </p>
           <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-snug">
             Završi s financijskim brigama — pridruži se{' '}
             <span style={{ color: '#D4AF37' }}>FinCoach VIP programu</span>
           </h2>
-          <p
-            className="mb-8 max-w-xl mx-auto"
-            style={{ color: 'rgba(255,255,255,0.7)' }}
-          >
+          <p className="mb-8 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
             90 dana strukturiranog programa koji te vodi od financijskog kaosa do sustava koji radi sam — čak i kad nisi motiviran/a.
           </p>
           <Link
@@ -197,6 +188,7 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
         </div>
       </section>
+
       <SiteFooter />
     </main>
   )

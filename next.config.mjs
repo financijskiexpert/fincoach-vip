@@ -15,6 +15,11 @@ const nextConfig = {
         destination: '/besplatna-edukacija',
         permanent: true,
       },
+      {
+        source: '/blog/:slug*',
+        destination: '/besplatna-edukacija/:slug*',
+        permanent: true,
+      },
     ]
   },
   experimental: {

@@ -56,7 +56,7 @@ function getCategoryLabel(cat: string | null): string {
 
 function PostCard({ post }: { post: EduPost }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="group flex flex-col rounded-xl overflow-hidden transition-transform hover:-translate-y-1" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+    <Link href={`/besplatna-edukacija/${post.slug}`} className="group flex flex-col rounded-xl overflow-hidden transition-transform hover:-translate-y-1" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
         <Image
           src={getCardImage(post)}
@@ -95,7 +95,7 @@ function PostCard({ post }: { post: EduPost }) {
 
 function FeaturedBig({ post }: { post: EduPost }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="group rounded-2xl overflow-hidden flex flex-col md:flex-row transition-transform hover:-translate-y-0.5" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.25)' }}>
+    <Link href={`/besplatna-edukacija/${post.slug}`} className="group rounded-2xl overflow-hidden flex flex-col md:flex-row transition-transform hover:-translate-y-0.5" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.25)' }}>
       <div className="relative md:w-1/2 flex-shrink-0 overflow-hidden" style={{ minHeight: 220 }}>
         <Image
           src={getCardImage(post)}
@@ -138,7 +138,7 @@ function FeaturedBig({ post }: { post: EduPost }) {
 
 function FeaturedMini({ post }: { post: EduPost }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="group flex gap-4 rounded-xl p-4 transition-colors" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(255,255,255,0.1)' }}>
+    <Link href={`/besplatna-edukacija/${post.slug}`} className="group flex gap-4 rounded-xl p-4 transition-colors" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(255,255,255,0.1)' }}>
       <div className="relative flex-shrink-0 rounded-lg overflow-hidden" style={{ width: 72, height: 72 }}>
         <Image
           src={getCardImage(post)}

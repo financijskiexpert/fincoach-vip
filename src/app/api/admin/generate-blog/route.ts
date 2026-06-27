@@ -51,7 +51,7 @@ export async function POST() {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
     const fbCaption = generated.fb_caption
-      ? generated.fb_caption.replace('[BLOG_URL]', `${siteUrl}/blog/${finalSlug}`)
+      ? generated.fb_caption.replace('[BLOG_URL]', `${siteUrl}/besplatna-edukacija/${finalSlug}`)
       : ''
 
     const { data: post, error: insertErr } = await service
