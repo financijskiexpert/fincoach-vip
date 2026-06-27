@@ -2,21 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { generateBlogPost } from '@/lib/claude'
 import { injectImagesIntoContent, getCoverImageUrl } from '@/lib/blog-images'
+import { revalidatePath } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
-/**
- * Dnevna avtomatska generacija blog članka.
- * 1. Vzame najstarejšo "pending" temo iz blog_topics
- * 2. Pokliče Claude da generira članek
- * 3. Vstavi v blog_posts z is_published=false (admin pregled)
- * 4. Označi temo kot 'generated'
- *
- * Lahko kličemo ročno: GET /api/cron/generate-blog?force=1 z X-Cron-Secret header.
- */
+const VALID_CATEGORIES = [
+  'osobne-financije',
+  'investiranje',
+  'psihologija-novca',
+  'osiguranje',
+  'mentorstvo',
+  'obiteljske-financije',
+]
+
 export async function GET(request: NextRequest) {
-  // Auth: Vercel cron pošlje header `x-vercel-cron`, ali ročni klic z CRON_SECRET
   const cronHeader = request.headers.get('x-vercel-cron')
   const secretHeader = request.headers.get('x-cron-secret')
   const isVercelCron = !!cronHeader
@@ -27,15 +27,11 @@ export async function GET(request: NextRequest) {
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({
-      ok: false,
-      error: 'ANTHROPIC_API_KEY ni nastavljen v environment. Dodaj v Vercel env vars.',
-    }, { status: 500 })
+    return NextResponse.json({ ok: false, error: 'ANTHROPIC_API_KEY nije postavljen.' }, { status: 500 })
   }
 
   const service = await createServiceClient()
 
-  // Vzemi najstarejšo pending temo z najvišjo prioriteto
   const { data: topic, error: topicErr } = await service
     .from('blog_topics')
     .select('id, title, angle, category, keywords')
@@ -46,15 +42,29 @@ export async function GET(request: NextRequest) {
     .maybeSingle()
 
   if (topicErr) return NextResponse.json({ error: topicErr.message }, { status: 500 })
-  if (!topic) return NextResponse.json({ ok: true, message: 'No pending topics' })
+  if (!topic) return NextResponse.json({ ok: true, message: 'Nema više tema na čekanju.' })
 
   try {
     const generated = await generateBlogPost(topic)
-
-    // Umetni slike u sadržaj
     generated.content = injectImagesIntoContent(generated.content, topic.category)
 
-    // Preveri slug uniqueness
+    // Validacija prije automatske objave
+    const errors: string[] = []
+    if (!generated.title || generated.title.length < 10) errors.push('naslov prekratak')
+    if (!generated.slug) errors.push('slug nedostaje')
+    if (!generated.content || generated.content.length < 800) errors.push('sadržaj prekratak (<800 znakova)')
+    if (!generated.excerpt || generated.excerpt.length < 50) errors.push('excerpt nedostaje ili prekratak')
+    if (topic.category && !VALID_CATEGORIES.includes(topic.category)) errors.push(`neispravna kategorija: ${topic.category}`)
+
+    if (errors.length > 0) {
+      await service
+        .from('blog_topics')
+        .update({ error_message: `Validacija neuspjela: ${errors.join(', ')}` })
+        .eq('id', topic.id)
+      return NextResponse.json({ ok: false, error: `Validacija neuspjela: ${errors.join(', ')}` }, { status: 422 })
+    }
+
+    // Provjeri jedinstvenost sluga
     let finalSlug = generated.slug
     let suffix = 1
     while (true) {
@@ -65,11 +75,12 @@ export async function GET(request: NextRequest) {
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+    const articleUrl = `${siteUrl}/besplatna-edukacija/${finalSlug}`
     const fbCaption = generated.fb_caption
-      ? generated.fb_caption.replace('[BLOG_URL]', `${siteUrl}/besplatna-edukacija/${finalSlug}`)
+      ? generated.fb_caption.replace('[BLOG_URL]', articleUrl)
       : ''
+    const publishedAt = new Date().toISOString()
 
-    // Vstavi članek (NE objavljen — admin mora potrditi)
     const { data: post, error: insertErr } = await service
       .from('blog_posts')
       .insert({
@@ -82,7 +93,8 @@ export async function GET(request: NextRequest) {
         fb_caption: fbCaption || null,
         category: topic.category ?? null,
         cover_image_url: getCoverImageUrl(topic.category, finalSlug),
-        is_published: false,
+        is_published: true,
+        published_at: publishedAt,
         is_auto_generated: true,
         topic_id: topic.id,
       })
@@ -91,30 +103,27 @@ export async function GET(request: NextRequest) {
 
     if (insertErr) throw insertErr
 
-    // Posodobi topic
     await service
       .from('blog_topics')
-      .update({
-        status: 'generated',
-        blog_post_id: post.id,
-        generated_at: new Date().toISOString(),
-      })
+      .update({ status: 'generated', blog_post_id: post.id, generated_at: publishedAt })
       .eq('id', topic.id)
+
+    // Počisti CDN keš da se novi članak odmah pojavi
+    revalidatePath('/besplatna-edukacija')
 
     return NextResponse.json({
       ok: true,
       topic: topic.title,
       post_id: post.id,
       slug: finalSlug,
-      message: 'Članak generiran. Otvori /admin/blog za pregled i objavu.',
+      url: articleUrl,
+      category: topic.category,
+      message: 'Članak generiran i objavljen.',
     })
   } catch (err: any) {
-    // Označi temo z greško, da je ne poskušamo znova istega dne
     await service
       .from('blog_topics')
-      .update({
-        error_message: err.message?.slice(0, 500) ?? 'Unknown error',
-      })
+      .update({ error_message: err.message?.slice(0, 500) ?? 'Unknown error' })
       .eq('id', topic.id)
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
   }
