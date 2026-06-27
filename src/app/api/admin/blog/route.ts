@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
@@ -77,6 +78,13 @@ export async function PUT(request: NextRequest) {
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Počisti keš za ovu stranicu i listing
+  if (data?.slug) {
+    revalidatePath(`/besplatna-edukacija/${data.slug}`)
+  }
+  revalidatePath('/besplatna-edukacija')
+
   return NextResponse.json({ post: data })
 }
 
@@ -89,8 +97,22 @@ export async function DELETE(request: NextRequest) {
   if (!id) return NextResponse.json({ error: 'ID je obavezan.' }, { status: 400 })
 
   const supabase = await createServiceClient()
-  const { error } = await supabase.from('blog_posts').delete().eq('id', id)
 
+  // Dohvati slug prije brisanja (za revalidaciju keša)
+  const { data: post } = await supabase
+    .from('blog_posts')
+    .select('slug')
+    .eq('id', id)
+    .single()
+
+  const { error } = await supabase.from('blog_posts').delete().eq('id', id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Počisti keš za obrisanu stranicu i listing
+  if (post?.slug) {
+    revalidatePath(`/besplatna-edukacija/${post.slug}`)
+  }
+  revalidatePath('/besplatna-edukacija')
+
   return NextResponse.json({ success: true })
 }
