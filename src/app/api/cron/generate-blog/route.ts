@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { generateBlogPost } from '@/lib/claude'
-import { injectImagesIntoContent } from '@/lib/blog-images'
+import { injectImagesIntoContent, getCoverImageUrl } from '@/lib/blog-images'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
@@ -80,6 +80,8 @@ export async function GET(request: NextRequest) {
         meta_title: generated.meta_title,
         meta_description: generated.meta_description,
         fb_caption: fbCaption || null,
+        category: topic.category ?? null,
+        cover_image_url: getCoverImageUrl(topic.category, finalSlug),
         is_published: false,
         is_auto_generated: true,
         topic_id: topic.id,

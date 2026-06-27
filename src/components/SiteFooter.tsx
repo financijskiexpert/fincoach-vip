@@ -15,7 +15,7 @@ export default function SiteFooter() {
           <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={160} height={50} />
           <div className="flex flex-wrap justify-center gap-6 text-sm text-white/40">
             <Link href="/volim-svoj-novac" className="hover:text-white transition-colors">Tečaj</Link>
-            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+            <Link href="/besplatna-edukacija" className="hover:text-white transition-colors">Besplatna edukacija</Link>
             <Link href="/kontakt" className="hover:text-white transition-colors">Kontakt</Link>
             <Link href="/uvjetiposlovanja" className="hover:text-white transition-colors">Uvjeti</Link>
             <Link href="/politikaprivatnosti" className="hover:text-white transition-colors">Privatnost</Link>

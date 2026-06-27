@@ -54,6 +54,12 @@ function photoUrl(seed: string): string {
   return `https://picsum.photos/seed/${seed}/1200/630`
 }
 
+export function getCoverImageUrl(category: string | null | undefined, slug: string): string {
+  const pool = getPhotosForCategory(category)
+  const seed = pool[0]?.seed ?? 'financial-freedom'
+  return `https://picsum.photos/seed/${seed}-${slug.slice(0, 12)}/800/450`
+}
+
 // Umeće slike u HTML sadržaj — ispred 1. i 3. naslova H2
 export function injectImagesIntoContent(
   html: string,
