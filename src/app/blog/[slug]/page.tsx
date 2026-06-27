@@ -96,11 +96,11 @@ export default async function BlogPostPage({ params }: Props) {
       <article className="max-w-3xl mx-auto px-4 py-12">
         {/* Back link */}
         <Link
-          href="/blog"
+          href="/besplatna-edukacija"
           className="inline-flex items-center text-sm mb-10 transition-colors hover:opacity-80"
           style={{ color: '#D4AF37' }}
         >
-          ← Natrag na blog
+          ← Natrag na edukaciju
         </Link>
 
         {/* Meta */}
