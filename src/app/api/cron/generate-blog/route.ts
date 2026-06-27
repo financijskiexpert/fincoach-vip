@@ -17,10 +17,11 @@ const VALID_CATEGORIES = [
 ]
 
 export async function GET(request: NextRequest) {
-  const cronHeader = request.headers.get('x-vercel-cron')
-  const secretHeader = request.headers.get('x-cron-secret')
-  const isVercelCron = !!cronHeader
-  const isManual = secretHeader === process.env.CRON_SECRET
+  const cronSecret = process.env.CRON_SECRET
+  const isVercelCron = !!request.headers.get('x-vercel-cron')
+  const headerToken = request.headers.get('x-cron-secret')
+  const queryToken = request.nextUrl.searchParams.get('token')
+  const isManual = cronSecret && (headerToken === cronSecret || queryToken === cronSecret)
 
   if (!isVercelCron && !isManual) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
