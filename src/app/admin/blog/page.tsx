@@ -198,7 +198,7 @@ export default function AdminBlog() {
                       <Badge className="bg-white/5 text-white/40 border-white/10 shrink-0">Draft</Badge>
                     )}
                   </div>
-                  <p className="text-white/30 text-xs font-mono">/blog/{post.slug}</p>
+                  <p className="text-white/30 text-xs font-mono">/besplatna-edukacija/{post.slug}</p>
                   {post.excerpt && (
                     <p className="text-white/40 text-xs mt-1 truncate">{post.excerpt}</p>
                   )}
@@ -211,7 +211,7 @@ export default function AdminBlog() {
                 </p>
                 <div className="flex items-center gap-1 shrink-0">
                   {post.is_published && (
-                    <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer"
+                    <a href={`/besplatna-edukacija/${post.slug}`} target="_blank" rel="noopener noreferrer"
                       className="p-2 text-white/30 hover:text-gold transition-colors">
                       <Eye className="w-4 h-4" />
                     </a>
