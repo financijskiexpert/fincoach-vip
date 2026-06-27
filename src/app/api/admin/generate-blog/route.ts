@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { generateBlogPost } from '@/lib/claude'
-import { injectImagesIntoContent, getCoverImageUrl } from '@/lib/blog-images'
+import { generateAndUploadArticleImages, injectGeneratedImages } from '@/lib/blog-image-generator'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
@@ -38,7 +38,6 @@ export async function POST() {
 
   try {
     const generated = await generateBlogPost(topic)
-    generated.content = injectImagesIntoContent(generated.content, topic.category)
 
     let finalSlug = generated.slug
     let suffix = 1
@@ -48,6 +47,11 @@ export async function POST() {
       if (!existing) break
       finalSlug = `${generated.slug}-${++suffix}`
     }
+
+    const { coverUrl, img1Url, img2Url } = await generateAndUploadArticleImages(
+      generated.title, topic.category, finalSlug
+    )
+    generated.content = injectGeneratedImages(generated.content, img1Url, img2Url)
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
     const fbCaption = generated.fb_caption
@@ -65,7 +69,7 @@ export async function POST() {
         meta_description: generated.meta_description,
         fb_caption: fbCaption || null,
         category: topic.category ?? null,
-        cover_image_url: getCoverImageUrl(topic.category, finalSlug),
+        cover_image_url: coverUrl,
         is_published: false,
         is_auto_generated: true,
         topic_id: topic.id,

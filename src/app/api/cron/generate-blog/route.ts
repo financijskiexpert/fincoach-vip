@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { generateBlogPost } from '@/lib/claude'
-import { injectImagesIntoContent, getCoverImageUrl } from '@/lib/blog-images'
+import { generateAndUploadArticleImages, injectGeneratedImages } from '@/lib/blog-image-generator'
 import { revalidatePath } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
@@ -46,10 +46,10 @@ export async function GET(request: NextRequest) {
   if (!topic) return NextResponse.json({ ok: true, message: 'Nema više tema na čekanju.' })
 
   try {
+    // 1. Generiraj tekst članka
     const generated = await generateBlogPost(topic)
-    generated.content = injectImagesIntoContent(generated.content, topic.category)
 
-    // Validacija prije automatske objave
+    // 2. Validacija prije objave
     const errors: string[] = []
     if (!generated.title || generated.title.length < 10) errors.push('naslov prekratak')
     if (!generated.slug) errors.push('slug nedostaje')
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ok: false, error: `Validacija neuspjela: ${errors.join(', ')}` }, { status: 422 })
     }
 
-    // Provjeri jedinstvenost sluga
+    // 3. Odredi finalni slug (jedinstvenost)
     let finalSlug = generated.slug
     let suffix = 1
     while (true) {
@@ -75,6 +75,13 @@ export async function GET(request: NextRequest) {
       finalSlug = `${generated.slug}-${++suffix}`
     }
 
+    // 4. Generiraj i uploadaj unikatne slike (3 PNG per članak)
+    const { coverUrl, img1Url, img2Url } = await generateAndUploadArticleImages(
+      generated.title, topic.category, finalSlug
+    )
+    generated.content = injectGeneratedImages(generated.content, img1Url, img2Url)
+
+    // 5. Spremi u bazu i objavi
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
     const articleUrl = `${siteUrl}/besplatna-edukacija/${finalSlug}`
     const fbCaption = generated.fb_caption
@@ -93,7 +100,7 @@ export async function GET(request: NextRequest) {
         meta_description: generated.meta_description,
         fb_caption: fbCaption || null,
         category: topic.category ?? null,
-        cover_image_url: getCoverImageUrl(topic.category, finalSlug),
+        cover_image_url: coverUrl,
         is_published: true,
         published_at: publishedAt,
         is_auto_generated: true,
@@ -109,7 +116,6 @@ export async function GET(request: NextRequest) {
       .update({ status: 'generated', blog_post_id: post.id, generated_at: publishedAt })
       .eq('id', topic.id)
 
-    // Počisti CDN keš da se novi članak odmah pojavi
     revalidatePath('/besplatna-edukacija')
 
     return NextResponse.json({
