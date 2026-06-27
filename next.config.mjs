@@ -8,6 +8,18 @@ const nextConfig = {
       { protocol: 'https', hostname: 'picsum.photos' },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/besplatna-edukacija',
+        headers: [{ key: 'Cache-Control', value: 'no-store, must-revalidate' }],
+      },
+      {
+        source: '/besplatna-edukacija/:slug*',
+        headers: [{ key: 'Cache-Control', value: 'no-store, must-revalidate' }],
+      },
+    ]
+  },
   async redirects() {
     return [
       {
