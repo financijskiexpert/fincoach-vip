@@ -49,7 +49,7 @@ export async function POST() {
     }
 
     const { coverUrl, img1Url, img2Url } = await generateAndUploadArticleImages(
-      generated.title, topic.category, finalSlug
+      generated.title, topic.category, finalSlug, generated.excerpt
     )
     generated.content = injectGeneratedImages(generated.content, img1Url, img2Url)
 

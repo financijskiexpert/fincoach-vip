@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
 
     // 4. Generiraj i uploadaj unikatne slike (3 PNG per članak)
     const { coverUrl, img1Url, img2Url } = await generateAndUploadArticleImages(
-      generated.title, topic.category, finalSlug
+      generated.title, topic.category, finalSlug, generated.excerpt
     )
     generated.content = injectGeneratedImages(generated.content, img1Url, img2Url)
 

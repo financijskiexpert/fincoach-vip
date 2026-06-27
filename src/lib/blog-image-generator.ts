@@ -1,3 +1,4 @@
+import Anthropic from '@anthropic-ai/sdk'
 import { Resvg } from '@resvg/resvg-js'
 import { createServiceClient } from './supabase/server'
 
@@ -6,21 +7,23 @@ const GOLD = '#D4AF37'
 const WHITE = '#FFFFFF'
 const DIM = 'rgba(255,255,255,0.12)'
 
-// Deterministic seed iz sluga
-function slugSeed(s: string): number {
-  let h = 5381
-  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0
-  return Math.abs(h)
+function getClient(): Anthropic {
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY nije postavljen')
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 }
 
-function seedRands(seed: number, n: number): number[] {
-  const out: number[] = []
-  let s = seed >>> 0
-  for (let i = 0; i < n; i++) {
-    s = (Math.imul(1664525, s) + 1013904223) >>> 0
-    out.push(s / 0xffffffff)
+function categoryLabel(cat: string | null | undefined): string {
+  const map: Record<string, string> = {
+    'osobne-financije': 'Osobne financije',
+    'investiranje': 'Investiranje',
+    'psihologija-novca': 'Psihologija novca',
+    'osiguranje': 'Financijska zaštita',
+    'mentorstvo': 'Mentorstvo',
+    'obiteljske-financije': 'Obiteljske financije',
   }
-  return out
+  if (!cat) return 'FinCoach VIP'
+  for (const [k, v] of Object.entries(map)) if (cat.includes(k)) return v
+  return 'FinCoach VIP'
 }
 
 function escXml(t: string): string {
@@ -43,228 +46,135 @@ function wrapText(title: string, maxLen = 38): string[] {
   return lines.slice(0, 3)
 }
 
-function renderTitle(title: string, x = 80, yStart = 52): string {
+// ── Fallback SVG (ako Claude ne vrati validan SVG) ────────────────────────────
+
+function fallbackSvg(title: string, cat: string | null | undefined, seed: number): string {
+  // Deterministični seed za "random" vrijednosti
+  let s = (seed >>> 0)
+  const rand = () => { s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 0xffffffff }
+
   const lines = wrapText(escXml(title))
-  return lines.map((l, i) =>
-    `<text x="${x}" y="${yStart + i * 44}" font-family="system-ui,sans-serif" font-size="${i === 0 ? 38 : 34}" font-weight="800" fill="${WHITE}">${l}</text>`
+  const titleSvg = lines.map((l, i) =>
+    `<text x="80" y="${52 + i * 44}" font-family="system-ui,sans-serif" font-size="${i === 0 ? 38 : 34}" font-weight="800" fill="${WHITE}">${l}</text>`
   ).join('\n')
-}
 
-function categoryLabel(cat: string | null | undefined): string {
-  const map: Record<string, string> = {
-    'osobne-financije': 'Osobne financije',
-    'investiranje': 'Investiranje',
-    'psihologija-novca': 'Psihologija novca',
-    'osiguranje': 'Financijska zaštita',
-    'mentorstvo': 'Mentorstvo',
-    'obiteljske-financije': 'Obiteljske financije',
-  }
-  if (!cat) return 'FinCoach VIP'
-  for (const [k, v] of Object.entries(map)) if (cat.includes(k)) return v
-  return 'FinCoach VIP'
-}
-
-// ── Chart types ─────────────────────────────────────────────────────────────
-
-function barChart(title: string, seed: number): string {
-  const r = seedRands(seed, 7)
-  const W = 1200, H = 630
-  const cX = 80, cY = 155, cW = W - 160, cH = H - 290
+  // Bar chart sa slučajnim vrijednostima baziranim na seedu
   const months = ['Sij', 'Vel', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp']
-  const vals = r.map(v => 600 + Math.round(v * 3800))
+  const vals = months.map(() => 600 + Math.round(rand() * 3800))
   const maxV = Math.max(...vals)
+  const cX = 80, cY = 165, cW = 1040, cH = 330
   const bW = Math.floor(cW / 7) - 16
 
   const bars = months.map((m, i) => {
     const bH = Math.round((vals[i] / maxV) * cH)
     const x = cX + i * Math.floor(cW / 7) + 8
     const y = cY + cH - bH
-    const highlight = vals[i] === maxV
-    return [
-      `<rect x="${x}" y="${y}" width="${bW}" height="${bH}" rx="7" fill="${highlight ? GOLD : DIM}"/>`,
-      `<text x="${x + bW / 2}" y="${y - 12}" text-anchor="middle" font-family="system-ui" font-size="19" font-weight="${highlight ? '700' : '400'}" fill="${highlight ? GOLD : 'rgba(255,255,255,0.7)'}">€${(vals[i] / 1000).toFixed(1)}k</text>`,
-      `<text x="${x + bW / 2}" y="${cY + cH + 30}" text-anchor="middle" font-family="system-ui" font-size="16" fill="rgba(255,255,255,0.5)">${m}</text>`,
-    ].join('\n')
+    const hi = vals[i] === maxV
+    return `<rect x="${x}" y="${y}" width="${bW}" height="${bH}" rx="7" fill="${hi ? GOLD : DIM}"/>
+<text x="${x + bW / 2}" y="${y - 12}" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="${hi ? '700' : '400'}" fill="${hi ? GOLD : 'rgba(255,255,255,0.7)'}">€${(vals[i] / 1000).toFixed(1)}k</text>
+<text x="${x + bW / 2}" y="${cY + cH + 30}" text-anchor="middle" font-family="system-ui" font-size="16" fill="rgba(255,255,255,0.5)">${m}</text>`
   }).join('\n')
 
-  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<rect width="${W}" height="${H}" fill="${NAVY}"/>
-<rect width="7" height="${H}" fill="${GOLD}"/>
-${renderTitle(title)}
-<text x="${W - 80}" y="52" text-anchor="end" font-family="system-ui" font-size="19" fill="${GOLD}">${categoryLabel(null)}</text>
+  return `<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="630" fill="${NAVY}"/>
+<rect width="7" height="630" fill="${GOLD}"/>
+${titleSvg}
+<text x="1120" y="52" text-anchor="end" font-family="system-ui,sans-serif" font-size="19" fill="${GOLD}">${escXml(categoryLabel(cat))}</text>
 ${bars}
 <line x1="${cX}" y1="${cY + cH}" x2="${cX + cW}" y2="${cY + cH}" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
 </svg>`
 }
 
-function lineChart(title: string, cat: string | null | undefined, seed: number): string {
-  const r = seedRands(seed, 12)
-  const W = 1200, H = 630
-  const cX = 80, cY = 145, cW = W - 160, cH = H - 270
+// ── Claude Haiku generira SVG vezan uz temu članka ───────────────────────────
 
-  const pts = r.map((v, i) => {
-    const trend = i / 11
-    return Math.round(40 + trend * 700 + v * 160 - 80)
-  })
-  const minP = Math.min(...pts), maxP = Math.max(...pts)
+async function generateSvgWithClaude(
+  title: string,
+  excerpt: string | null | undefined,
+  category: string | null | undefined,
+  imageIndex: number,
+  fallbackSeed: number
+): Promise<string> {
+  const client = getClient()
+  const catLabel = categoryLabel(category)
 
-  const coords = pts.map((p, i) => {
-    const x = cX + (i / 11) * cW
-    const y = cY + cH - ((p - minP) / (maxP - minP + 1)) * cH
-    return [Math.round(x), Math.round(y)]
-  })
+  const imageRole = imageIndex === 0
+    ? 'naslovna slika (cover) — vizualno najdojmljivija, prikazuje srž teme'
+    : imageIndex === 1
+      ? 'ilustracija za prvu sekciju teksta — vizualizira ključni koncept'
+      : 'ilustracija za drugu sekciju teksta — vizualizira praktičan primjer ili rezultat'
 
-  const poly = coords.map(c => c.join(',')).join(' ')
-  const area = `${cX},${cY + cH} ${poly} ${cX + cW},${cY + cH}`
-  const last = coords[coords.length - 1]
-  const growth = Math.round(r[0] * 120 + 45)
+  const prompt = `Napravi SVG ilustraciju za blog članak o osobnim financijama.
 
-  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.28"/>
-    <stop offset="100%" stop-color="${GOLD}" stop-opacity="0.02"/>
-  </linearGradient>
-</defs>
-<rect width="${W}" height="${H}" fill="${NAVY}"/>
-<rect width="7" height="${H}" fill="${GOLD}"/>
-${renderTitle(title)}
-<text x="${W - 80}" y="52" text-anchor="end" font-family="system-ui" font-size="19" fill="${GOLD}">${categoryLabel(cat)}</text>
-<polygon points="${area}" fill="url(#g)"/>
-<polyline points="${poly}" fill="none" stroke="${GOLD}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
-<circle cx="${last[0]}" cy="${last[1]}" r="10" fill="${GOLD}"/>
-<text x="${last[0] + 16}" y="${last[1] + 6}" font-family="system-ui" font-size="22" font-weight="700" fill="${GOLD}">+${growth}%</text>
-<line x1="${cX}" y1="${cY + cH}" x2="${cX + cW}" y2="${cY + cH}" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-</svg>`
+ČLANAK:
+Naslov: "${title}"
+Kategorija: ${catLabel}
+${excerpt ? `Opis: ${excerpt}` : ''}
+Uloga ove slike: ${imageRole}
+
+TEHNIČKE SPECIFIKACIJE (OBAVEZNO):
+- viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg"
+- Prva stvar u SVG: <rect width="1200" height="630" fill="${NAVY}"/>
+- Druga stvar: <rect width="7" height="630" fill="${GOLD}"/> (zlatna lijeva traka)
+- Ključna boja: ${GOLD} za naglašene elemente
+- Tekst: bijeli (#FFFFFF) ili zlatni (#D4AF37)
+- Naslov članka prikaži u gornjem lijevom uglu (x=80, y=52, font-size=36, font-weight=800, fill=white)
+  Ako je naslov dugačak, prelomi u 2 retka (y=52 i y=96)
+- Oznaka kategorije desno gore (x=1120, y=52, text-anchor=end, font-size=18, fill=${GOLD})
+- Sadržaj ilustracije počinje od y=130 ili niže
+
+SADRŽAJ (NAJVAŽNIJE):
+Napravi vizualizaciju SPECIFIČNU za ovu temu. Primjeri:
+- Za temu o štednji: vizualni ciljar štednje, jar sa novcem, trakasta tabla napretka
+- Za temu o investicijama: rastući graf portfelja, razredi imovine, složena kamata
+- Za temu o dugovima: semafor duga, plan otplate, vizualizacija opterećenja
+- Za psihologiju: mozak i novac, impulsi vs razum, mentalne blokade
+- Za osiguranje: štit zaštite, obitelj i sigurnost, rizik bez vs sa osiguranjem
+- Za mentorstvo: ljestve karijere, mreža klijenata, prihod zastopnika
+- Za obitelj: kućanski proračun, djeca i novac, zajednički ciljevi
+
+OGRANIČENJA SVG (resvg renderer — nema CSS filtera!):
+- Dozvoljeno: rect, circle, ellipse, line, polyline, polygon, path, text, g, defs, linearGradient, radialGradient, stop, use, symbol
+- NIJE dozvoljeno: filter, feGaussianBlur, feDropShadow, foreignObject, clip-path, mask, animacije
+- font-family UVIJEK: font-family="system-ui,sans-serif"
+- Koordinate: uvijek brojevi, nikada postotci u width/height atributima
+- path d atribut: koristi samo M, L, H, V, C, S, Q, A, Z komande
+
+Vrati SAMO SVG kod koji počinje s <svg i završava s </svg>. Bez ikakvog teksta, bez markdown, bez objašnjenja.`
+
+  try {
+    const msg = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 3500,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const raw = msg.content
+      .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+      .map(b => b.text)
+      .join('')
+      .trim()
+
+    // Izvuci SVG iz odgovora
+    const match = raw.match(/<svg[\s\S]*?<\/svg>/i)
+    if (!match) return fallbackSvg(title, category, fallbackSeed)
+
+    const svgCode = match[0]
+
+    // Validiraj da resvg može parsirati
+    new Resvg(svgCode, { fitTo: { mode: 'width', value: 1200 } })
+    return svgCode
+  } catch (err) {
+    console.error(`SVG generacija neuspjela (img ${imageIndex}), koristim fallback:`, err)
+    return fallbackSvg(title, category, fallbackSeed + imageIndex)
+  }
 }
 
-function donutChart(title: string, cat: string | null | undefined, seed: number): string {
-  const r = seedRands(seed, 5)
-  const W = 1200, H = 630
-  const cx = Math.round(W * 0.36), cy = Math.round(H / 2), OR = 165, IR = 100
+// ── Deterministični seed iz stringa ──────────────────────────────────────────
 
-  const segments = [
-    { label: 'Štednja', color: GOLD },
-    { label: 'Troškovi', color: '#4A90D9' },
-    { label: 'Investicije', color: '#2ECC71' },
-    { label: 'Osiguranje', color: '#E67E22' },
-    { label: 'Slobodno', color: '#9B59B6' },
-  ]
-  const rawVals = r.map(v => 10 + Math.round(v * 38))
-  const total = rawVals.reduce((s, v) => s + v, 0)
-  const pcts = rawVals.map(v => v / total)
-
-  let angle = -Math.PI / 2
-  const paths = segments.map((seg, i) => {
-    const start = angle
-    const end = angle + pcts[i] * 2 * Math.PI
-    angle = end
-    const x1 = cx + OR * Math.cos(start), y1 = cy + OR * Math.sin(start)
-    const x2 = cx + OR * Math.cos(end), y2 = cy + OR * Math.sin(end)
-    const ix1 = cx + IR * Math.cos(start), iy1 = cy + IR * Math.sin(start)
-    const ix2 = cx + IR * Math.cos(end), iy2 = cy + IR * Math.sin(end)
-    const large = pcts[i] > 0.5 ? 1 : 0
-    return `<path d="M${ix1.toFixed(1)},${iy1.toFixed(1)} L${x1.toFixed(1)},${y1.toFixed(1)} A${OR},${OR} 0 ${large},1 ${x2.toFixed(1)},${y2.toFixed(1)} L${ix2.toFixed(1)},${iy2.toFixed(1)} A${IR},${IR} 0 ${large},0 ${ix1.toFixed(1)},${iy1.toFixed(1)}Z" fill="${seg.color}"/>`
-  }).join('\n')
-
-  const legendX = Math.round(W * 0.62)
-  const legend = segments.map((seg, i) => `
-<rect x="${legendX}" y="${135 + i * 68}" width="22" height="22" rx="5" fill="${seg.color}"/>
-<text x="${legendX + 34}" y="${152 + i * 68}" font-family="system-ui" font-size="22" fill="${WHITE}">${seg.label}</text>
-<text x="${W - 80}" y="${152 + i * 68}" text-anchor="end" font-family="system-ui" font-size="22" font-weight="700" fill="${seg.color}">${Math.round(pcts[i] * 100)}%</text>`
-  ).join('\n')
-
-  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<rect width="${W}" height="${H}" fill="${NAVY}"/>
-<rect width="7" height="${H}" fill="${GOLD}"/>
-${renderTitle(title)}
-<text x="${W - 80}" y="52" text-anchor="end" font-family="system-ui" font-size="19" fill="${GOLD}">${categoryLabel(cat)}</text>
-${paths}
-<circle cx="${cx}" cy="${cy}" r="${IR - 4}" fill="${NAVY}"/>
-${legend}
-</svg>`
-}
-
-function shieldCard(title: string, cat: string | null | undefined, seed: number): string {
-  const r = seedRands(seed, 4)
-  const W = 1200, H = 630
-  const cx = Math.round(W * 0.34), cy = Math.round(H / 2)
-
-  const stats = [
-    { label: 'Pokrivenost', val: `${Math.round(85 + r[0] * 14)}%` },
-    { label: 'Klijenti', val: `${Math.round(200 + r[1] * 800)}+` },
-    { label: 'Iskustvo', val: '30+ god.' },
-    { label: 'Isplata', val: `${Math.round(3 + r[2] * 4)} dana` },
-  ]
-  const cards = stats.map((s, i) => {
-    const col = i % 2, row = Math.floor(i / 2)
-    const x = Math.round(W * 0.57) + col * 240
-    const y = 140 + row * 180
-    return `<rect x="${x}" y="${y}" width="220" height="150" rx="14" fill="${DIM}"/>
-<text x="${x + 110}" y="${y + 72}" text-anchor="middle" font-family="system-ui" font-size="44" font-weight="800" fill="${GOLD}">${s.val}</text>
-<text x="${x + 110}" y="${y + 110}" text-anchor="middle" font-family="system-ui" font-size="18" fill="rgba(255,255,255,0.6)">${s.label}</text>`
-  }).join('\n')
-
-  // Shield path
-  const sh = `M${cx},${cy - 155} L${cx + 125},${cy - 85} L${cx + 125},${cy + 55} Q${cx + 125},${cy + 125} ${cx},${cy + 162} Q${cx - 125},${cy + 125} ${cx - 125},${cy + 55} L${cx - 125},${cy - 85}Z`
-
-  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<rect width="${W}" height="${H}" fill="${NAVY}"/>
-<rect width="7" height="${H}" fill="${GOLD}"/>
-${renderTitle(title)}
-<text x="${W - 80}" y="52" text-anchor="end" font-family="system-ui" font-size="19" fill="${GOLD}">${categoryLabel(cat)}</text>
-<path d="${sh}" fill="${GOLD}" opacity="0.13"/>
-<path d="${sh}" fill="none" stroke="${GOLD}" stroke-width="3" opacity="0.7"/>
-<text x="${cx}" y="${cy + 22}" text-anchor="middle" font-family="system-ui" font-size="88" fill="${GOLD}" opacity="0.9">✓</text>
-${cards}
-</svg>`
-}
-
-function staircaseChart(title: string, cat: string | null | undefined, seed: number): string {
-  const r = seedRands(seed, 5)
-  const W = 1200, H = 630
-  const steps = [
-    { label: 'Start', sub: 'Osnove' },
-    { label: 'Znanje', sub: 'Edukacija' },
-    { label: 'Praksa', sub: 'Iskustvo' },
-    { label: 'Rast', sub: 'Klijenti' },
-    { label: 'Uspjeh', sub: 'Sloboda' },
-  ]
-  const bW = 162, bH = 68
-  const startX = 90, baseY = H - 110
-
-  const bars = steps.map((s, i) => {
-    const x = startX + i * (bW + 14)
-    const totalH = (i + 1) * bH
-    const y = baseY - totalH
-    const isTop = i === steps.length - 1
-    return `<rect x="${x}" y="${y}" width="${bW}" height="${totalH}" rx="9" fill="${isTop ? GOLD : DIM}"/>
-<text x="${x + bW / 2}" y="${y - 16}" text-anchor="middle" font-family="system-ui" font-size="21" font-weight="700" fill="${isTop ? GOLD : WHITE}">${s.label}</text>
-<text x="${x + bW / 2}" y="${y + 32}" text-anchor="middle" font-family="system-ui" font-size="15" fill="rgba(255,255,255,0.55)">${s.sub}</text>`
-  }).join('\n')
-
-  const lineEnd = startX + steps.length * (bW + 14) - 14
-  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-<rect width="${W}" height="${H}" fill="${NAVY}"/>
-<rect width="7" height="${H}" fill="${GOLD}"/>
-${renderTitle(title)}
-<text x="${W - 80}" y="52" text-anchor="end" font-family="system-ui" font-size="19" fill="${GOLD}">${categoryLabel(cat)}</text>
-${bars}
-<line x1="${startX}" y1="${baseY}" x2="${lineEnd}" y2="${baseY}" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-</svg>`
-}
-
-// Odaberi tip grafa na osnovu kategorije i indexa
-function buildSvg(title: string, cat: string | null | undefined, slug: string, idx: number): string {
-  const seed = slugSeed(slug + String(idx))
-  const c = cat ?? ''
-
-  if (c.includes('investiranje')) return lineChart(title, cat, seed)
-  if (c.includes('psihologija')) return donutChart(title, cat, seed)
-  if (c.includes('osiguranje')) return shieldCard(title, cat, seed)
-  if (c.includes('mentorstvo')) return staircaseChart(title, cat, seed)
-  // osobne-financije, obiteljske-financije, default: izmjenjujemo bar i line
-  return idx % 2 === 0 ? barChart(title, seed) : lineChart(title, cat, seed)
+function strSeed(s: string): number {
+  let h = 5381
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0
+  return Math.abs(h)
 }
 
 // ── Javna funkcija ───────────────────────────────────────────────────────────
@@ -272,14 +182,20 @@ function buildSvg(title: string, cat: string | null | undefined, slug: string, i
 export async function generateAndUploadArticleImages(
   title: string,
   category: string | null | undefined,
-  slug: string
+  slug: string,
+  excerpt?: string | null
 ): Promise<{ coverUrl: string; img1Url: string; img2Url: string }> {
   const supabase = await createServiceClient()
-  const urls: string[] = []
+  const seed = strSeed(slug)
 
+  // Generiraj sva 3 SVG-a paralelno (cover + 2 slike u tekstu)
+  const svgs = await Promise.all([0, 1, 2].map(i =>
+    generateSvgWithClaude(title, excerpt, category, i, seed + i)
+  ))
+
+  const urls: string[] = []
   for (let i = 0; i < 3; i++) {
-    const svg = buildSvg(title, category, slug, i)
-    const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } })
+    const resvg = new Resvg(svgs[i], { fitTo: { mode: 'width', value: 1200 } })
     const png = Buffer.from(resvg.render().asPng())
 
     const fileName = `${slug}-${i}.png`
@@ -287,7 +203,7 @@ export async function generateAndUploadArticleImages(
       .from('blog-images')
       .upload(fileName, png, { contentType: 'image/png', upsert: true })
 
-    if (error) throw new Error(`Storage upload failed: ${error.message}`)
+    if (error) throw new Error(`Storage upload greška: ${error.message}`)
 
     const { data } = supabase.storage.from('blog-images').getPublicUrl(fileName)
     urls.push(data.publicUrl)
@@ -296,7 +212,8 @@ export async function generateAndUploadArticleImages(
   return { coverUrl: urls[0], img1Url: urls[1], img2Url: urls[2] }
 }
 
-// Umetne generisane slike u HTML sadržaj umjesto picsuma
+// ── Ubaci slike u HTML sadržaj članka ────────────────────────────────────────
+
 export function injectGeneratedImages(
   html: string,
   img1Url: string,
