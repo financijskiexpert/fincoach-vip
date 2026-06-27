@@ -284,7 +284,7 @@ export default function LandingPage() {
               </p>
               <div className="flex gap-6">
                 <div>
-                  <p className="text-2xl font-bold text-gold">10+</p>
+                  <p className="text-2xl font-bold text-gold">30+</p>
                   <p className="text-sm text-white/40">Godina iskustva</p>
                 </div>
                 <div>
