@@ -190,10 +190,10 @@ function PdfStrip() {
       <div className="max-w-2xl mx-auto text-center">
         <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Besplatno · odmah na email</p>
         <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: '#fff' }}>
-          Preuzmi vodič <span style={{ color: '#D4AF37' }}>"Volim Svoj Novac"</span>
+          Preuzmi besplatni PDF vodič <span style={{ color: '#D4AF37' }}>"Savjeti i tehnike za financijsku stabilnost"</span>
         </h2>
         <p className="mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
-          Praktični PDF vodič koji su preuzele stotine čitatelja. Korak po korak do financijske slobode — besplatno.
+          Praktični vodič koji su preuzele stotine čitatelja. Korak po korak do financijske slobode — besplatno na tvoj email.
         </p>
 
         {status === 'success' ? (

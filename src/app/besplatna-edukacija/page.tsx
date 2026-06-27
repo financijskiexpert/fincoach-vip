@@ -25,7 +25,7 @@ export default async function BesplatnaEdukacijaPage() {
 
   const { data: rawPosts } = await supabase
     .from('blog_posts')
-    .select('id, title, slug, excerpt, published_at, cover_image_url, category, blog_topics(category)')
+    .select('id, title, slug, excerpt, published_at, cover_image_url, category')
     .eq('is_published', true)
     .order('published_at', { ascending: false })
 
@@ -36,9 +36,7 @@ export default async function BesplatnaEdukacijaPage() {
     excerpt: p.excerpt as string | null,
     published_at: p.published_at as string | null,
     cover_image_url: p.cover_image_url as string | null,
-    category: (p.category as string | null)
-      ?? (Array.isArray(p.blog_topics) ? p.blog_topics[0]?.category : p.blog_topics?.category)
-      ?? null,
+    category: p.category as string | null,
   }))
 
   return (
