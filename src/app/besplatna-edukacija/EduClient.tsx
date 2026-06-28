@@ -14,6 +14,7 @@ const CATEGORIES = [
   { id: 'osiguranje', label: 'Osiguranje' },
   { id: 'mentorstvo', label: 'Mentorstvo' },
   { id: 'obiteljske-financije', label: 'Obiteljske financije' },
+  { id: 'osobna-rast', label: 'Osobna rast' },
 ]
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -23,6 +24,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   'osiguranje': 'Osiguranje',
   'mentorstvo': 'Mentorstvo',
   'obiteljske-financije': 'Obiteljske financije',
+  'osobna-rast': 'Osobna rast',
 }
 
 export interface EduPost {
