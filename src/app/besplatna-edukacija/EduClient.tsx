@@ -280,14 +280,14 @@ export default function EduClient({ posts }: { posts: EduPost[] }) {
 
   return (
     <>
-      {/* Category filters */}
+      {/* Category filters — 2 rows × 4 */}
       <div className="max-w-5xl mx-auto px-4 pb-8">
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {CATEGORIES.map(cat => (
             <button
               key={cat.id ?? 'all'}
               onClick={() => setSelectedCat(cat.id)}
-              className="rounded-full px-4 py-2 text-sm font-medium transition-colors"
+              className="rounded-full px-4 py-2 text-sm font-medium transition-colors text-center"
               style={{
                 backgroundColor: selectedCat === cat.id
                   ? 'rgba(212,175,55,0.2)'
