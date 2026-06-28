@@ -25,15 +25,12 @@ export interface GeneratedBlogPost {
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 
-// Kategorije za koje CTA uključuje i /kontakt link
-const CONTACT_CATEGORIES = ['osiguranje', 'mentorstvo']
-
 function buildCta(category: string | null | undefined): string {
   const cat = category ?? ''
-  if (CONTACT_CATEGORIES.some(c => cat.includes(c))) {
-    return `<div class="blog-cta"><p>📥 <strong>Preuzmi besplatni vodič</strong> — "5 koraka do financijske slobode": <a href="${SITE_URL}">fincoach.vip</a></p><p>🤝 Zainteresiran/a za suradnju ili mentorstvo u osiguranju? <a href="${SITE_URL}/kontakt">Javi mi se →</a></p><p>🎓 <a href="${SITE_URL}/volim-svoj-novac">FinCoach VIP program →</a></p></div>`
-  }
-  return `<div class="blog-cta"><p>📥 <strong>Preuzmi besplatni vodič</strong> — "5 koraka do financijske slobode": <a href="${SITE_URL}">fincoach.vip</a></p><p>🎓 Spreman/na za ozbiljnu transformaciju? <a href="${SITE_URL}/volim-svoj-novac">FinCoach VIP program →</a></p></div>`
+  const contactLine = cat.includes('osiguranje') || cat.includes('mentorstvo')
+    ? `<p>🤝 Zainteresiran/a za suradnju ili mentorstvo u osiguranju? <a href="${SITE_URL}/kontakt">Javi mi se →</a></p>`
+    : `<p>🤝 Imaš pitanje ili želiš osobni savjet? <a href="${SITE_URL}/kontakt">Javi mi se →</a></p>`
+  return `<div class="blog-cta"><p>📥 <strong>Preuzmi besplatni vodič</strong> — "5 koraka do financijske slobode": <a href="${SITE_URL}">fincoach.vip</a></p>${contactLine}<p>🎓 Spreman/na za ozbiljnu transformaciju? <a href="${SITE_URL}/volim-svoj-novac">FinCoach VIP program →</a></p></div>`
 }
 
 const SYSTEM_PROMPT = `Ti si Brane Recek — financijski savjetnik s 30+ godina iskustva, autor FinCoach VIP programa "Volim Svoj Novac" i mentor novim osiguravajućim zastopnicima. Pišeš blog članke za fincoach.vip na hrvatskom jeziku.
