@@ -19,6 +19,7 @@
     "@stripe/stripe-js": "^4.0.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
+    "@vercel/functions": "^3.7.4",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.0",

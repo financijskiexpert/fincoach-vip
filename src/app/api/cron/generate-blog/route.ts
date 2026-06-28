@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { waitUntil } from '@vercel/functions'
 import { createServiceClient } from '@/lib/supabase/server'
 import { generateBlogPost } from '@/lib/claude'
 import { generateAndUploadArticleImages, injectGeneratedImages } from '@/lib/blog-image-generator'
@@ -16,40 +17,13 @@ const VALID_CATEGORIES = [
   'obiteljske-financije',
 ]
 
-export async function GET(request: NextRequest) {
-  const cronSecret = process.env.CRON_SECRET
-  const isVercelCron = !!request.headers.get('x-vercel-cron')
-  const headerToken = request.headers.get('x-cron-secret')
-  const queryToken = request.nextUrl.searchParams.get('token')
-  const isManual = cronSecret && (headerToken === cronSecret || queryToken === cronSecret)
-
-  if (!isVercelCron && !isManual) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({ ok: false, error: 'ANTHROPIC_API_KEY nije postavljen.' }, { status: 500 })
-  }
-
-  const service = await createServiceClient()
-
-  const { data: topic, error: topicErr } = await service
-    .from('blog_topics')
-    .select('id, title, angle, category, keywords')
-    .eq('status', 'pending')
-    .order('priority', { ascending: false })
-    .order('created_at', { ascending: true })
-    .limit(1)
-    .maybeSingle()
-
-  if (topicErr) return NextResponse.json({ error: topicErr.message }, { status: 500 })
-  if (!topic) return NextResponse.json({ ok: true, message: 'Nema više tema na čekanju.' })
-
+async function generateAndPublishBlog(
+  service: Awaited<ReturnType<typeof createServiceClient>>,
+  topic: { id: string; title: string; angle?: string | null; category?: string | null; keywords?: string[] | null }
+): Promise<void> {
   try {
-    // 1. Generiraj tekst članka
     const generated = await generateBlogPost(topic)
 
-    // 2. Validacija prije objave
     const errors: string[] = []
     if (!generated.title || generated.title.length < 10) errors.push('naslov prekratak')
     if (!generated.slug) errors.push('slug nedostaje')
@@ -62,10 +36,10 @@ export async function GET(request: NextRequest) {
         .from('blog_topics')
         .update({ error_message: `Validacija neuspjela: ${errors.join(', ')}` })
         .eq('id', topic.id)
-      return NextResponse.json({ ok: false, error: `Validacija neuspjela: ${errors.join(', ')}` }, { status: 422 })
+      console.error('Blog validacija neuspjela:', errors.join(', '))
+      return
     }
 
-    // 3. Odredi finalni slug (jedinstvenost)
     let finalSlug = generated.slug
     let suffix = 1
     while (true) {
@@ -75,13 +49,11 @@ export async function GET(request: NextRequest) {
       finalSlug = `${generated.slug}-${++suffix}`
     }
 
-    // 4. Generiraj i uploadaj unikatne slike (3 PNG per članak)
     const { coverUrl, img1Url, img2Url } = await generateAndUploadArticleImages(
       generated.title, topic.category, finalSlug, generated.excerpt
     )
     generated.content = injectGeneratedImages(generated.content, img1Url, img2Url)
 
-    // 5. Spremi u bazu i objavi
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
     const articleUrl = `${siteUrl}/besplatna-edukacija/${finalSlug}`
     const fbCaption = generated.fb_caption
@@ -118,20 +90,53 @@ export async function GET(request: NextRequest) {
 
     revalidatePath('/besplatna-edukacija')
 
-    return NextResponse.json({
-      ok: true,
-      topic: topic.title,
-      post_id: post.id,
-      slug: finalSlug,
-      url: articleUrl,
-      category: topic.category,
-      message: 'Članak generiran i objavljen.',
-    })
+    console.log(`Blog generiran i objavljen: ${finalSlug}`)
   } catch (err: any) {
+    console.error('Blog generacija greška:', err?.message)
     await service
       .from('blog_topics')
-      .update({ error_message: err.message?.slice(0, 500) ?? 'Unknown error' })
+      .update({ status: 'pending', error_message: err.message?.slice(0, 500) ?? 'Unknown error' })
       .eq('id', topic.id)
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
+      .catch(() => {})
   }
+}
+
+export async function GET(request: NextRequest) {
+  const cronSecret = process.env.CRON_SECRET
+  const isVercelCron = !!request.headers.get('x-vercel-cron')
+  const headerToken = request.headers.get('x-cron-secret')
+  const queryToken = request.nextUrl.searchParams.get('token')
+  const isManual = cronSecret && (headerToken === cronSecret || queryToken === cronSecret)
+
+  if (!isVercelCron && !isManual) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ ok: false, error: 'ANTHROPIC_API_KEY nije postavljen.' }, { status: 500 })
+  }
+
+  const service = await createServiceClient()
+
+  const { data: topic, error: topicErr } = await service
+    .from('blog_topics')
+    .select('id, title, angle, category, keywords')
+    .eq('status', 'pending')
+    .order('priority', { ascending: false })
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+
+  if (topicErr) return NextResponse.json({ error: topicErr.message }, { status: 500 })
+  if (!topic) return NextResponse.json({ ok: true, message: 'Nema više tema na čekanju.' })
+
+  // Pokreni generaciju u pozadini — odgovaramo odmah da cron-job.org ne ispadne (max 30s)
+  waitUntil(generateAndPublishBlog(service, topic))
+
+  return NextResponse.json({
+    ok: true,
+    message: 'Blog generacija pokrenuta u pozadini.',
+    topic: topic.title,
+    category: topic.category,
+  })
 }
