@@ -21,6 +21,7 @@ function categoryLabel(cat: string | null | undefined): string {
     'osiguranje': 'Financijska zaštita',
     'mentorstvo': 'Mentorstvo',
     'obiteljske-financije': 'Obiteljske financije',
+    'osobna-rast': 'Osobna rast',
   }
   if (!cat) return 'FinCoach VIP'
   for (const [k, v] of Object.entries(map)) if (cat.includes(k)) return v
@@ -38,6 +39,7 @@ function buildPexelsQuery(category: string | null | undefined, imageIndex: numbe
     'osiguranje':           ['family protection insurance safety', 'life insurance family security home', 'protection safety umbrella family'],
     'mentorstvo':           ['business mentor coaching professional', 'career development leadership', 'business success meeting team'],
     'obiteljske-financije': ['family financial planning home', 'family together happy lifestyle', 'family budget kitchen table'],
+    'osobna-rast':          ['personal growth success mindset', 'self improvement habits discipline', 'goal setting achievement motivation'],
   }
   for (const [k, v] of Object.entries(bank)) {
     if (cat === k || cat.includes(k)) return v[imageIndex % v.length]

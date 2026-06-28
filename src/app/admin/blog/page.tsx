@@ -287,13 +287,31 @@ function FbCaptionCopy({ caption }: { caption: string }) {
   )
 }
 
+const BLOG_CATEGORIES = [
+  { value: 'auto',               label: 'Automatski (iz queue)' },
+  { value: 'osobne-financije',   label: 'Osobne financije' },
+  { value: 'investiranje',       label: 'Investiranje' },
+  { value: 'psihologija-novca',  label: 'Psihologija novca' },
+  { value: 'osiguranje',         label: 'Osiguranje' },
+  { value: 'mentorstvo',         label: 'Mentorstvo' },
+  { value: 'obiteljske-financije', label: 'Obiteljske financije' },
+  { value: 'osobna-rast',        label: 'Osobna rast' },
+]
+
 function GenerateNowButton({ onDone }: { onDone: () => void }) {
   const [pending, setPending] = useState(false)
+  const [category, setCategory] = useState('auto')
+
   async function generate() {
-    if (!confirm('Generiraj novi članak iz queue tema?\n\nClaude AI će napisati osnutek za pregled (NE objavljuje automatski).')) return
+    const catLabel = BLOG_CATEGORIES.find(c => c.value === category)?.label ?? category
+    if (!confirm(`Generiraj novi članak — kategorija: ${catLabel}\n\nClaude AI će napisati osnutak za pregled (NE objavljuje automatski).`)) return
     setPending(true)
     try {
-      const res = await fetch('/api/admin/generate-blog', { method: 'POST' })
+      const res = await fetch('/api/admin/generate-blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category }),
+      })
       const data = await res.json()
       if (data.ok) {
         toast.success(`✓ Generiran: ${data.topic}. Otvori za pregled i objavu.`)
@@ -307,10 +325,23 @@ function GenerateNowButton({ onDone }: { onDone: () => void }) {
       setPending(false)
     }
   }
+
   return (
-    <Button onClick={generate} disabled={pending} variant="outline" className="gap-2">
-      {pending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-      Generiraj sad (AI)
-    </Button>
+    <div className="flex items-center gap-2">
+      <select
+        value={category}
+        onChange={e => setCategory(e.target.value)}
+        disabled={pending}
+        className="bg-navy border border-white/10 text-white text-sm rounded-xl px-3 py-2 focus:outline-none focus:border-gold/40 disabled:opacity-50"
+      >
+        {BLOG_CATEGORIES.map(c => (
+          <option key={c.value} value={c.value}>{c.label}</option>
+        ))}
+      </select>
+      <Button onClick={generate} disabled={pending} variant="outline" className="gap-2">
+        {pending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+        Generiraj (AI)
+      </Button>
+    </div>
   )
 }

@@ -45,6 +45,7 @@ KATEGORIJE:
 - osiguranje: važnost zaštite, vrste, odabir — iz 30g iskustva u struci
 - mentorstvo: razvoj karijere zastopnika, coaching, suradnja
 - obiteljske-financije: djeca i novac, partnerski razgovori
+- osobna-rast: navike, disciplina, postavljanje ciljeva, produktivnost — veza između osobnog razvoja i financijskog uspjeha
 
 PRAVILA SADRŽAJA:
 - Glas: topao, iskren, autoritativan ali ne arogantan. Pišeš kao mentor.

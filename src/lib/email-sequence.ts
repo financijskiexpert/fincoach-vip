@@ -278,7 +278,9 @@ export function buildEmailContent(
     <div style="text-align:center;margin:20px 0;"><a href="${SITE_URL}/volim-svoj-novac" class="btn">Upiši se sada →</a></div>
     <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata novca. Nema rizika.</p>`
 
-  const softCta = `<p class="soft-cta">Još nisi dio programa? Upiši se s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> i počni transformaciju danas → <a href="${SITE_URL}/volim-svoj-novac" style="color:#D4AF37;">fincoach.vip/volim-svoj-novac</a></p>`
+  const softCta = affiliateCode
+    ? `<p class="soft-cta">Tvoj ekskluzivni 10% popust je aktivan! → <a href="${SITE_URL}/volim-svoj-novac?ref=${affiliateCode}" style="color:#D4AF37;">fincoach.vip/volim-svoj-novac</a></p>`
+    : `<p class="soft-cta">Još nisi dio programa? Upiši se s kodom <strong style="color:#D4AF37;font-family:monospace;">PRILIKA</strong> i počni transformaciju danas → <a href="${SITE_URL}/volim-svoj-novac" style="color:#D4AF37;">fincoach.vip/volim-svoj-novac</a></p>`
 
   const cases: Record<number, () => string> = {
 

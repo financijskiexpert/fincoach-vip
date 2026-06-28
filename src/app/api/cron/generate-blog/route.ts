@@ -15,6 +15,7 @@ const VALID_CATEGORIES = [
   'osiguranje',
   'mentorstvo',
   'obiteljske-financije',
+  'osobna-rast',
 ]
 
 async function generateAndPublishBlog(
