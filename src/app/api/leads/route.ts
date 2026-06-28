@@ -27,6 +27,9 @@ export async function POST(request: NextRequest) {
     const countdownExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
 
     // Upsert lead in Supabase
+    // Pohrani affiliate kod ako je lead prišao prek affiliate linka
+    const affiliateCode = request.cookies.get('aff_ref')?.value?.toUpperCase() ?? null
+
     const { data: lead, error: leadError } = await supabase
       .from('leads')
       .upsert(
@@ -37,6 +40,7 @@ export async function POST(request: NextRequest) {
           countdown_expires_at: countdownExpiresAt,
           marketing_consent: marketing_consent,
           marketing_consent_at: marketing_consent ? new Date().toISOString() : null,
+          ...(affiliateCode ? { affiliate_code: affiliateCode } : {}),
         },
         {
           onConflict: 'email',

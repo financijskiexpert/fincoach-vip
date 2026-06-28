@@ -25,10 +25,10 @@ export async function GET(request: NextRequest) {
   const supabase = await createServiceClient()
   const now = new Date().toISOString()
 
-  // Dohvati sve due emailove
+  // Dohvati sve due emailove + affiliate_code leada
   const { data: dueEmails, error } = await supabase
     .from('email_sequence_queue')
-    .select('*')
+    .select('*, leads(affiliate_code)')
     .eq('status', 'pending')
     .lte('scheduled_at', now)
     .limit(50)
@@ -82,8 +82,9 @@ export async function GET(request: NextRequest) {
         }
       }
 
-      // Generiraj sadržaj emaila
-      const emailContent = buildEmailContent(item.sequence_index, item.full_name ?? 'Prijatelju', item.email)
+      // Generiraj sadržaj emaila (affiliate lead → bez PRIJATELJU koda u prodajnim emailima)
+      const affiliateCode = (item as any).leads?.affiliate_code ?? null
+      const emailContent = buildEmailContent(item.sequence_index, item.full_name ?? 'Prijatelju', item.email, affiliateCode)
       if (!emailContent) {
         await supabase
           .from('email_sequence_queue')

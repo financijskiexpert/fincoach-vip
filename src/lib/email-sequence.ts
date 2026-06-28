@@ -147,13 +147,123 @@ function emailBase(content: string, unsubEmail: string): string {
 
 // ─── Sadržaj emaila po indexu ─────────────────────────────────────────────────
 
-export function buildEmailContent(
+// ─── Affiliate prodajni emaili (bez PRIJATELJU/PRIJATELJU koda) ──────────────
+
+function buildAffiliateSalesEmail(
   sequenceIndex: number,
   name: string,
-  email: string
+  email: string,
+  affiliateCode: string
 ): { subject: string; html: string } | null {
   const seq = EMAIL_SEQUENCE[sequenceIndex]
   if (!seq) return null
+  const n = name.split(' ')[0] || 'prijatelju'
+  const sig = `<p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`
+
+  const affiliateOffer = `
+    <div class="box" style="border-color:#D4AF37;text-align:center;">
+      <p style="color:#D4AF37;font-weight:800;font-size:15px;margin:0 0 8px;">Tvoja ekskluzivna cijena:</p>
+      <p style="font-size:44px;font-weight:900;color:#D4AF37;margin:4px 0;">357 €</p>
+      <p style="color:#718096;font-size:12px;margin:0 0 4px;">Umjesto redovnih <s style="color:#718096;">397 €</s> · <strong style="color:#fff;">10% ekskluzivni popust</strong></p>
+      <p style="color:#718096;font-size:12px;margin:0 0 16px;">Doživotni pristup · 90 lekcija · Aktivno zajednica</p>
+    </div>
+    <div style="text-align:center;margin:20px 0;">
+      <a href="${SITE_URL}/volim-svoj-novac?ref=${affiliateCode}" class="btn">Upiši se s popustom →</a>
+    </div>
+    <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata novca. Nema rizika.</p>`
+
+  // 5 rotacijskih tijela za prodajne emaile — rotiraju po sequenceIndex
+  const variant = Math.floor(sequenceIndex / 5) % 5
+
+  const bodies: Array<() => string> = [
+    () => `
+      <h2>Dragi/a ${n}, tvoj ekskluzivni popust je aktivan</h2>
+      <p>Nekad sam pitao polaznike: "Zašto ste čekali toliko dugo?"</p>
+      <p>Odgovor je uvijek isti: <strong style="color:#fff;">"Mislio/la sam da nije pravi trenutak."</strong></p>
+      <div class="box">
+        <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Istina o "pravom trenutku":</p>
+        <p style="margin:0;">Savršen trenutak nikad ne dolazi sam od sebe. Pravi trenutak je onaj koji <strong style="color:#fff;">ti odabereš</strong>.</p>
+      </div>
+      <p>Tvoj ekskluzivni popust od 10% je aktivan. Upiši se danas i za 90 dana bit ćeš na sasvim drugom mjestu.</p>
+      ${affiliateOffer}
+      ${sig}`,
+
+    () => `
+      <h2>Dragi/a ${n}, koliko te košta svaki dan odgađanja?</h2>
+      <p>Napravimo brzu matematiku zajedno.</p>
+      <div class="box">
+        <p style="margin:0 0 8px;">📊 Prosječan polaznik programa uštedi <strong style="color:#fff;">200 € miesečno</strong> u prvih 90 dana</p>
+        <p style="margin:0 0 8px;">⏳ Svaki dan bez sustava = izgubljena ušteđevina</p>
+        <p style="margin:0;">🎯 Tvoj ekskluzivni popust pokriva se sam za manje od 2 mieseca</p>
+      </div>
+      <p>Ovo nije trošak — ovo je <strong style="color:#fff;">investicija koja se vraća.</strong></p>
+      <p>Tvoj 10% popust je aktivan i čeka te:</p>
+      ${affiliateOffer}
+      ${sig}`,
+
+    () => `
+      <h2>Dragi/a ${n}, evo što kažu oni koji su počeli</h2>
+      <div class="box" style="font-style:italic;">
+        <p style="color:#fff;margin:0 0 12px;">"Za 3 mieseca sam eliminirala 5.000 € duga i prvi put u životu imam hitni fond. Nisam vjerovala da je moguće."</p>
+        <p style="color:#D4AF37;font-size:13px;margin:0;">— Ana, 34 god., Zagreb</p>
+      </div>
+      <div class="box" style="font-style:italic;">
+        <p style="color:#fff;margin:0 0 12px;">"Počeo sam s 50 € miesečno. Danas imam diversificirani portfelj. Nitko me nikad nije naučio kako."</p>
+        <p style="color:#D4AF37;font-size:13px;margin:0;">— Marko, 41 god., Split</p>
+      </div>
+      <p>Tvoja priča još nije napisana. Ali možeš početi pisati je danas, s ekskluzivnim popustom koji te čeka:</p>
+      ${affiliateOffer}
+      ${sig}`,
+
+    () => `
+      <h2>Dragi/a ${n}, jedna odluka koja mijenja sve</h2>
+      <p>U 30 godina rada u financijama naučio sam jednu stvar:</p>
+      <p>Razlika između onih koji postignu financijsku slobodu i onih koji ne, nije u inteligenciji, ni u prihodima, ni u sreći.</p>
+      <div class="box">
+        <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Razlika je u jednoj odluci:</p>
+        <p style="font-size:18px;color:#fff;margin:0;"><strong>Odlučiti početi. Danas.</strong></p>
+      </div>
+      <p>Imaš ekskluzivni pristup programu uz 10% popust. Iskoristi ga:</p>
+      ${affiliateOffer}
+      ${sig}`,
+
+    () => `
+      <h2>Dragi/a ${n}, osobna poruka za tebe</h2>
+      <p>Svaki put kad netko upiše program, osjećam istu radost.</p>
+      <p>Ne zbog naplate — nego jer znam što slijedi: <strong style="color:#fff;">90 dana u kojima se stvari zaista počnu mijenjati.</strong></p>
+      <p>Tvoj popust je osiguran. Sve što trebaš napraviti je jedan klik:</p>
+      ${affiliateOffer}
+      <div class="box">
+        <p style="margin:0 0 8px;color:#D4AF37;font-weight:700;">Što dobivaš:</p>
+        <p style="margin:0 0 6px;">✓ 90 lekcija o osobnim financijama</p>
+        <p style="margin:0 0 6px;">✓ Praktični alati i predlošci</p>
+        <p style="margin:0 0 6px;">✓ Pristup zajednici polaznika</p>
+        <p style="margin:0;">✓ 30-dnevna garancija povrata novca</p>
+      </div>
+      ${sig}`,
+  ]
+
+  const content = bodies[variant]()
+  return {
+    subject: seq.subject,
+    html: emailBase(content, email),
+  }
+}
+
+export function buildEmailContent(
+  sequenceIndex: number,
+  name: string,
+  email: string,
+  affiliateCode?: string | null
+): { subject: string; html: string } | null {
+  const seq = EMAIL_SEQUENCE[sequenceIndex]
+  if (!seq) return null
+
+  // Affiliate lead + prodajni email → pošalji affiliate verziju bez PRIJATELJU koda
+  if (affiliateCode && seq.type === 'sales') {
+    return buildAffiliateSalesEmail(sequenceIndex, name, email, affiliateCode)
+  }
+
   const n = name.split(' ')[0] || 'prijatelju'
 
   const sig = `<p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`
