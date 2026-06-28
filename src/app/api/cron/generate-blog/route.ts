@@ -93,11 +93,12 @@ async function generateAndPublishBlog(
     console.log(`Blog generiran i objavljen: ${finalSlug}`)
   } catch (err: any) {
     console.error('Blog generacija greška:', err?.message)
-    await service
-      .from('blog_topics')
-      .update({ status: 'pending', error_message: err.message?.slice(0, 500) ?? 'Unknown error' })
-      .eq('id', topic.id)
-      .catch(() => {})
+    try {
+      await service
+        .from('blog_topics')
+        .update({ status: 'pending', error_message: err.message?.slice(0, 500) ?? 'Unknown error' })
+        .eq('id', topic.id)
+    } catch (_) {}
   }
 }
 
