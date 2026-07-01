@@ -10,6 +10,7 @@ import { TrendingDown, PiggyBank, Frown, BookOpen, Video, Award, Star, ChevronRi
 import { Badge } from '@/components/ui/badge'
 import PdfBookMockup from '@/components/PdfBookMockup'
 import SiteFooter from '@/components/SiteFooter'
+import TestimonialsCarousel from '@/components/TestimonialsCarousel'
 
 export default function LandingPage() {
   const [name, setName] = useState('')
@@ -302,42 +303,9 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl font-bold text-white mb-4">Što kažu polaznici?</h2>
+            <p className="text-white/50">Stvarni rezultati stvarnih ljudi.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                name: 'Marija K.',
-                role: 'Učiteljica, Split',
-                text: 'Za 3 mjeseca sam uspjela uštedjeti više nego za cijelu prethodnu godinu. Ovo stvarno funkcionira!',
-                stars: 5,
-              },
-              {
-                name: 'Ivan P.',
-                role: 'Poduzetnik, Zagreb',
-                text: 'Mislio sam da znam sve o novcu, ali Braneov pristup mi je potpuno promijenio perspektivu.',
-                stars: 5,
-              },
-              {
-                name: 'Ana M.',
-                role: 'Marketing menadžerica, Rijeka',
-                text: 'Konačno nemam stres na kraju mjeseca. Preporučujem svima koji osjećaju da im novac "curi".',
-                stars: 5,
-              },
-            ].map(t => (
-              <div key={t.name} className="bg-navy border border-white/10 rounded-2xl p-6">
-                <div className="flex gap-0.5 mb-4">
-                  {Array(t.stars).fill(0).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-gold text-gold" />
-                  ))}
-                </div>
-                <p className="text-white/70 text-sm leading-relaxed mb-4 italic">&ldquo;{t.text}&rdquo;</p>
-                <div>
-                  <p className="text-white font-semibold text-sm">{t.name}</p>
-                  <p className="text-white/40 text-xs">{t.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TestimonialsCarousel />
         </div>
       </section>
 
