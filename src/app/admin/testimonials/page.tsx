@@ -68,7 +68,7 @@ export default function AdminTestimonials() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      toast.success(editingId ? 'Pričevanje ažurirano.' : 'Pričevanje dodano.')
+      toast.success(editingId ? 'Recenzija ažurirano.' : 'Recenzija dodano.')
       setShowForm(false)
       setEditingId(null)
       fetchAll()
@@ -96,10 +96,10 @@ export default function AdminTestimonials() {
   }
 
   async function del(id: string) {
-    if (!confirm('Obriši pričevanje?')) return
+    if (!confirm('Obriši recenziju?')) return
     try {
       await fetch(`/api/admin/testimonials?id=${id}`, { method: 'DELETE' })
-      toast.success('Pričevanje obrisano.')
+      toast.success('Recenzija obrisano.')
       fetchAll()
     } catch { toast.error('Greška.') }
   }
@@ -110,24 +110,24 @@ export default function AdminTestimonials() {
     <div className="max-w-4xl mx-auto p-6 lg:p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Pričevanja</h1>
+          <h1 className="text-3xl font-bold text-white">Recenzije</h1>
           <p className="text-white/50 mt-1">{published} objavljenih · {items.length} ukupno</p>
         </div>
         <Button onClick={startNew} className="gap-2">
           <Plus className="w-4 h-4" />
-          Dodaj pričevanje
+          Dodaj recenziju
         </Button>
       </div>
 
       {/* Preview note */}
       <div className="bg-gold/5 border border-gold/20 rounded-xl px-4 py-3 mb-6 text-sm text-white/60">
-        💡 Objavljenja pričevanja se prikazuju u karuselu na glavnoj stranici (2 istovremeno, mijenjaju se svakih 10 sekundi).
+        💡 Objavljene recenzije se prikazuju u karuselu na glavnoj stranici (2 istovremeno, mijenjaju se svakih 10 sekundi).
       </div>
 
       {showForm && (
         <div className="bg-navy-50 border border-gold/20 rounded-2xl p-6 mb-8">
           <h2 className="text-lg font-bold text-white mb-6">
-            {editingId ? 'Uredi pričevanje' : 'Novo pričevanje'}
+            {editingId ? 'Uredi recenziju' : 'Novo recenziju'}
           </h2>
           <div className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
@@ -171,7 +171,7 @@ export default function AdminTestimonials() {
             </div>
 
             <div>
-              <label className="block text-sm text-white/50 mb-1.5">Citat / pričevanje *</label>
+              <label className="block text-sm text-white/50 mb-1.5">Citat / recenziju *</label>
               <textarea
                 value={form.quote}
                 onChange={e => setForm(f => ({ ...f, quote: e.target.value }))}
@@ -214,7 +214,7 @@ export default function AdminTestimonials() {
           <div className="p-12 text-center text-white/30">Učitavam...</div>
         ) : items.length === 0 ? (
           <div className="p-12 text-center text-white/30">
-            Još nema pričevanja. Dodaj prvo pričevanje klikom na gumb gore.
+            Još nema recenzija. Dodaj prvu recenziju klikom na gumb gore.
           </div>
         ) : (
           <div className="divide-y divide-white/5">

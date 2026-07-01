@@ -61,7 +61,7 @@ const ADMIN_NAV = [
   { href: '/admin/leadovi', label: 'Leadovi', icon: UserCheck },
   { href: '/admin/affiliate', label: 'Affiliate', icon: Link2 },
   { href: '/admin/blog', label: 'Blog', icon: FileText },
-  { href: '/admin/testimonials', label: 'Pričevanja', icon: Award },
+  { href: '/admin/testimonials', label: 'Recenzije', icon: Award },
   { href: '/admin/emaili', label: 'Emaili', icon: Mail },
 ]
 

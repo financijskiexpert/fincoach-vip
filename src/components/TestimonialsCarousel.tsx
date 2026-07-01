@@ -94,7 +94,7 @@ export default function TestimonialsCarousel() {
               <button
                 key={i}
                 onClick={() => go(i)}
-                aria-label={`Pričevanje ${i + 1}`}
+                aria-label={`Recenzija ${i + 1}`}
                 className="w-2 h-2 rounded-full transition-all duration-300"
                 style={{
                   backgroundColor: i === idx || i === (idx + 1) % n
