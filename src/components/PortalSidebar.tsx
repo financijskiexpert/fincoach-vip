@@ -26,6 +26,7 @@ import {
   Menu,
   X,
   Calculator,
+  Star,
 } from 'lucide-react'
 
 interface Lesson {
@@ -139,6 +140,7 @@ export default function PortalSidebar({
     { href: '/portal/biljeske', label: 'Moje bilješke', icon: FileText },
     { href: '/portal/kalkulatori', label: 'Kalkulatori', icon: Calculator },
     { href: '/portal/certifikat', label: 'Certifikat', icon: Award },
+    { href: '/portal/recenzija', label: 'Ostavi recenziju', icon: Star },
     ...(hasAffiliate
       ? [{ href: '/portal/affiliate', label: 'Affiliate', icon: Link2 }]
       : []),
