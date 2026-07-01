@@ -11,6 +11,7 @@ import {
   Video, Award, Calendar, Zap, Clock, Brain, TrendingUp
 } from 'lucide-react'
 import SiteFooter from '@/components/SiteFooter'
+import TestimonialsCarousel from '@/components/TestimonialsCarousel'
 
 const faqs = [
   {
