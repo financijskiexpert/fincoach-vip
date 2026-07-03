@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -168,9 +169,10 @@ function FeaturedMini({ post }: { post: EduPost }) {
 }
 
 function PdfStrip() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle')
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -181,7 +183,11 @@ function PdfStrip() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, full_name: name, source: 'edukacija', marketing_consent: true }),
       })
-      setStatus(res.ok ? 'success' : 'error')
+      if (res.ok) {
+        router.push('/hvala?lead=1')
+      } else {
+        setStatus('error')
+      }
     } catch {
       setStatus('error')
     }
@@ -198,12 +204,7 @@ function PdfStrip() {
           Praktični vodič koji su preuzele stotine čitatelja. Korak po korak do financijske slobode — besplatno na tvoj email.
         </p>
 
-        {status === 'success' ? (
-          <div className="rounded-xl px-6 py-5" style={{ backgroundColor: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)' }}>
-            <p className="font-semibold" style={{ color: 'rgb(134,239,172)' }}>Vodič je na putu! Provjeri inbox (i spam) za nekoliko minuta.</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
             <input
               type="text"
               value={name}
@@ -230,7 +231,6 @@ function PdfStrip() {
               {status === 'loading' ? 'Šaljem...' : 'Preuzmi besplatno'}
             </button>
           </form>
-        )}
 
         {status === 'error' && (
           <p className="mt-3 text-sm" style={{ color: 'rgb(252,165,165)' }}>Greška — pokušaj ponovo ili javi se na brane@fincoach.vip</p>

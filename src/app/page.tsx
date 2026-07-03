@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -13,11 +14,11 @@ import SiteFooter from '@/components/SiteFooter'
 import TestimonialsCarousel from '@/components/TestimonialsCarousel'
 
 export default function LandingPage() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [marketingConsent, setMarketingConsent] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -40,11 +41,9 @@ export default function LandingPage() {
         const data = await res.json().catch(() => ({}))
         throw new Error(data.error || `HTTP ${res.status}`)
       }
-      setSubmitted(true)
-      toast.success('Vodič je na putu! Provjeri svoju email pristiglu poštu.')
+      router.push('/hvala?lead=1')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Nešto je pošlo po krivu. Pokušaj ponovo.')
-    } finally {
       setLoading(false)
     }
   }
@@ -90,18 +89,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {submitted ? (
-            <div className="max-w-md mx-auto bg-green-500/10 border border-green-500/30 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Vodič je na putu!</h3>
-              <p className="text-white/60">Provjeri svoju email pristiglu poštu (i spam folder) za nekoliko minuta.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
               <div className="bg-navy-50 border border-white/10 rounded-2xl p-6 space-y-4">
                 <Input
                   placeholder="Tvoje ime"
@@ -122,7 +110,7 @@ export default function LandingPage() {
                   Pošalji mi vodič besplatno →
                 </Button>
 
-                {/* GDPR marketing consent — privzeto neoznačeno */}
+                {/* GDPR marketing consent */}
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <input
                     type="checkbox"
@@ -144,21 +132,18 @@ export default function LandingPage() {
                 </p>
               </div>
             </form>
-          )}
 
           {/* Sekundarna pot — direktno na tečaj za "hot" obiskovalce */}
-          {!submitted && (
-            <div className="max-w-md mx-auto mt-6 text-center">
+          <div className="max-w-md mx-auto mt-6 text-center">
               <p className="text-white/40 text-sm mb-2">Već znaš što tražiš?</p>
               <Link
-                href="/volim-svoj-novac"
+                href="/volim-svojnovac"
                 className="inline-flex items-center gap-2 text-gold hover:text-yellow-400 text-sm font-semibold transition-colors group"
               >
                 Prelistaj tečaj odmah
                 <span className="transition-transform group-hover:translate-x-1">→</span>
               </Link>
             </div>
-          )}
         </div>
       </section>
 
@@ -318,8 +303,7 @@ export default function LandingPage() {
           <p className="text-white/50 mb-8 text-lg">
             Preuzmi besplatni vodič i napravi prvi korak prema financijskoj slobodi.
           </p>
-          {!submitted && (
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto">
               <div className="bg-navy-50 border border-white/10 rounded-2xl p-6 space-y-4">
                 <Input
                   placeholder="Tvoje ime"
@@ -358,10 +342,9 @@ export default function LandingPage() {
                 </p>
               </div>
             </form>
-          )}
           <p className="mt-6 text-white/30 text-sm">
             Ili{' '}
-            <Link href="/volim-svoj-novac" className="text-gold hover:underline">
+            <Link href="/volim-svojnovac" className="text-gold hover:underline">
               odmah pogledaj kompletan tečaj →
             </Link>
           </p>
