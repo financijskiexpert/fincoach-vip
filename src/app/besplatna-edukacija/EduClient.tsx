@@ -184,7 +184,7 @@ function PdfStrip() {
         body: JSON.stringify({ email, full_name: name, source: 'edukacija', marketing_consent: true }),
       })
       if (res.ok) {
-        router.push('/hvala?lead=1')
+        router.push('/dijagnoza')
       } else {
         setStatus('error')
       }
