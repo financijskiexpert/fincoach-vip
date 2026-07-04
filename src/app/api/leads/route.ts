@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { addContact, sendLeadPdfEmail } from '@/lib/brevo'
 import { addDays } from 'date-fns'
-import { EMAIL_SEQUENCE } from '@/lib/email-sequence'
+import { LEAD_SEQUENCE } from '@/lib/email-sequence'
 
 const PDF_URL = `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/vodic-financijska-stabilnost.pdf`
 
@@ -88,15 +88,21 @@ export async function POST(request: NextRequest) {
       PDF_URL
     )
 
-    // Zapolni email sekvenco v queue (emaili 1-7, vsake 2 dni)
+    // Zapolni lead email sekvenco (nova arhitektura, 13 emailov, sequence_type = 'lead')
     if (lead?.id) {
       const emailLower = email.toLowerCase().trim()
-      const queueItems = EMAIL_SEQUENCE.map((seq, index) => ({
+      const now = new Date()
+
+      const queueItems = LEAD_SEQUENCE.map((seq, index) => ({
         lead_id: lead.id,
         email: emailLower,
         full_name: full_name ?? '',
         sequence_index: index,
-        scheduled_at: addDays(new Date(), seq.dayOffset).toISOString(),
+        sequence_type: 'lead',
+        // Index 0 = +5 minuta; ostalo = dayOffset
+        scheduled_at: index === 0
+          ? new Date(now.getTime() + 5 * 60 * 1000).toISOString()
+          : addDays(now, seq.dayOffset).toISOString(),
         status: 'pending',
       }))
 
