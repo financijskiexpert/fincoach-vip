@@ -167,6 +167,81 @@ export async function sendWelcomeEmail(email: string, name: string, generatedPas
   })
 }
 
+export async function sendStarterAccessEmail(
+  email: string,
+  name: string,
+  accessUrl: string,
+  financialType?: string
+): Promise<void> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+
+  const typeLabel: Record<string, string> = {
+    hedonist: 'Hedonist 🔥',
+    branic: 'Branič 🛡️',
+    vrtlog: 'Vrtlog 🌀',
+    teoreticar: 'Teoretičar 📚',
+  }
+  const tipText = financialType && typeLabel[financialType]
+    ? `<p style="color:#D4AF37;font-weight:700;margin:0 0 6px;">Tvoj financijski tip: ${typeLabel[financialType]}</p>`
+    : ''
+
+  const firstName = name.split(' ')[0] || 'prijatelju'
+
+  const htmlContent = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+<style>
+  body { font-family: Inter, Arial, sans-serif; background: #f1f5f9; margin: 0; padding: 0; }
+  .wrap { max-width: 600px; margin: 32px auto; background: #0D1B2A; border-radius: 14px; overflow: hidden; }
+  .header { background: linear-gradient(135deg, #0D1B2A 0%, #1a2f47 100%); padding: 32px 40px; text-align: center; }
+  .logo { color: #D4AF37; font-size: 22px; font-weight: 800; letter-spacing: 1px; }
+  .body { padding: 40px; color: #fff; }
+  h2 { color: #D4AF37; font-size: 22px; font-weight: 700; margin: 0 0 20px; line-height: 1.3; }
+  p { color: #cbd5e0; line-height: 1.75; margin: 0 0 16px; font-size: 15px; }
+  .btn { display: inline-block; background: #D4AF37; color: #0D1B2A; padding: 16px 36px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 16px; margin: 8px 0; }
+  .box { background: #0a1929; border: 1px solid rgba(212,175,55,0.35); border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+  .footer { background: #091623; padding: 20px 40px; text-align: center; color: #4a5568; font-size: 12px; }
+  .sig { color: #D4AF37; font-weight: 700; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header"><div class="logo">FinCoach VIP</div></div>
+  <div class="body">
+    <h2>Dragi/a ${firstName}, Starter Paket je tvoj! 🎉</h2>
+    <p>Hvala na povjerenju. Tvoja Financijska dijagnoza je aktivna i čeka te unutar aplikacije.</p>
+    <div class="box">
+      ${tipText}
+      <p style="color:#fff;font-weight:700;margin:0 0 12px;">Što te čeka:</p>
+      <p style="margin:0 0 6px;">📊 <strong>Financijski Health Score</strong> — vidiš točno gdje stojite</p>
+      <p style="margin:0 0 6px;">🧠 <strong>Profil tvog financijskog tipa</strong> + personalizirani savjeti</p>
+      <p style="margin:0 0 6px;">📅 <strong>30-dnevni plan</strong> prilagođen točno tvom tipu</p>
+      <p style="margin:0;">🎬 <strong>4 ekskluzivna videa</strong> s Branetom (1 svaki tjedan)</p>
+    </div>
+    <p>Tvoj pristup je siguran i osoban — link ispod vrijedi samo za tebe:</p>
+    <div style="text-align:center;margin:24px 0;">
+      <a href="${accessUrl}" class="btn">Otvori svoju dijagnozu →</a>
+    </div>
+    <p style="font-size:13px;color:#718096;">Pohrani ovaj link — to je tvoj osobni pristup. Ne dijeli ga s drugima.</p>
+    <p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>
+    <p style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:12px;color:#718096;">
+      Primio/la si ovaj email jer si kupio/la Financijski Starter Paket na fincoach.vip.<br>
+      Ako smatraš da je ovo greška, kontaktiraj nas na <a href="mailto:brane@fincoach.vip" style="color:#718096;">brane@fincoach.vip</a><br>
+      <a href="${siteUrl}/odjava?email=${encodeURIComponent(email)}" style="color:#4a5568;">Odjavi se od marketinških emailova</a>
+    </p>
+  </div>
+  <div class="footer">© 2026 FinCoach VIP</div>
+</div>
+</body>
+</html>`
+
+  await sendTransactionalEmail({
+    to: [{ email, name }],
+    subject: `${firstName}, tvoj Starter Paket je spreman — otvori odmah`,
+    htmlContent,
+  })
+}
+
 export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: string): Promise<void> {
   const htmlContent = `
     <!DOCTYPE html>

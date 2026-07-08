@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { buildEmailContent, EMAIL_SEQUENCE } from '@/lib/email-sequence'
+import { buildEmailContent, buildLeadEmail, buildStarterEmail, EMAIL_SEQUENCE, LEAD_SEQUENCE, STARTER_SEQUENCE } from '@/lib/email-sequence'
 import { sendTransactionalEmail } from '@/lib/brevo'
 
 export const dynamic = 'force-dynamic'
@@ -48,43 +48,88 @@ export async function GET(request: NextRequest) {
 
   for (const item of dueEmails) {
     try {
-      // Provjeri je li lead već kupio tečaj
-      const seq = EMAIL_SEQUENCE[item.sequence_index]
-      if (seq?.skipIfPurchased) {
-        const { data: purchase } = await supabase
-          .from('purchases')
-          .select('id')
-          .eq('status', 'completed')
-          .then(async () => {
-            // Pronađi user po emailu
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('id')
-              .eq('email', item.email.toLowerCase())
-              .single()
-            if (!profile) return { data: null }
-            return supabase
-              .from('purchases')
-              .select('id')
-              .eq('user_id', profile.id)
-              .eq('status', 'completed')
-              .single()
-          })
+      const seqType: string = (item as any).sequence_type ?? null
+      const idx: number = item.sequence_index
+      let emailContent: { subject: string; html: string } | null = null
 
-        if (purchase) {
-          // Lead je već kupio — preskoči prodajni email
-          await supabase
-            .from('email_sequence_queue')
-            .update({ status: 'skipped', sent_at: now })
-            .eq('id', item.id)
-          skipped++
-          continue
+      if (seqType === 'lead') {
+        // ── Nova lead sekvenca (13 emailov, indeksi 0-12) ─────────────────────
+        const leadSeq = LEAD_SEQUENCE[idx]
+        if (!leadSeq) {
+          await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
+          skipped++; continue
         }
+
+        // Skip Starter Paket emaile če je lead že kupil
+        if (leadSeq.sellsStarterPaket) {
+          const { data: leadRow } = await supabase
+            .from('leads').select('starter_purchased').eq('email', item.email.toLowerCase()).single()
+          if (leadRow?.starter_purchased) {
+            await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
+            skipped++; continue
+          }
+        }
+
+        // Skip 397€ emaile če je lead že kupil 90-dnevni tečaj
+        if (leadSeq.sells397) {
+          const { data: profile } = await supabase
+            .from('profiles').select('id').eq('email', item.email.toLowerCase()).single()
+          if (profile?.id) {
+            const { data: purchase } = await supabase
+              .from('purchases').select('id').eq('user_id', profile.id).eq('status', 'completed').maybeSingle()
+            if (purchase) {
+              await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
+              skipped++; continue
+            }
+          }
+        }
+
+        const affiliateCode = (item as any).leads?.affiliate_code ?? null
+        emailContent = buildLeadEmail(idx, item.full_name ?? 'Prijatelju', item.email, affiliateCode)
+
+      } else if (seqType === 'starter') {
+        // ── Starter sekvenca (10 emailov, indeksi 100-109) ────────────────────
+        const starterSeq = STARTER_SEQUENCE[idx - 100]
+        if (!starterSeq) {
+          await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
+          skipped++; continue
+        }
+
+        // Skip 397€ emaile če je starter kupec već kupil 90-dnevni tečaj
+        if (starterSeq.sells397) {
+          const { data: profile } = await supabase
+            .from('profiles').select('id').eq('email', item.email.toLowerCase()).single()
+          if (profile?.id) {
+            const { data: purchase } = await supabase
+              .from('purchases').select('id').eq('user_id', profile.id).eq('status', 'completed').maybeSingle()
+            if (purchase) {
+              await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
+              skipped++; continue
+            }
+          }
+        }
+
+        emailContent = buildStarterEmail(idx, item.full_name ?? 'Prijatelju', item.email)
+
+      } else {
+        // ── Legacna sekvenca (stari leads, sequence_type = null) ──────────────
+        const seq = EMAIL_SEQUENCE[idx]
+        if (seq?.skipIfPurchased) {
+          const { data: profile } = await supabase
+            .from('profiles').select('id').eq('email', item.email.toLowerCase()).single()
+          if (profile?.id) {
+            const { data: purchase } = await supabase
+              .from('purchases').select('id').eq('user_id', profile.id).eq('status', 'completed').maybeSingle()
+            if (purchase) {
+              await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
+              skipped++; continue
+            }
+          }
+        }
+        const affiliateCode = (item as any).leads?.affiliate_code ?? null
+        emailContent = buildEmailContent(idx, item.full_name ?? 'Prijatelju', item.email, affiliateCode)
       }
 
-      // Generiraj sadržaj emaila (affiliate lead → bez PRIJATELJU koda u prodajnim emailima)
-      const affiliateCode = (item as any).leads?.affiliate_code ?? null
-      const emailContent = buildEmailContent(item.sequence_index, item.full_name ?? 'Prijatelju', item.email, affiliateCode)
       if (!emailContent) {
         await supabase
           .from('email_sequence_queue')
