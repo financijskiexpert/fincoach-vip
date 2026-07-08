@@ -116,7 +116,7 @@ function RezultatContent() {
       const res = await fetch('/api/checkout/starter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ financial_type: tip }),
       })
       const json = await res.json()
       if (json.url) {
@@ -241,8 +241,8 @@ function RezultatContent() {
                 </ul>
 
                 <div className="flex items-baseline gap-3 mb-5">
-                  <span className="text-4xl font-black" style={{ color: '#D4AF37' }}>27€</span>
-                  <span className="text-base line-through" style={{ color: 'rgba(255,255,255,0.3)' }}>67€</span>
+                  <span className="text-4xl font-black" style={{ color: '#D4AF37' }}>19€</span>
+                  <span className="text-base line-through" style={{ color: 'rgba(255,255,255,0.3)' }}>47€</span>
                   <span className="text-sm" style={{ color: 'rgba(255,255,255,0.35)' }}>jednokratno</span>
                 </div>
 
@@ -252,7 +252,7 @@ function RezultatContent() {
                   className="w-full rounded-xl py-4 font-black text-lg transition-opacity hover:opacity-90 disabled:opacity-60"
                   style={{ backgroundColor: '#D4AF37', color: '#0D1B2A', fontSize: '1rem' }}
                 >
-                  {loading ? 'Preusmjeravam na plaćanje...' : 'Pokreni svoju transformaciju — 27€ →'}
+                  {loading ? 'Preusmjeravam na plaćanje...' : 'Pokreni svoju transformaciju — 19€ →'}
                 </button>
 
                 {error && (

@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       const metadata = session.metadata ?? {}
       const { courseId, courseSlug, userId, affiliateCode, couponCode, product, financial_type } = metadata
 
-      // ── STARTER PAKET (27€) — ločena veja ──────────────────────────────────
+      // ── STARTER PAKET (19€) — ločena veja ──────────────────────────────────
       if (product === 'starter-paket') {
         const customerEmail = session.customer_details?.email ?? session.customer_email ?? ''
         const customerName = session.customer_details?.name ?? ''

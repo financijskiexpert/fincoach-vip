@@ -1781,7 +1781,7 @@ export function buildEmailContent(
 
 // ─── NOVA ARHITEKTURA ─────────────────────────────────────────────────────────
 // LEAD_SEQUENCE — za nove leadove (13 emaila, indeksi 0-12)
-//   - Indeksi 0-5: Starter Paket 27€ (preskočeno ko starter_purchased = true)
+//   - Indeksi 0-5: Starter Paket 19€ (preskočeno ko starter_purchased = true)
 //   - Indeksi 6-12: 397€ program (preskočeno ko 397€ kupljeno)
 // STARTER_SEQUENCE — za kupce Starter Paketa (10 emaila, indeksi 100-109)
 //   - Indeksi 100-103: Nurture / napredak (nikad preskočeno)
@@ -1796,10 +1796,10 @@ export const LEAD_SEQUENCE: Array<{
 }> = [
   { dayOffset: 0,  subject: 'Tvoja financijska dijagnoza te čeka — otvori sada', sellsStarterPaket: true,  sells397: false },
   { dayOffset: 1,  subject: 'Gdje nestaje tvoj novac svaki mjesec?',              sellsStarterPaket: false, sells397: false },
-  { dayOffset: 2,  subject: 'Za 27 € — doznaj točno koji financijski tip si',    sellsStarterPaket: true,  sells397: false },
+  { dayOffset: 2,  subject: 'Za 19 € — doznaj točno koji financijski tip si',    sellsStarterPaket: true,  sells397: false },
   { dayOffset: 3,  subject: 'Petra je u 3 tjedna eliminirala 2.400 € duga',      sellsStarterPaket: true,  sells397: false },
   { dayOffset: 5,  subject: '⏰ Tvoja dijagnoza i 30-dnevni plan — zadnja šansa', sellsStarterPaket: true,  sells397: false },
-  { dayOffset: 7,  subject: 'Zadnji poziv: Financijski Starter Paket — 27 €',    sellsStarterPaket: true,  sells397: false },
+  { dayOffset: 7,  subject: 'Zadnji poziv: Financijski Starter Paket — 19 €',    sellsStarterPaket: true,  sells397: false },
   { dayOffset: 10, subject: 'Zašto pametni, vrijedni ljudi ostaju bez novca',    sellsStarterPaket: false, sells397: false },
   { dayOffset: 14, subject: 'Ana je za 3 mieseca uštedjela više nego za godinu', sellsStarterPaket: false, sells397: false },
   { dayOffset: 17, subject: 'Što točno dobivaš u 90-dnevnom programu?',          sellsStarterPaket: false, sells397: true  },
@@ -1844,13 +1844,13 @@ export function buildLeadEmail(
   const starterBox = `
     <div class="box" style="border-color:#D4AF37;text-align:center;">
       <p style="color:#D4AF37;font-weight:800;font-size:15px;margin:0 0 8px;">Financijski Starter Paket</p>
-      <p style="font-size:42px;font-weight:900;color:#D4AF37;margin:4px 0;">27 €</p>
-      <p style="color:#718096;font-size:12px;margin:0 0 4px;">Umjesto <s style="color:#718096;">67 €</s> · jednokratno plaćanje</p>
+      <p style="font-size:42px;font-weight:900;color:#D4AF37;margin:4px 0;">19 €</p>
+      <p style="color:#718096;font-size:12px;margin:0 0 4px;">Umjesto <s style="color:#718096;">47 €</s> · jednokratno plaćanje</p>
       <p style="margin:0 0 6px;font-size:14px;">📊 Financijski Health Score &nbsp;·&nbsp; 🧠 Personalizirani profil tipa</p>
       <p style="margin:0 0 16px;font-size:14px;">📅 30-dnevni plan &nbsp;·&nbsp; 🎬 4 ekskluzivna videa s Branetom</p>
     </div>
     <div style="text-align:center;margin:20px 0;">
-      <a href="${siteUrl}/dijagnoza" class="btn">Pokreni dijagnozu → 27 € →</a>
+      <a href="${siteUrl}/dijagnoza" class="btn">Pokreni dijagnozu → 19 € →</a>
     </div>
     <p style="color:#718096;font-size:12px;text-align:center;">🔒 Sigurno plaćanje — Stripe · 30-dnevna garancija povrata</p>`
 
@@ -1865,7 +1865,7 @@ export function buildLeadEmail(
     <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata novca. Nema rizika.</p>`
 
   const softStarterCta = `<p style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);color:#718096;font-size:13px;">
-    Još nisi preuzeo/la svoju financijsku dijagnozu? → <a href="${siteUrl}/dijagnoza" style="color:#D4AF37;">Pokreni za 27 €</a></p>`
+    Još nisi preuzeo/la svoju financijsku dijagnozu? → <a href="${siteUrl}/dijagnoza" style="color:#D4AF37;">Pokreni za 19 €</a></p>`
 
   const cases: Record<number, () => string> = {
 
@@ -1905,18 +1905,18 @@ export function buildLeadEmail(
 
     // Index 2 — Dan 2 — Starter Paket pitch
     2: () => `
-      <h2>Za 27 € — doznaj točno koji financijski tip si</h2>
+      <h2>Za 19 € — doznaj točno koji financijski tip si</h2>
       <p>Dragi/a ${n},</p>
       <p>Jučer si napravio/la financijsku dijagnozu. Sada znaš koji financijski tip si.</p>
       <p>Ali poznavanje tipa nije dovoljno. Trebaš i <strong style="color:#fff;">konkretan plan koji odgovara točno tvojim blokatorima.</strong></p>
       <div class="box">
-        <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Za 27 € dobivaš sve što ti treba za start:</p>
+        <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Za 19 € dobivaš sve što ti treba za start:</p>
         <p style="margin:0 0 6px;">📊 <strong style="color:#fff;">Health Score 0-100</strong> — vidiš točno gdje stojite financijski</p>
         <p style="margin:0 0 6px;">🧠 <strong style="color:#fff;">Profil tipa</strong> — zašto se ponašaš kako se ponašaš + konkretni savjeti</p>
         <p style="margin:0 0 6px;">📅 <strong style="color:#fff;">30-dnevni akcijski plan</strong> — prilagođen tvojim blokatorima, korak po korak</p>
         <p style="margin:0;">🎬 <strong style="color:#fff;">4 videa s Branetom</strong> — 1 tjedno, direktno u inbox</p>
       </div>
-      <p>Nije 397 €. Nije 100 €. Je <strong style="color:#D4AF37;">27 €</strong> — jednokratno, bez pretplate.</p>
+      <p>Nije 397 €. Nije 100 €. Je <strong style="color:#D4AF37;">19 €</strong> — jednokratno, bez pretplate.</p>
       ${starterBox}
       ${sig}`,
 
@@ -1927,7 +1927,7 @@ export function buildLeadEmail(
       <p>Petra je bila u situaciji koju mnogi poznajemo: kreditna kartica, osobni kredit, osjećaj da nema izlaza.</p>
       <p>Počela je s Financijskim Starter Paketom. Nije imala posebnih preduvjeta — samo odlučnost i konkretan plan.</p>
       <div class="box">
-        <p style="font-style:italic;color:#fff;margin:0 0 12px;">"Health Score mi je pokazao gdje točno 'curi' novac — a da toga nisam bila ni svjesna. 30-dnevni plan mi je dao strukturu. Za 3 tjedna eliminirala sam 2.400 € duga i first time imam hitni fond od 800 €. Nisam vjerovala da je moguće za 27 €."</p>
+        <p style="font-style:italic;color:#fff;margin:0 0 12px;">"Health Score mi je pokazao gdje točno 'curi' novac — a da toga nisam bila ni svjesna. 30-dnevni plan mi je dao strukturu. Za 3 tjedna eliminirala sam 2.400 € duga i first time imam hitni fond od 800 €. Nisam vjerovala da je moguće za 19 €."</p>
         <p style="color:#D4AF37;font-size:13px;margin:0;">— Petra L., Zagreb ⭐⭐⭐⭐⭐</p>
       </div>
       <p>Petrinu situaciju možeš replicirati. Trebaš isti plan — prilagođen tebi.</p>
@@ -1947,7 +1947,7 @@ export function buildLeadEmail(
         <p style="margin:0 0 6px;">✅ 30 dana ranije počinješ graditi hitni fond</p>
         <p style="margin:0;">✅ Složeni efekt radi 30 dana duže za tebe</p>
       </div>
-      <p>27 € je manje od jednog ručka za dvoje. A rezultati se mjere u tisućama eura godišnje.</p>
+      <p>19 € je manje od jednog ručka. A rezultati se mjere u tisućama eura godišnje.</p>
       ${starterBox}
       ${sig}`,
 
@@ -1960,7 +1960,7 @@ export function buildLeadEmail(
       <p>Ali ako postoji i <strong style="color:#fff;">1% tebe koji razmišlja o tome</strong> — to je znak da je pravo vrijeme.</p>
       <div class="box" style="border-color:rgba(212,175,55,0.6);">
         <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">30-dnevna garancija povrata:</p>
-        <p style="margin:0;font-size:14px;">Ako u prvih 30 dana ne vidiš vrijednost — vraćam ti 27 € bez pitanja. Osobno. Nema rizika, samo rezultati.</p>
+        <p style="margin:0;font-size:14px;">Ako u prvih 30 dana ne vidiš vrijednost — vraćam ti 19 € bez pitanja. Osobno. Nema rizika, samo rezultati.</p>
       </div>
       ${starterBox}
       ${sig}`,

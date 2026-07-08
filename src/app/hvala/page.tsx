@@ -195,8 +195,8 @@ function HvalaContent() {
 
             {/* Price */}
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-white/30 line-through text-lg">97€</span>
-              <span className="text-5xl font-black text-gold">27€</span>
+              <span className="text-white/30 line-through text-lg">47€</span>
+              <span className="text-5xl font-black text-gold">19€</span>
               <span className="text-white/40 text-sm">jednokratno</span>
             </div>
 
@@ -209,7 +209,7 @@ function HvalaContent() {
               >
                 {checkoutLoading
                   ? <><Loader2 className="w-4 h-4 animate-spin" /> Preusmjeravam na plaćanje...</>
-                  : <>Uzmi Starter Paket za 27€ <ArrowRight className="w-4 h-4" /></>
+                  : <>Uzmi Starter Paket za 19€ <ArrowRight className="w-4 h-4" /></>
                 }
               </Button>
             ) : (
