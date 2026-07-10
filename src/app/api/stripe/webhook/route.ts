@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       if (session.payment_status !== 'paid') break
 
       const metadata = session.metadata ?? {}
-      const { courseId, courseSlug, userId, affiliateCode, couponCode, product, financial_type } = metadata
+      const { courseId, courseSlug, userId, affiliateCode, couponCode, product, financial_type, upgradeCouponId } = metadata
 
       // ── STARTER PAKET (19€) — ločena veja ──────────────────────────────────
       if (product === 'starter-paket') {
@@ -114,12 +114,24 @@ export async function POST(request: NextRequest) {
 
         if (lead?.id) {
           const { addDays } = await import('date-fns')
-          const STARTER_DAYS = [1, 7, 14, 21, 25, 30, 35, 45, 60, 90]
-          const starterItems = STARTER_DAYS.map((day, i) => ({
+          const STARTER_SCHEDULE = [
+            { day: 1,  idx: 100 },
+            { day: 7,  idx: 101 },
+            { day: 14, idx: 102 },
+            { day: 21, idx: 103 },
+            { day: 25, idx: 104 },
+            { day: 28, idx: 110 },
+            { day: 30, idx: 105 },
+            { day: 35, idx: 106 },
+            { day: 45, idx: 107 },
+            { day: 60, idx: 108 },
+            { day: 90, idx: 109 },
+          ]
+          const starterItems = STARTER_SCHEDULE.map(({ day, idx }) => ({
             lead_id: lead.id,
             email: customerEmail.toLowerCase(),
             full_name: customerName,
-            sequence_index: 100 + i,
+            sequence_index: idx,
             sequence_type: 'starter',
             scheduled_at: addDays(new Date(), day).toISOString(),
             status: 'pending',
@@ -127,6 +139,18 @@ export async function POST(request: NextRequest) {
           await supabase
             .from('email_sequence_queue')
             .upsert(starterItems, { onConflict: 'lead_id,sequence_index', ignoreDuplicates: true })
+
+          // Generiraj unikatni upgrade kupon (50% off na 397€ tečaj)
+          const couponCode = 'UPGRADE-' + Array.from(
+            { length: 6 },
+            () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'.charAt(Math.floor(Math.random() * 33))
+          ).join('')
+          await supabase.from('upgrade_coupons').insert({
+            code: couponCode,
+            email: customerEmail.toLowerCase(),
+            starter_purchase_id: purchase.id,
+            discount_percent: 50,
+          })
         }
 
         break
@@ -252,6 +276,15 @@ export async function POST(request: NextRequest) {
       // Update coupon uses count
       if (couponCode) {
         await supabase.rpc('increment_coupon_uses', { coupon_code: couponCode })
+      }
+
+      // Mark upgrade coupon as used (1x enforcement)
+      if (upgradeCouponId) {
+        await supabase
+          .from('upgrade_coupons')
+          .update({ used_at: new Date().toISOString() })
+          .eq('id', upgradeCouponId)
+          .is('used_at', null)
       }
 
       // Send welcome email with login credentials

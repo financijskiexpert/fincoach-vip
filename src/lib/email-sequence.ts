@@ -1794,7 +1794,7 @@ export const LEAD_SEQUENCE: Array<{
   sellsStarterPaket: boolean  // skip if starter_purchased = true
   sells397: boolean            // skip if 397€ course purchased
 }> = [
-  { dayOffset: 0,  subject: 'Tvoja financijska dijagnoza te čeka — otvori sada', sellsStarterPaket: true,  sells397: false },
+  { dayOffset: 0,  subject: 'Tvoj besplatni vodič je spreman 🎁 + posebna ponuda (2 sata)', sellsStarterPaket: true,  sells397: false },
   { dayOffset: 1,  subject: 'Gdje nestaje tvoj novac svaki mjesec?',              sellsStarterPaket: false, sells397: false },
   { dayOffset: 2,  subject: 'Za 19 € — doznaj točno koji financijski tip si',    sellsStarterPaket: true,  sells397: false },
   { dayOffset: 3,  subject: 'Petra je u 3 tjedna eliminirala 2.400 € duga',      sellsStarterPaket: true,  sells397: false },
@@ -1819,7 +1819,8 @@ export const STARTER_SEQUENCE: Array<{
   { dayOffset: 14, subject: '2 tjedna! Ovo je trenutak koji sve mijenja',                     sells397: false },
   { dayOffset: 21, subject: 'Tri tjedna — polaznici na ovoj točki vide ovo...',               sells397: false },
   { dayOffset: 25, subject: 'Pitanje za tebe (iskreno, 2 min)',                               sells397: false },
-  { dayOffset: 30, subject: '30 dana! 🎉 Što si naučio/la — i što dolazi slijed',             sells397: true  },
+  { dayOffset: 28, subject: '📦 Čez 2 dana — posebna ponuda samo za tebe (pročitaj)',         sells397: true  },
+  { dayOffset: 30, subject: '30 dana! 🎉 Tvoja ekskluzivna ponuda je unutra — otvori odmah', sells397: true  },
   { dayOffset: 35, subject: 'Tomislav je za 60 dana eliminirao 8.000 € duga — evo kako',     sells397: true  },
   { dayOffset: 45, subject: 'Što slijedi nakon Starter Paketa? (Važno pitanje)',              sells397: true  },
   { dayOffset: 60, subject: '2 mieseca! Koliko si promijenio/la? + posebna ponuda',           sells397: true  },
@@ -1869,21 +1870,31 @@ export function buildLeadEmail(
 
   const cases: Record<number, () => string> = {
 
-    // Index 0 — +5min — Welcome + Starter Paket CTA
+    // Index 0 — +5min — PDF link + 2h Starter Paket ponuda
     0: () => `
-      <h2>Dragi/a ${n}, tvoja financijska dijagnoza te čeka 🧠</h2>
-      <p>Upravo si napravio/la korak koji 90% ljudi nikad ne napravi — podigao/la si ruku i rekao/la: <strong style="color:#fff;">hoću promjenu.</strong></p>
-      <p>Dok čitaš ovo, tvoja <strong style="color:#fff;">financijska dijagnoza</strong> je gotova. Znaš koji financijski tip si — i znaš koji su tvoji konkretni blokatori.</p>
-      <p>Ali dijagnoza bez akcijskog plana je samo analiza. Evo što slijedi:</p>
-      <div class="box">
-        <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Što dobivaš u Starter Paketu:</p>
-        <p style="margin:0 0 6px;">📊 <strong style="color:#fff;">Financijski Health Score</strong> — točna ocjena gdje stojite (0-100)</p>
-        <p style="margin:0 0 6px;">🧠 <strong style="color:#fff;">Personalizirani profil</strong> tvojeg financijskog tipa</p>
-        <p style="margin:0 0 6px;">📅 <strong style="color:#fff;">30-dnevni plan</strong> prilagođen točno tvojim blokatorima</p>
-        <p style="margin:0;">🎬 <strong style="color:#fff;">4 ekskluzivna videa</strong> s Branetom (1 svaki tjedan)</p>
+      <h2>Dragi/a ${n}, tvoj vodič je ovdje 🎁</h2>
+      <p>Hvala ti što si se prijavio/la! Ispod je link za preuzimanje tvojeg besplatnog vodiča:</p>
+      <div style="text-align:center;margin:20px 0;">
+        <a href="${siteUrl}/vodic-financijska-stabilnost.pdf" class="btn" style="background:#1a2f47;color:#D4AF37;border:1px solid rgba(212,175,55,0.4);">
+          📄 Preuzmi vodič besplatno →
+        </a>
       </div>
-      ${starterBox}
-      <p>Vidimo se unutra. 🙏</p>
+      <div class="box" style="border-color:rgba(212,175,55,0.5);background:rgba(212,175,55,0.06);">
+        <p style="color:#D4AF37;font-weight:800;font-size:13px;margin:0 0 6px;text-align:center;">⏰ POSEBNA PONUDA — vrijedi samo 2 sata</p>
+        <p style="text-align:center;margin:0 0 4px;font-size:13px;color:rgba(255,255,255,0.6);">Kao novi pretplatnik, imaš ekskluzivnu cijenu:</p>
+        <p style="text-align:center;font-size:40px;font-weight:900;color:#D4AF37;margin:4px 0;">19 €</p>
+        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.4);margin:0 0 16px;"><s>49 €</s> standardna cijena · Samo danas, samo za tebe</p>
+        <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Što dobivaš u Starter Paketu:</p>
+        <p style="margin:0 0 5px;font-size:14px;">📊 <strong style="color:#fff;">Financijski Health Score</strong> — točna ocjena 0-100 gdje stojite</p>
+        <p style="margin:0 0 5px;font-size:14px;">🧠 <strong style="color:#fff;">Personalizirani profil</strong> tvojeg financijskog tipa</p>
+        <p style="margin:0 0 5px;font-size:14px;">📅 <strong style="color:#fff;">30-dnevni plan</strong> prilagođen točno tvojim blokatorima</p>
+        <p style="margin:0;font-size:14px;">🎬 <strong style="color:#fff;">4 ekskluzivna videa</strong> s Branetom (1 svaki tjedan)</p>
+      </div>
+      <div style="text-align:center;margin:20px 0;">
+        <a href="${siteUrl}/starter-paket" class="btn">Iskoristi ponudu — 19 € →</a>
+      </div>
+      <p style="color:#718096;font-size:12px;text-align:center;">🔒 Sigurno plaćanje — Stripe · 30-dnevna garancija povrata · Nakon 2 sata cijena se vraća na 49 €</p>
+      <p>Sve ostalo — bez žurbe. Vodič je tvoj. 🙏</p>
       ${sig}`,
 
     // Index 1 — Dan 1 — Educational, bez ponude
@@ -2099,21 +2110,31 @@ export function buildLeadEmail(
 export function buildStarterEmail(
   sequenceIndex: number,
   name: string,
-  email: string
+  email: string,
+  uniqueCouponCode?: string | null
 ): { subject: string; html: string } | null {
-  const localIdx = sequenceIndex - 100
-  const seq = STARTER_SEQUENCE[localIdx]
+  // Non-sequential index mapping: 100-104 → pos 0-4, 110 → pos 5 (day 28), 105-109 → pos 6-10
+  const INDEX_TO_POS: Record<number, number> = {
+    100: 0, 101: 1, 102: 2, 103: 3, 104: 4,
+    110: 5,
+    105: 6, 106: 7, 107: 8, 108: 9, 109: 10,
+  }
+  const arrayPos = INDEX_TO_POS[sequenceIndex]
+  const seq = arrayPos !== undefined ? STARTER_SEQUENCE[arrayPos] : null
   if (!seq) return null
 
   const n = name.split(' ')[0] || 'prijatelju'
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
   const sig = `<p><span class="sig">Brane</span><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>`
 
+  const couponDisplay = uniqueCouponCode ?? 'STARTER'
   const courseBox = `
     <div class="box" style="border-color:#D4AF37;text-align:center;">
       <p style="color:#D4AF37;font-weight:800;font-size:15px;margin:0 0 8px;">FinCoach VIP — 90-dnevni program</p>
-      <p style="font-size:42px;font-weight:900;color:#D4AF37;margin:4px 0;">197 €</p>
-      <p style="color:#718096;font-size:12px;margin:0 0 4px;">s kodom <strong style="color:#fff;font-family:monospace;">STARTER</strong> · Umjesto 397 €</p>
+      <p style="font-size:42px;font-weight:900;color:#D4AF37;margin:4px 0;">198,50 €</p>
+      <p style="color:#718096;font-size:12px;margin:0 0 4px;"><s style="color:#718096;">397 €</s> → <strong style="color:#fff;">50% popusta — samo za tebe</strong></p>
+      <p style="color:#718096;font-size:12px;margin:0 0 10px;">Tvoj ekskluzivni kod (samo 1x, samo za tebe):</p>
+      <p style="font-family:monospace;font-size:24px;font-weight:900;color:#fff;background:#1a2f47;padding:8px 20px;border-radius:8px;display:inline-block;letter-spacing:3px;margin:0 0 12px;">${couponDisplay}</p>
       <p style="color:#718096;font-size:12px;margin:0 0 16px;">90 lekcija · Doživotni pristup · 30-dnevna garancija</p>
     </div>
     <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svojnovac" class="btn">Nastavi transformaciju →</a></div>`
@@ -2186,6 +2207,23 @@ export function buildStarterEmail(
       ${appLink}
       ${sig}`,
 
+    // Index 110 (day 28) — Warning: posebna ponuda za 2 dana
+    110: () => `
+      <h2>📦 Za 2 dana — pripremi se za nešto posebno</h2>
+      <p>Dragi/a ${n},</p>
+      <p>Kratka poruka — i nadam se da će te razveseliti.</p>
+      <p>Za 2 dana šaljem ti nešto što ne dijelim s nikime javno.</p>
+      <div class="box">
+        <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">Što dolazi za 2 dana:</p>
+        <p style="margin:0 0 6px;">→ <strong style="color:#fff;">Ekskluzivna ponuda</strong> — generirana samo za tebe, ne za nikoga drugog</p>
+        <p style="margin:0 0 6px;">→ <strong style="color:#fff;">Jednom upotrebljiva</strong> — kod koji vrijedi samo jednom</p>
+        <p style="margin:0;">→ <strong style="color:#fff;">Vremenski ograničena</strong> — vrijedi 48 sati od kad ga dobiješ</p>
+      </div>
+      <p>Nemoj preskočiti taj email. Piše od mene — osobno.</p>
+      <p>Do tada — nastavi s planom. 🙏</p>
+      ${appLink}
+      ${sig}`,
+
     // Index 104 (day 25) — Feedback + very soft 397€
     104: () => `
       <h2>Jedno pitanje za tebe (iskreno, 2 min)</h2>
@@ -2199,22 +2237,29 @@ export function buildStarterEmail(
       ${appLink}
       ${sig}`,
 
-    // Index 105 (day 30) — 30-day milestone + soft 397€
+    // Index 105 (day 30) — 30-day milestone + unique coupon 50% off
     105: () => `
-      <h2>30 dana! 🎉 Čestitke — i što dolazi slijed</h2>
+      <h2>30 dana! 🎉 I imam poklon samo za tebe</h2>
       <p>Dragi/a ${n},</p>
-      <p>30 dana s Financijskim Starter Paketom. Ovo je ozbiljan uspjeh — većina ljudi ne dođe ni do ovoga.</p>
-      <p>Što si postigao/la u 30 dana?</p>
+      <p>30 dana s Financijskim Starter Paketom. Ovo je ozbiljan uspjeh — i zaslužuješ nešto posebno.</p>
       <div class="box">
         <p style="margin:0 0 6px;">📊 Vidiš točno kamo ide svaki euro</p>
-        <p style="margin:0 0 6px;">💰 Počeo/la si štedjeti konzistentno (ili čak automatski)</p>
+        <p style="margin:0 0 6px;">💰 Počeo/la si štedjeti konzistentno</p>
         <p style="margin:0 0 6px;">🛡️ Imaš konkretan plan za hitni fond</p>
-        <p style="margin:0;">🎯 Znaš koji financijski tip si — i što s tim napraviti</p>
+        <p style="margin:0;">🎯 Poznaješ svoj financijski tip — i znaš što s njim</p>
       </div>
-      <p>Mnogi polaznici koji završe 30 dana pitaju: <em>"Što slijedi? Kako idemo dublje?"</em></p>
-      <p>Za to postoji <strong style="color:#fff;">FinCoach VIP 90-dnevni program</strong> — koji nastavlja tamo gdje Starter Paket staje: investiranje, eliminacija duga, pasivni prihodi.</p>
-      <p>Kao polaznik Starter Paketa, imaš poseban kod <strong style="color:#D4AF37;font-family:monospace;">STARTER</strong> koji ti daje 50% popusta (197 € umjesto 397 €).</p>
-      ${courseBox}
+      <p>Mnogi polaznici koji završe 30 dana pitaju: <em>"Što slijedi?"</em></p>
+      <p>Za one koji žele ići dublje — investiranje, eliminacija duga, pasivni prihodi — postoji <strong style="color:#fff;">FinCoach VIP 90-dnevni program</strong>.</p>
+      <p>Kao cijenjeni polaznik Starter Paketa, generirao sam kod koji je <strong style="color:#D4AF37;">samo tvoj</strong>:</p>
+      <div class="box" style="border-color:rgba(212,175,55,0.6);background:rgba(212,175,55,0.05);text-align:center;">
+        <p style="color:#718096;font-size:12px;margin:0 0 6px;">Posebno generirano samo za tebe — 1x upotreba:</p>
+        <p style="font-family:monospace;font-size:26px;font-weight:900;color:#D4AF37;background:#1a2f47;padding:10px 24px;border-radius:8px;display:inline-block;letter-spacing:3px;margin:0 0 10px;">${couponDisplay}</p>
+        <p style="font-size:36px;font-weight:900;color:#D4AF37;margin:4px 0;">198,50 €</p>
+        <p style="color:#718096;font-size:12px;margin:0 0 4px;"><s>397 €</s> — <strong style="color:#fff;">50% popusta</strong></p>
+        <p style="color:#ef4444;font-size:12px;font-weight:700;margin:0;">⏰ Kod vrijedi 48 sati</p>
+      </div>
+      <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svojnovac" class="btn">Iskoristi svoju ekskluzivnu ponudu →</a></div>
+      <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata. Nema rizika.</p>
       ${sig}`,
 
     // Index 106 (day 35) — Social proof + 397€
@@ -2245,7 +2290,7 @@ export function buildStarterEmail(
         <p style="margin:0 0 6px;">🏠 <strong style="color:#fff;">Pasivni prihodi</strong> — realistične opcije za prosječnog zaposlenika</p>
         <p style="margin:0;">🏦 <strong style="color:#fff;">Pregovaranje s bankama</strong> — refinanciranje, bolji uvjeti</p>
       </div>
-      <p>Tvoj Starter kod <strong style="color:#D4AF37;font-family:monospace;">STARTER</strong> daje ti 50% popusta — bez roka trajanja.</p>
+      <p>Tvoj ekskluzivni kod <strong style="color:#D4AF37;font-family:monospace;">${couponDisplay}</strong> daje ti 50% popusta.</p>
       ${courseBox}
       ${sig}`,
 
@@ -2262,7 +2307,7 @@ export function buildStarterEmail(
         <p style="margin:0;">🎯 Jesam li počeo/la investirati?</p>
       </div>
       <p>Ako si zadovoljan/na napretkom — zamislil što je moguće za sljedeća 60 dana s 90-dnevnim programom koji ide duplo dublje.</p>
-      <p>Kod <strong style="color:#D4AF37;font-family:monospace;">STARTER</strong> daje ti 50% popusta. Uvijek.</p>
+      <p>Tvoj ekskluzivni kod <strong style="color:#D4AF37;font-family:monospace;">${couponDisplay}</strong> daje ti 50% popusta.</p>
       ${courseBox}
       ${sig}`,
 
@@ -2277,7 +2322,7 @@ export function buildStarterEmail(
         <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">I jedno iskreno pitanje:</p>
         <p style="margin:0;">Je li 90 dana dovoljno za financijsku slobodu? <strong style="color:#fff;">Ne.</strong> To je samo dobar početak. Sljedeće poglavlje — investiranje, pasivni prihodi, eliminacija duga — čeka te u 90-dnevnom programu.</p>
       </div>
-      <p>Kod <strong style="color:#D4AF37;font-family:monospace;">STARTER</strong> daje ti 50% popusta. Ovo je zadnji email u tvojoj Starter sekvenci — ali ne mora biti kraj putovanja.</p>
+      <p>Tvoj ekskluzivni kod <strong style="color:#D4AF37;font-family:monospace;">${couponDisplay}</strong> daje ti 50% popusta. Ovo je zadnji email u tvojoj Starter sekvenci — ali ne mora biti kraj putovanja.</p>
       ${courseBox}
       <p>Bez obzira što odabereš — hvala ti što si bio/la dio ovoga. 🙏</p>
       ${sig}`,

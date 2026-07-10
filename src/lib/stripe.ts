@@ -17,6 +17,7 @@ export interface CreateCheckoutSessionParams {
   affiliateCode?: string
   couponCode?: string
   stripeCouponId?: string
+  upgradeCouponId?: string
   allowPromotionCodes?: boolean
 }
 
@@ -32,6 +33,7 @@ export async function createCheckoutSession({
   affiliateCode,
   couponCode,
   stripeCouponId,
+  upgradeCouponId,
   allowPromotionCodes = true,
 }: CreateCheckoutSessionParams): Promise<Stripe.Checkout.Session> {
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
@@ -60,6 +62,7 @@ export async function createCheckoutSession({
       userId: userId ?? '',
       affiliateCode: affiliateCode ?? '',
       couponCode: couponCode ?? '',
+      upgradeCouponId: upgradeCouponId ?? '',
     },
     allow_promotion_codes: allowPromotionCodes && !stripeCouponId,
   }

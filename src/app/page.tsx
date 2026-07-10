@@ -41,7 +41,7 @@ export default function LandingPage() {
         const data = await res.json().catch(() => ({}))
         throw new Error(data.error || `HTTP ${res.status}`)
       }
-      router.push('/dijagnoza')
+      router.push('/starter-paket')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Nešto je pošlo po krivu. Pokušaj ponovo.')
       setLoading(false)

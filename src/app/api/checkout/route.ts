@@ -63,8 +63,26 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Coupon: aplicira se SAMO ako affiliate NIJE aktivan (zaštita provizije partnera)
-    if (couponCode && !affiliateActive) {
+    // Upgrade kupon (UPGRADE-XXXXXX): 50% off, samo 1x, samo ako affiliate NIJE aktivan
+    let upgradeCouponId: string | null = null
+    if (couponCode && !affiliateActive && couponCode.toUpperCase().startsWith('UPGRADE-')) {
+      const { data: upgradeCoupon } = await serviceSupabase
+        .from('upgrade_coupons')
+        .select('id, discount_percent, used_at, expires_at')
+        .eq('code', couponCode.toUpperCase())
+        .maybeSingle()
+
+      if (upgradeCoupon && !upgradeCoupon.used_at) {
+        const notExpired = !upgradeCoupon.expires_at || new Date(upgradeCoupon.expires_at) > new Date()
+        if (notExpired) {
+          priceAmountCents = Math.round(priceAmountCents * (1 - upgradeCoupon.discount_percent / 100))
+          upgradeCouponId = upgradeCoupon.id
+        }
+      }
+    }
+
+    // Regularni coupon: aplicira se SAMO ako affiliate NIJE aktivan i nije upgrade kupon
+    if (couponCode && !affiliateActive && !upgradeCouponId) {
       const { data: coupon } = await serviceSupabase
         .from('coupons')
         .select('*')
@@ -98,7 +116,8 @@ export async function POST(request: NextRequest) {
       affiliateCode,
       couponCode,
       stripeCouponId,
-      allowPromotionCodes: !affiliateActive,  // Onemogoči PRILIKA na Stripeu ko je affiliate aktiven
+      upgradeCouponId: upgradeCouponId ?? undefined,
+      allowPromotionCodes: !affiliateActive && !upgradeCouponId,
     })
 
     return NextResponse.json({ url: session.url })

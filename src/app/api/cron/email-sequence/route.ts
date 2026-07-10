@@ -88,8 +88,15 @@ export async function GET(request: NextRequest) {
         emailContent = buildLeadEmail(idx, item.full_name ?? 'Prijatelju', item.email, affiliateCode)
 
       } else if (seqType === 'starter') {
-        // ── Starter sekvenca (10 emailov, indeksi 100-109) ────────────────────
-        const starterSeq = STARTER_SEQUENCE[idx - 100]
+        // ── Starter sekvenca (indeksi 100-104, 110, 105-109) ─────────────────
+        // Non-sequential: 100-104 → pos 0-4, 110 → pos 5 (day 28), 105-109 → pos 6-10
+        const STARTER_IDX_MAP: Record<number, number> = {
+          100: 0, 101: 1, 102: 2, 103: 3, 104: 4,
+          110: 5,
+          105: 6, 106: 7, 107: 8, 108: 9, 109: 10,
+        }
+        const arrPos = STARTER_IDX_MAP[idx]
+        const starterSeq = arrPos !== undefined ? STARTER_SEQUENCE[arrPos] : null
         if (!starterSeq) {
           await supabase.from('email_sequence_queue').update({ status: 'skipped', sent_at: now }).eq('id', item.id)
           skipped++; continue
@@ -109,7 +116,21 @@ export async function GET(request: NextRequest) {
           }
         }
 
-        emailContent = buildStarterEmail(idx, item.full_name ?? 'Prijatelju', item.email)
+        // Za dan 30 (idx 105) — dohvati unikatni upgrade kupon iz DB
+        let uniqueCoupon: string | null = null
+        if (idx === 105) {
+          const { data: couponRow } = await supabase
+            .from('upgrade_coupons')
+            .select('code')
+            .eq('email', item.email.toLowerCase())
+            .is('used_at', null)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle()
+          uniqueCoupon = couponRow?.code ?? null
+        }
+
+        emailContent = buildStarterEmail(idx, item.full_name ?? 'Prijatelju', item.email, uniqueCoupon)
 
       } else {
         // ── Legacna sekvenca (stari leads, sequence_type = null) ──────────────

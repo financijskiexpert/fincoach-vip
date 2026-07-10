@@ -216,6 +216,63 @@ const PLANOVI: Record<Tip, Task[]> = {
 
 const DEFAULT_PLAN: Task[] = PLANOVI.vrtlog
 
+// ─── Quiz pitanja ─────────────────────────────────────────────────────────────
+
+const QUIZ_QUESTIONS: { q: string; opts: { label: string; tip: Tip }[] }[] = [
+  {
+    q: 'Kako završavaš tipičan mjesec?',
+    opts: [
+      { label: 'Potrošio/la sam gotovo sve — živim punim plućima', tip: 'hedonist' },
+      { label: 'Imam ušteđevinu, ali je ne diram — oprezan/na sam sa svime', tip: 'branic' },
+      { label: 'Planirao/la sam štedjeti, ali nekako nije ispalo', tip: 'vrtlog' },
+      { label: 'Analizirao/la sam gdje ide novac, ali nisam ništa promijenio/la', tip: 'teoreticar' },
+    ],
+  },
+  {
+    q: 'Kada pomisliš na kupnju nečeg skupljeg, obično...',
+    opts: [
+      { label: 'Kupim odmah ako mi se sviđa — za to i radim', tip: 'hedonist' },
+      { label: 'Razmišljam mjesecima i na kraju najčešće ne kupim', tip: 'branic' },
+      { label: 'Planirao/la sam to kupiti "sljedeći mjesec" već godinu dana', tip: 'vrtlog' },
+      { label: 'Istražujem tjednima sve opcije, usporedbe i recenzije', tip: 'teoreticar' },
+    ],
+  },
+  {
+    q: 'Tvoj odnos prema investiranju trenutno:',
+    opts: [
+      { label: 'Radije potrošim — ulaganje mi nije prioritet', tip: 'hedonist' },
+      { label: 'Plašim se izgubiti novac, volim sigurni štedni račun', tip: 'branic' },
+      { label: 'Hoću investirati, ali uvijek odgodim za "kad se smirim"', tip: 'vrtlog' },
+      { label: 'Znam sve o ETF-ovima i Buffettu — ali još nisam počeo/la', tip: 'teoreticar' },
+    ],
+  },
+  {
+    q: 'Kad stigne plaća, tvoj prvi impuls je:',
+    opts: [
+      { label: 'Isplanirati nešto lijepo — zaslužujem nagradu', tip: 'hedonist' },
+      { label: 'Odmah prebaciti na štedni račun što god mogu', tip: 'branic' },
+      { label: 'Napraviti budžet — ali ga se rijetko i držim', tip: 'vrtlog' },
+      { label: 'Kalkulirati sve moguće načine alokacije', tip: 'teoreticar' },
+    ],
+  },
+  {
+    q: 'Što je tvoj najveći financijski izazov?',
+    opts: [
+      { label: 'Trošim previše na stvari koje volim', tip: 'hedonist' },
+      { label: 'Imam ušteđevinu, ali se bojim investirati', tip: 'branic' },
+      { label: 'Počnem s navikama, ali ne izdržim dulje od tjedan-dva', tip: 'vrtlog' },
+      { label: 'Istražujem i planiram — ali rijetko dođem do akcije', tip: 'teoreticar' },
+    ],
+  },
+]
+
+function calculateType(answers: Record<number, Tip>): Tip {
+  const counts: Record<Tip, number> = { hedonist: 0, branic: 0, vrtlog: 0, teoreticar: 0 }
+  Object.values(answers).forEach(t => counts[t]++)
+  return (['hedonist', 'branic', 'vrtlog', 'teoreticar'] as Tip[])
+    .reduce((best, t) => counts[t] > counts[best] ? t : best)
+}
+
 // ─── Komponente ───────────────────────────────────────────────────────────────
 
 function HealthScoreGauge({ score }: { score: number }) {
@@ -282,6 +339,10 @@ function StarterContent() {
   const [data, setData] = useState<StarterData | null>(null)
   const [doneTasks, setDoneTasks] = useState<Set<number>>(new Set())
   const [activeTab, setActiveTab] = useState<'dijagnoza' | 'plan' | 'videa'>('dijagnoza')
+  const [showQuiz, setShowQuiz] = useState(false)
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, Tip>>({})
+  const [quizSubmitting, setQuizSubmitting] = useState(false)
+  const [quizError, setQuizError] = useState('')
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 
@@ -293,6 +354,7 @@ function StarterContent() {
       .then(json => {
         if (json.valid) {
           setData(json)
+          if (!json.financial_type) setShowQuiz(true)
           const stored = localStorage.getItem(`fc_starter_done_${token}`)
           if (stored) {
             try { setDoneTasks(new Set(JSON.parse(stored))) } catch { /* ignore */ }
@@ -313,6 +375,29 @@ function StarterContent() {
       localStorage.setItem(`fc_starter_done_${token}`, JSON.stringify(Array.from(next)))
       return next
     })
+  }
+
+  async function submitQuiz() {
+    const answeredAll = Object.keys(quizAnswers).length === QUIZ_QUESTIONS.length
+    if (!answeredAll) return
+    setQuizSubmitting(true)
+    setQuizError('')
+    const detectedType = calculateType(quizAnswers)
+    try {
+      const res = await fetch('/api/starter/set-type', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, financial_type: detectedType }),
+      })
+      const json = await res.json()
+      if (!json.ok) throw new Error(json.error ?? 'Greška')
+      setData(prev => prev ? { ...prev, financial_type: detectedType } : prev)
+      setShowQuiz(false)
+    } catch {
+      setQuizError('Greška pri spremanju — pokušaj ponovo.')
+    } finally {
+      setQuizSubmitting(false)
+    }
   }
 
   if (loading) return (
@@ -337,6 +422,83 @@ function StarterContent() {
       </div>
     </div>
   )
+
+  // ── Quiz view (shown when financial_type not yet set) ──────────────────────
+  if (showQuiz && data) {
+    const answeredCount = Object.keys(quizAnswers).length
+    const allAnswered = answeredCount === QUIZ_QUESTIONS.length
+    const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#0D1B2A', color: '#fff' }}>
+        <nav className="fixed top-0 left-0 right-0 z-50"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', backgroundColor: 'rgba(13,27,42,0.95)', backdropFilter: 'blur(8px)' }}>
+          <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
+            <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={110} height={34} priority />
+            <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Finansijska dijagnoza</span>
+          </div>
+        </nav>
+        <div className="px-4 pb-24" style={{ paddingTop: 80 }}>
+          <div className="max-w-xl mx-auto">
+            <div className="text-center pt-6 pb-8">
+              <div className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5"
+                style={{ backgroundColor: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+                5 pitanja · 2 minute
+              </div>
+              <h1 className="text-2xl font-black mb-2">Zdravo, {firstName}! 👋</h1>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                Odgovori na 5 kratkih pitanja kako bismo personalizirali tvoj plan.
+              </p>
+            </div>
+
+            <div className="mb-4 flex items-center gap-2">
+              <div className="flex-1 rounded-full h-1.5" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                <div className="h-1.5 rounded-full transition-all duration-500"
+                  style={{ width: `${(answeredCount / QUIZ_QUESTIONS.length) * 100}%`, backgroundColor: '#D4AF37' }} />
+              </div>
+              <span className="text-xs tabular-nums" style={{ color: 'rgba(255,255,255,0.35)' }}>{answeredCount}/{QUIZ_QUESTIONS.length}</span>
+            </div>
+
+            <div className="space-y-6">
+              {QUIZ_QUESTIONS.map((q, qi) => (
+                <div key={qi} className="rounded-2xl p-5"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: `1px solid ${quizAnswers[qi] ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.08)'}` }}>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    Pitanje {qi + 1}
+                  </p>
+                  <p className="font-bold mb-4" style={{ lineHeight: 1.4 }}>{q.q}</p>
+                  <div className="space-y-2">
+                    {q.opts.map((opt, oi) => {
+                      const selected = quizAnswers[qi] === opt.tip
+                      return (
+                        <button key={oi} onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: opt.tip }))}
+                          className="w-full text-left rounded-xl px-4 py-3 text-sm transition-all"
+                          style={{
+                            backgroundColor: selected ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
+                            border: `1px solid ${selected ? 'rgba(212,175,55,0.5)' : 'rgba(255,255,255,0.07)'}`,
+                            color: selected ? '#D4AF37' : 'rgba(255,255,255,0.7)',
+                            fontWeight: selected ? 700 : 400,
+                          }}>
+                          {selected && <span className="mr-2">✓</span>}{opt.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {quizError && <p className="mt-4 text-sm text-center" style={{ color: '#f87171' }}>{quizError}</p>}
+
+            <button onClick={submitQuiz} disabled={!allAnswered || quizSubmitting}
+              className="w-full mt-6 rounded-xl py-4 font-black text-lg transition-opacity hover:opacity-90 disabled:opacity-40"
+              style={{ backgroundColor: '#D4AF37', color: '#0D1B2A' }}>
+              {quizSubmitting ? 'Analiziramo...' : allAnswered ? 'Prikaži moju dijagnozu →' : `Odgovori na sva pitanja (${answeredCount}/5)`}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const tip = data.financial_type
   const tipData = tip && TIPOVI[tip] ? TIPOVI[tip] : DEFAULT_TIP
