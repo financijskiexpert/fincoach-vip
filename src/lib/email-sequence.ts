@@ -1875,7 +1875,7 @@ export function buildLeadEmail(
       <h2>Dragi/a ${n}, tvoj vodič je ovdje 🎁</h2>
       <p>Hvala ti što si se prijavio/la! Ispod je link za preuzimanje tvojeg besplatnog vodiča:</p>
       <div style="text-align:center;margin:20px 0;">
-        <a href="${siteUrl}/vodic-financijska-stabilnost.pdf" class="btn" style="background:#1a2f47;color:#D4AF37;border:1px solid rgba(212,175,55,0.4);">
+        <a href="${siteUrl}/downloads/vodic-financijska-stabilnost.pdf" class="btn" style="background:#1a2f47;color:#D4AF37;border:1px solid rgba(212,175,55,0.4);">
           📄 Preuzmi vodič besplatno →
         </a>
       </div>
