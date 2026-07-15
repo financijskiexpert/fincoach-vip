@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 
 const teme = [
   { value: 'osiguranje-karijera', label: 'Karijera u osiguranju / suradnja' },
@@ -12,14 +12,39 @@ const teme = [
 
 type Status = 'idle' | 'sending' | 'ok' | 'error'
 
+function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
 export default function KontaktForm() {
   const [status, setStatus] = useState<Status>('idle')
+  const [captchaInput, setCaptchaInput] = useState('')
+  const [captchaError, setCaptchaError] = useState(false)
+
+  const captcha = useMemo(() => {
+    const a = randomInt(2, 9)
+    const b = randomInt(2, 9)
+    return { a, b, answer: a + b }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setCaptchaError(false)
+
+    if (parseInt(captchaInput, 10) !== captcha.answer) {
+      setCaptchaError(true)
+      return
+    }
+
     setStatus('sending')
     const form = e.currentTarget
     const data = new FormData(form)
+
+    // Honeypot: ako je popunjeno, to je bot
+    if (data.get('website')) {
+      setStatus('ok')
+      return
+    }
 
     try {
       const res = await fetch('/api/kontakt', {
@@ -59,6 +84,9 @@ export default function KontaktForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Honeypot — nevidljivo za ljude, boti ga popunjavaju */}
+      <input name="website" type="text" tabIndex={-1} aria-hidden="true" className="hidden" autoComplete="off" />
+
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm text-white/60 mb-1">Ime i prezime *</label>
@@ -92,6 +120,26 @@ export default function KontaktForm() {
           placeholder="Ukratko opiši situaciju i što tražiš..."
         />
       </div>
+
+      {/* Math captcha */}
+      <div>
+        <label className="block text-sm text-white/60 mb-1">
+          Provjera: koliko je {captcha.a} + {captcha.b}? *
+        </label>
+        <input
+          type="number"
+          required
+          value={captchaInput}
+          onChange={e => { setCaptchaInput(e.target.value); setCaptchaError(false) }}
+          className={`${inputCls} ${captchaError ? 'border-red-400' : ''}`}
+          placeholder="Upiši broj..."
+          autoComplete="off"
+        />
+        {captchaError && (
+          <p className="text-red-400 text-xs mt-1">Netočan odgovor. Pokušaj ponovo.</p>
+        )}
+      </div>
+
       {status === 'error' && (
         <p className="text-red-400 text-sm">Greška pri slanju. Pokušaj ponovo ili piši na brane@fincoach.vip.</p>
       )}
