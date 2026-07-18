@@ -171,7 +171,7 @@ export default function SalesPage() {
           <div className="max-w-3xl mx-auto mb-10">
             <div className="aspect-video bg-navy-50 border border-white/10 rounded-2xl overflow-hidden">
               <video
-                src="/videos/fincoach_promo.mp4"
+                src="/api/video/vsl"
                 controls
                 poster="/images/brane-predava.jpg"
                 className="w-full h-full object-cover"
@@ -628,3 +628,4 @@ export default function SalesPage() {
     </div>
   )
 }
+
