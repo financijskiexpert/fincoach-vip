@@ -194,7 +194,6 @@ function StarterPaketContent() {
               playsInline
               preload="metadata"
               className="w-full block"
-              poster="/images/brane-portrait.jpg"
               src="/api/video/starter-landing"
             />
           </div>
