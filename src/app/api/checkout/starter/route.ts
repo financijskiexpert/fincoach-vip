@@ -6,7 +6,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}))
-    const { email, financial_type } = body as { email?: string; financial_type?: string }
+    const { email, financial_type, expired } = body as { email?: string; financial_type?: string; expired?: boolean }
+    const unit_amount = expired ? 7900 : 1900
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -16,10 +17,10 @@ export async function POST(request: NextRequest) {
             currency: 'eur',
             product_data: {
               name: 'FinCoach — Financijski Starter Paket',
-              description: 'Excel budžetski tracker + 90-dnevni plan + kalkulator hitnog fonda + tracker dugova + bonus PDF',
+              description: 'Financijska dijagnoza + personalizirani 30-dnevni plan + 4 ekskluzivna videa s Branetom',
               images: [`${SITE_URL}/og-image.jpg`],
             },
-            unit_amount: 1900,
+            unit_amount,
           },
           quantity: 1,
         },

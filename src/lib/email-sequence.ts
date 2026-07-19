@@ -1883,7 +1883,7 @@ export function buildLeadEmail(
         <p style="color:#D4AF37;font-weight:800;font-size:13px;margin:0 0 6px;text-align:center;">⏰ POSEBNA PONUDA — vrijedi samo 2 sata</p>
         <p style="text-align:center;margin:0 0 4px;font-size:13px;color:rgba(255,255,255,0.6);">Kao novi pretplatnik, imaš ekskluzivnu cijenu:</p>
         <p style="text-align:center;font-size:40px;font-weight:900;color:#D4AF37;margin:4px 0;">19 €</p>
-        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.4);margin:0 0 16px;"><s>49 €</s> standardna cijena · Samo danas, samo za tebe</p>
+        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.4);margin:0 0 16px;"><s>79 €</s> standardna cijena · Samo danas, samo za tebe</p>
         <p style="color:#D4AF37;font-weight:700;margin:0 0 8px;">Što dobivaš u Starter Paketu:</p>
         <p style="margin:0 0 5px;font-size:14px;">📊 <strong style="color:#fff;">Financijski Health Score</strong> — točna ocjena 0-100 gdje stojite</p>
         <p style="margin:0 0 5px;font-size:14px;">🧠 <strong style="color:#fff;">Personalizirani profil</strong> tvojeg financijskog tipa</p>
@@ -1893,7 +1893,7 @@ export function buildLeadEmail(
       <div style="text-align:center;margin:20px 0;">
         <a href="${siteUrl}/starter-paket" class="btn">Iskoristi ponudu — 19 € →</a>
       </div>
-      <p style="color:#718096;font-size:12px;text-align:center;">🔒 Sigurno plaćanje — Stripe · 30-dnevna garancija povrata · Nakon 2 sata cijena se vraća na 49 €</p>
+      <p style="color:#718096;font-size:12px;text-align:center;">🔒 Sigurno plaćanje — Stripe · 7-dnevna garancija povrata · Nakon 2 sata cijena se vraća na 79 €</p>
       <p>Sve ostalo — bez žurbe. Vodič je tvoj. 🙏</p>
       ${sig}`,
 

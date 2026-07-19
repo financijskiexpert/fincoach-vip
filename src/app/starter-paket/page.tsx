@@ -121,8 +121,8 @@ function StarterPaketContent() {
   const m = Math.floor(remaining / 60_000)
   const s = Math.floor((remaining % 60_000) / 1_000)
 
-  const price = expired ? 49 : 19
-  const oldPrice = expired ? null : 49
+  const price = expired ? 79 : 19
+  const oldPrice = expired ? null : 79
 
   async function handleKupi() {
     setLoading(true)
@@ -131,7 +131,7 @@ function StarterPaketContent() {
       const res = await fetch('/api/checkout/starter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ financial_type: tip || undefined }),
+        body: JSON.stringify({ financial_type: tip || undefined, expired }),
       })
       const json = await res.json()
       if (json.url) { window.location.href = json.url; return }
@@ -176,7 +176,7 @@ function StarterPaketContent() {
               className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6"
               style={{ backgroundColor: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}
             >
-              Samo za nove pretplatnike vodiča
+              ⏱ Početna cijena — 19€ umjesto 79€
             </div>
             <h1 className="text-3xl sm:text-4xl font-black leading-tight mb-4">
               Znaš da nešto ne valja s tvojim novcem.<br />
