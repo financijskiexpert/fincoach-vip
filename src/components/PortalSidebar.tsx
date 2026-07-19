@@ -59,7 +59,8 @@ const SECTIONS = [
 
 const ADMIN_NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/studenti', label: 'Studenti', icon: Users },
+  { href: '/admin/studenti', label: 'Studenti (VSN)', icon: Users },
+  { href: '/admin/starter', label: 'Starter Paket', icon: Zap },
   { href: '/admin/lekcije', label: 'Lekcije', icon: BookOpen },
   { href: '/admin/kuponi', label: 'Kuponi', icon: Tag },
   { href: '/admin/leadovi', label: 'Leadovi', icon: UserCheck },

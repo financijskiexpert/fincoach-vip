@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Users, ShoppingCart, TrendingUp, Mail, DollarSign, CheckCircle } from 'lucide-react'
+import { Users, ShoppingCart, TrendingUp, Mail, DollarSign, CheckCircle, Zap } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 
 async function getAdminStats() {
@@ -15,6 +15,7 @@ async function getAdminStats() {
     { count: totalLeads },
     { count: completedLessons },
     { data: recentPurchases },
+    { count: starterCount },
   ] = await Promise.all([
     supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'student'),
     supabase.from('purchases').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
@@ -26,9 +27,12 @@ async function getAdminStats() {
       .eq('status', 'completed')
       .order('purchased_at', { ascending: false })
       .limit(10),
+    supabase.from('starter_purchases').select('*', { count: 'exact', head: true }).eq('status', 'active'),
   ])
 
   const totalRevenue = revenue?.reduce((sum, p) => sum + (p.amount_paid ?? 0), 0) ?? 0
+  const starterTotal = starterCount ?? 0
+  const starterRevenue = starterTotal * 19
 
   return {
     totalStudents: totalStudents ?? 0,
@@ -37,6 +41,8 @@ async function getAdminStats() {
     totalLeads: totalLeads ?? 0,
     completedLessons: completedLessons ?? 0,
     recentPurchases: recentPurchases ?? [],
+    starterCount: starterTotal,
+    starterRevenue,
   }
 }
 
@@ -73,19 +79,20 @@ export default async function AdminDashboard() {
           <Badge className="bg-gold/10 text-gold border-gold/30">Admin</Badge>
         </div>
 
-        {/* Stats grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+        {/* VSN Stats */}
+        <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Volim Svoj Novac</p>
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
           {[
             {
               icon: DollarSign,
-              label: 'Ukupni prihod',
+              label: 'VSN Prihod',
               value: formatCurrency(stats.totalRevenue),
               color: 'text-gold',
               bg: 'bg-gold/10 border-gold/20',
             },
             {
               icon: ShoppingCart,
-              label: 'Prodaje',
+              label: 'VSN Prodaje',
               value: stats.totalPurchases,
               color: 'text-blue-400',
               bg: 'bg-blue-500/10 border-blue-500/20',
@@ -127,11 +134,39 @@ export default async function AdminDashboard() {
           ))}
         </div>
 
+        {/* Starter Paket Stats */}
+        <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Starter Paket</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <a href="/admin/starter" className="border rounded-xl p-4 bg-violet-500/10 border-violet-500/20 hover:border-violet-400/40 transition-colors">
+            <Zap className="w-5 h-5 text-violet-400 mb-2" />
+            <p className="text-xl font-bold text-violet-400">{stats.starterCount}</p>
+            <p className="text-xs text-white/50 mt-0.5">Starter kupci</p>
+          </a>
+          <div className="border rounded-xl p-4 bg-violet-500/10 border-violet-500/20">
+            <DollarSign className="w-5 h-5 text-violet-300 mb-2" />
+            <p className="text-xl font-bold text-violet-300">{formatCurrency(stats.starterRevenue)}</p>
+            <p className="text-xs text-white/50 mt-0.5">Starter prihod</p>
+          </div>
+          <div className="border rounded-xl p-4 bg-violet-500/10 border-violet-500/20">
+            <TrendingUp className="w-5 h-5 text-violet-300 mb-2" />
+            <p className="text-xl font-bold text-violet-300">
+              {formatCurrency(stats.totalRevenue + stats.starterRevenue)}
+            </p>
+            <p className="text-xs text-white/50 mt-0.5">Ukupni prihod</p>
+          </div>
+          <div className="border rounded-xl p-4 bg-violet-500/10 border-violet-500/20">
+            <Users className="w-5 h-5 text-violet-300 mb-2" />
+            <p className="text-xl font-bold text-violet-300">{stats.totalStudents + stats.starterCount}</p>
+            <p className="text-xs text-white/50 mt-0.5">Ukupno korisnika</p>
+          </div>
+        </div>
+
         {/* Quick links */}
-        <div className="grid md:grid-cols-4 gap-4 mb-8">
+        <div className="grid md:grid-cols-5 gap-4 mb-8">
           {[
             { label: 'Upravljaj lekcijama', href: '/admin/lekcije', icon: '📹' },
-            { label: 'Studenti', href: '/admin/studenti', icon: '👥' },
+            { label: 'Studenti (VSN)', href: '/admin/studenti', icon: '👥' },
+            { label: 'Starter Paket', href: '/admin/starter', icon: '⚡' },
             { label: 'Kuponi', href: '/admin/kuponi', icon: '🏷️' },
             { label: 'Blog', href: '/admin/blog', icon: '📝' },
           ].map(link => (
