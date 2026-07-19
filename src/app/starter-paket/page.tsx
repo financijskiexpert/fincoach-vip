@@ -293,24 +293,22 @@ function StarterPaketContent() {
 
           {/* BRANE CREDENTIALS */}
           <div
-            className="rounded-2xl p-6 mb-6 flex items-start gap-5"
+            className="rounded-2xl p-5 mb-6 flex items-center gap-4"
             style={{ backgroundColor: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
           >
-            {/* Photo placeholder — zamijeni src s pravom slikom */}
-            <div
-              className="rounded-2xl shrink-0 flex items-center justify-center"
-              style={{ width: 72, height: 72, backgroundColor: 'rgba(212,175,55,0.12)', border: '2px solid rgba(212,175,55,0.3)' }}
-            >
-              {/* TODO: <Image src="/brane-foto.jpg" alt="Brane Recek" width={72} height={72} className="rounded-2xl object-cover" /> */}
-              <span style={{ fontSize: 32 }}>👤</span>
-            </div>
+            <Image
+              src="/images/brane-portrait.jpg"
+              alt="Brane Recek"
+              width={64}
+              height={64}
+              className="rounded-full object-cover shrink-0"
+              style={{ border: '2px solid rgba(212,175,55,0.35)' }}
+            />
             <div>
-              <p className="font-black mb-0.5" style={{ fontSize: '1rem', color: '#D4AF37' }}>Brane Recek</p>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', marginBottom: 10 }}>Financijski coach · FinCoach VIP</p>
-              <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem', lineHeight: 1.6 }}>
-                Pomogao sam stotinama ljudi iz Hrvatske i Slovenije da prestanu "živjeti od plaće do plaće" —
-                bez smanjivanja životnog standarda. Starter Paket je ono što bi svaki odrasli trebao dobiti
-                na početku — ali nikad nije.
+              <p className="font-black mb-0.5" style={{ fontSize: '0.95rem', color: '#D4AF37' }}>Brane Recek</p>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', marginBottom: 6 }}>Financijski coach · FinCoach VIP</p>
+              <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.82rem', lineHeight: 1.55 }}>
+                Pomogao sam stotinama ljudi iz Hrvatske i Slovenije da prestanu "živjeti od plaće do plaće" — bez smanjivanja životnog standarda.
               </p>
             </div>
           </div>
