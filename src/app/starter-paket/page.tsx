@@ -194,7 +194,7 @@ function StarterPaketContent() {
               playsInline
               preload="metadata"
               className="w-full block"
-              src="/api/video/starter-landing"
+              src="/videos/starter_landing.mp4"
             />
           </div>
 

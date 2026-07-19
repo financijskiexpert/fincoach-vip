@@ -1,5 +1,6 @@
 import { S3Client, GetObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 import { NextRequest, NextResponse } from 'next/server'
+import { Readable } from 'stream'
 
 const r2 = new S3Client({
   endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
@@ -16,15 +17,12 @@ const KEY = 'starter-paket-landing.mp4'
 export async function GET(request: NextRequest) {
   const range = request.headers.get('range')
 
-  const cmdParams: ConstructorParameters<typeof GetObjectCommand>[0] = {
-    Bucket: BUCKET,
-    Key: KEY,
-    ...(range ? { Range: range } : {}),
-  }
-
   try {
-    const res = await r2.send(new GetObjectCommand(cmdParams))
-    const stream = res.Body as ReadableStream
+    const res = await r2.send(new GetObjectCommand({
+      Bucket: BUCKET,
+      Key: KEY,
+      ...(range ? { Range: range } : {}),
+    }))
 
     const headers: Record<string, string> = {
       'Content-Type': 'video/mp4',
@@ -34,7 +32,11 @@ export async function GET(request: NextRequest) {
     if (res.ContentLength) headers['Content-Length'] = String(res.ContentLength)
     if (res.ContentRange)  headers['Content-Range']  = res.ContentRange
 
-    return new NextResponse(stream, {
+    // Convert Node.js Readable → Web ReadableStream (required for Next.js Response)
+    const nodeReadable = res.Body as Readable
+    const webStream = Readable.toWeb(nodeReadable) as ReadableStream
+
+    return new NextResponse(webStream, {
       status: range ? 206 : 200,
       headers,
     })
@@ -43,7 +45,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function HEAD(request: NextRequest) {
+export async function HEAD(_request: NextRequest) {
   try {
     const res = await r2.send(new HeadObjectCommand({ Bucket: BUCKET, Key: KEY }))
     return new NextResponse(null, {
