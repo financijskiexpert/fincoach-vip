@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createServiceClient } from '@/lib/supabase/server'
-import { sendWelcomeEmail, sendStarterAccessEmail } from '@/lib/brevo'
+import { sendWelcomeEmail, sendStarterAccessEmail, sendStarterPortalEmail } from '@/lib/brevo'
 import Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
@@ -83,9 +83,38 @@ export async function POST(request: NextRequest) {
           break
         }
 
-        // Pošlji delivery email z unikatnim linkom
+        // Pošlji delivery email z unikatnim token linkom
         const accessUrl = `${siteUrl}/starter?token=${tokenRow.token}`
         await sendStarterAccessEmail(customerEmail, customerName || 'prijatelju', accessUrl, financial_type || undefined)
+
+        // Kreira Supabase Auth account (enako kot VSN kupci) + pošlje portal email z geslom
+        let starterGeneratedPassword: string | undefined
+        const { data: existingStarterProfile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', customerEmail.toLowerCase())
+          .maybeSingle()
+
+        if (!existingStarterProfile) {
+          starterGeneratedPassword = Array.from(
+            { length: 12 },
+            () => 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#'.charAt(
+              Math.floor(Math.random() * 58)
+            )
+          ).join('')
+
+          const { error: createErr } = await supabase.auth.admin.createUser({
+            email: customerEmail,
+            password: starterGeneratedPassword,
+            email_confirm: true,
+            user_metadata: { full_name: customerName, role: 'student' },
+          })
+          if (createErr) console.error('Starter Auth account error:', createErr)
+        }
+
+        if (starterGeneratedPassword) {
+          await sendStarterPortalEmail(customerEmail, customerName || 'prijatelju', starterGeneratedPassword)
+        }
 
         // Označi lead kot starter_purchased + prekaže email sekvenco za Starter Paket
         await supabase

@@ -20,7 +20,7 @@ export async function POST() {
 
     const supabase = await createServiceClient()
 
-    // Provjeri je li user kupio tečaj (lahko ima več nakupov)
+    // Provjeri je li user kupio VSN tečaj ili Starter Paket
     const { data: purchase } = await supabase
       .from('purchases')
       .select('id')
@@ -29,9 +29,17 @@ export async function POST() {
       .limit(1)
       .maybeSingle()
 
-    if (!purchase) {
+    const { data: starterPurchase } = await supabase
+      .from('starter_purchases')
+      .select('id')
+      .eq('email', (user.email ?? '').toLowerCase())
+      .eq('status', 'active')
+      .limit(1)
+      .maybeSingle()
+
+    if (!purchase && !starterPurchase) {
       return NextResponse.json(
-        { error: 'Affiliate program je dostupan samo kupcima tečaja.' },
+        { error: 'Affiliate program je dostupan korisnicima s aktivnim paketom.' },
         { status: 403 }
       )
     }

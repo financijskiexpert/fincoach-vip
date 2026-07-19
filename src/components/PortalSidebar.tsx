@@ -27,6 +27,7 @@ import {
   X,
   Calculator,
   Star,
+  Zap,
 } from 'lucide-react'
 
 interface Lesson {
@@ -40,6 +41,8 @@ interface Lesson {
 interface PortalSidebarProps {
   role: 'admin' | 'student'
   hasAffiliate: boolean
+  hasStarterAccess?: boolean
+  hasVSNAccess?: boolean
   lessons: Lesson[]
   completedLessonIds: string[]
   userName?: string
@@ -75,6 +78,8 @@ function formatDuration(seconds?: number): string {
 export default function PortalSidebar({
   role,
   hasAffiliate,
+  hasStarterAccess = false,
+  hasVSNAccess = false,
   lessons,
   completedLessonIds,
   userName,
@@ -132,15 +137,24 @@ export default function PortalSidebar({
 
   const studentNavItems = [
     { href: '/portal', label: 'Pregled', icon: Home },
-    {
-      href: '/portal',
-      label: `Napredak (${progressPercent}%)`,
-      icon: TrendingUp,
-    },
+    ...(hasStarterAccess
+      ? [{ href: '/portal/starter', label: 'Starter Paket', icon: Zap }]
+      : []),
+    ...(hasVSNAccess
+      ? [{
+          href: '/portal',
+          label: `Napredak (${progressPercent}%)`,
+          icon: TrendingUp,
+        }]
+      : []),
     { href: '/portal/biljeske', label: 'Moje bilješke', icon: FileText },
     { href: '/portal/kalkulatori', label: 'Kalkulatori', icon: Calculator },
-    { href: '/portal/certifikat', label: 'Certifikat', icon: Award },
-    { href: '/portal/recenzija', label: 'Ostavi recenziju', icon: Star },
+    ...(hasVSNAccess
+      ? [
+          { href: '/portal/certifikat', label: 'Certifikat', icon: Award },
+          { href: '/portal/recenzija', label: 'Ostavi recenziju', icon: Star },
+        ]
+      : []),
     ...(hasAffiliate
       ? [{ href: '/portal/affiliate', label: 'Affiliate', icon: Link2 }]
       : []),
@@ -298,8 +312,8 @@ export default function PortalSidebar({
                 )
               })}
 
-              {/* Lesson list — only when expanded */}
-              {!collapsed && (
+              {/* Lesson list — only when expanded AND user has VSN access */}
+              {!collapsed && hasVSNAccess && (
                 <div className="mt-2">
                   {SECTIONS.map(section => {
                     const sectionLessons = lessons.filter(l => l.section === section.key)

@@ -87,13 +87,24 @@ export default async function PortalLayout({
     .maybeSingle()
   const hasAffiliate = !!affiliateRecord?.is_active
 
+  const { data: starterPurchase } = await service
+    .from('starter_purchases')
+    .select('id, financial_type')
+    .eq('email', (user.email ?? '').toLowerCase())
+    .eq('status', 'active')
+    .maybeSingle()
+  const hasStarterAccess = !!starterPurchase
+
   const { lessons, completedIds } = await getLessonsAndProgress(user.id, user.email ?? '')
+  const hasVSNAccess = lessons.length > 0
 
   return (
     <div className="flex h-screen bg-navy overflow-hidden">
       <PortalSidebar
         role="student"
         hasAffiliate={hasAffiliate}
+        hasStarterAccess={hasStarterAccess}
+        hasVSNAccess={hasVSNAccess}
         lessons={lessons}
         completedLessonIds={completedIds}
         userName={profile?.full_name ?? undefined}

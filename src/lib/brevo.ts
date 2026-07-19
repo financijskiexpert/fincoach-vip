@@ -242,6 +242,59 @@ export async function sendStarterAccessEmail(
   })
 }
 
+export async function sendStarterPortalEmail(email: string, name: string, generatedPassword: string): Promise<void> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+  const firstName = name.split(' ')[0] || 'prijatelju'
+
+  const htmlContent = `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  body{font-family:Inter,Arial,sans-serif;background:#f1f5f9;margin:0;padding:0}
+  .wrap{max-width:600px;margin:32px auto;background:#0D1B2A;border-radius:14px;overflow:hidden}
+  .header{background:linear-gradient(135deg,#0D1B2A 0%,#1a2f47 100%);padding:32px 40px;text-align:center}
+  .logo{color:#D4AF37;font-size:22px;font-weight:800;letter-spacing:1px}
+  .body{padding:40px;color:#fff}
+  h2{color:#D4AF37;font-size:22px;font-weight:700;margin:0 0 20px;line-height:1.3}
+  p{color:#cbd5e0;line-height:1.75;margin:0 0 16px;font-size:15px}
+  .btn{display:inline-block;background:#D4AF37;color:#0D1B2A;padding:16px 36px;border-radius:8px;text-decoration:none;font-weight:800;font-size:16px;margin:8px 0}
+  .box{background:#0a1929;border:1px solid rgba(212,175,55,0.35);border-radius:10px;padding:20px 24px;margin:20px 0}
+  .footer{background:#091623;padding:20px 40px;text-align:center;color:#4a5568;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header"><div class="logo">FinCoach VIP</div></div>
+  <div class="body">
+    <h2>Dragi/a ${firstName}, tvoj portal je spreman! 🎉</h2>
+    <p>Uz Starter Paket dobivaš i pristup korisničkom portalu gdje ćeš pratiti svoju dijagnozu, 30-dnevni plan i ekskluzivne videe.</p>
+    <div class="box">
+      <p style="color:#D4AF37;font-weight:700;margin:0 0 12px;">🔐 Tvoji prijavni podaci</p>
+      <p style="margin:6px 0;font-size:14px;color:#cbd5e0;"><strong style="color:#fff;">Email:</strong> ${email}</p>
+      <p style="margin:6px 0;font-size:14px;color:#cbd5e0;"><strong style="color:#fff;">Lozinka:</strong> <span style="font-family:monospace;background:#1a2f47;padding:2px 8px;border-radius:4px;letter-spacing:1px;">${generatedPassword}</span></p>
+      <p style="color:#718096;font-size:12px;margin:12px 0 0;">Možeš promijeniti lozinku unutar portala u postavkama.</p>
+    </div>
+    <p>U portalu ćeš naći:</p>
+    <p style="margin:4px 0;">📊 <strong style="color:#fff;">Financijsku dijagnozu</strong> — Health Score + profil tvog tipa</p>
+    <p style="margin:4px 0;">📅 <strong style="color:#fff;">30-dnevni plan</strong> — personaliziran za tvoj tip</p>
+    <p style="margin:4px 0;">🎬 <strong style="color:#fff;">Ekskluzivna videa</strong> — svaki tjedan jedno novo</p>
+    <p style="margin:4px 0 16px;">🤝 <strong style="color:#fff;">Affiliate program</strong> — zarađuj preporučujući FinCoach</p>
+    <div style="text-align:center;margin:28px 0;">
+      <a href="${siteUrl}/prijava" class="btn">Prijavi se u portal →</a>
+    </div>
+    <p style="font-size:13px;color:#718096;">Link vodi na stranicu za prijavu — unesi email i gore navedenu lozinku.</p>
+    <p><strong style="color:#D4AF37;">Brane</strong><br><span style="color:#718096;font-size:13px;">FinCoach VIP</span></p>
+  </div>
+  <div class="footer">© 2026 FinCoach VIP</div>
+</div>
+</body></html>`
+
+  await sendTransactionalEmail({
+    to: [{ email, name }],
+    subject: `${firstName}, tvoj FinCoach portal je aktivan — prijavni podaci unutra`,
+    htmlContent,
+  })
+}
+
 export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: string): Promise<void> {
   const htmlContent = `
     <!DOCTYPE html>
