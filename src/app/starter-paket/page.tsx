@@ -13,7 +13,7 @@ function getDeadline(): number {
   const stored = localStorage.getItem(STORAGE_KEY)
   if (stored) {
     const ts = parseInt(stored, 10)
-    if (!isNaN(ts) && ts > Date.now()) return ts
+    if (!isNaN(ts)) return ts  // expired stays expired — never reset
   }
   const deadline = Date.now() + FIFTEEN_MIN_MS
   localStorage.setItem(STORAGE_KEY, String(deadline))
@@ -196,7 +196,7 @@ function StarterPaketContent() {
               className="w-full block"
               poster="/images/brane-portrait.jpg"
             >
-              <source src="/videos/starter_landing.mp4" type="video/mp4" />
+              <source src="/api/video/starter-landing" type="video/mp4" />
             </video>
           </div>
 
