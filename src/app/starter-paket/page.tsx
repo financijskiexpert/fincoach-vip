@@ -195,9 +195,8 @@ function StarterPaketContent() {
               preload="metadata"
               className="w-full block"
               poster="/images/brane-portrait.jpg"
-            >
-              <source src="/api/video/starter-landing" type="video/mp4" />
-            </video>
+              src="/api/video/starter-landing"
+            />
           </div>
 
           {/* PROBLEM */}
