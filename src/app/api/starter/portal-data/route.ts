@@ -32,12 +32,16 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: 'Nemaš pristup Starter Paketu.' }, { status: 403 })
   }
 
-  // Track last portal visit for re-engagement emails
+  // Track last portal visit for re-engagement emails (column added in migration 20260719)
   if (purchase?.id) {
-    await service
-      .from('starter_purchases')
-      .update({ last_seen_starter: new Date().toISOString() })
-      .eq('id', purchase.id)
+    try {
+      await service
+        .from('starter_purchases')
+        .update({ last_seen_starter: new Date().toISOString() } as Record<string, unknown>)
+        .eq('id', purchase.id)
+    } catch {
+      // Column may not exist yet — migration pending
+    }
   }
 
   return NextResponse.json({
