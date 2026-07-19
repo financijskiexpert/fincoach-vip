@@ -68,6 +68,7 @@ const ADMIN_NAV = [
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/testimonials', label: 'Recenzije', icon: Award },
   { href: '/admin/emaili', label: 'Emaili', icon: Mail },
+  { href: '/portal', label: 'Pregled portala', icon: PlayCircle },
 ]
 
 function formatDuration(seconds?: number): string {
