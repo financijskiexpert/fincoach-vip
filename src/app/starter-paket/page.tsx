@@ -187,22 +187,17 @@ function StarterPaketContent() {
             </p>
           </div>
 
-          {/* VIDEO PLACEHOLDER — zamijeni src kad Brane pošalje video */}
-          <div
-            className="rounded-2xl overflow-hidden mb-8"
-            style={{ border: '1px solid rgba(212,175,55,0.2)', backgroundColor: 'rgba(0,0,0,0.3)', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            id="starter-landing-video"
-          >
-            {/* TODO: zamijeni ovaj div s <video> ili <iframe> kad video bude spreman */}
-            <div className="text-center px-6">
-              <div
-                className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center"
-                style={{ backgroundColor: 'rgba(212,175,55,0.15)', border: '2px solid rgba(212,175,55,0.4)' }}
-              >
-                <span style={{ fontSize: 28 }}>▶</span>
-              </div>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>Video uskoro — Brane ti objašnjava sve</p>
-            </div>
+          {/* LANDING VIDEO */}
+          <div className="rounded-2xl overflow-hidden mb-8" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full block"
+              poster="/images/brane-portrait.jpg"
+            >
+              <source src="/videos/starter_landing.mp4" type="video/mp4" />
+            </video>
           </div>
 
           {/* PROBLEM */}
