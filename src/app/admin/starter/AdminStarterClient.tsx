@@ -108,21 +108,21 @@ export default function AdminStarterClient({ starters }: Props) {
                 </td>
                 <td className="py-3 pr-4 text-center">
                   {entry.token ? (
-                    <CheckCircle className="w-4 h-4 text-green-400 mx-auto" title="Ima portal login" />
+                    <CheckCircle className="w-4 h-4 text-green-400 mx-auto" />
                   ) : (
                     <XCircle className="w-4 h-4 text-white/20 mx-auto" />
                   )}
                 </td>
                 <td className="py-3 pr-4 text-center">
                   {entry.has_vsn ? (
-                    <CheckCircle className="w-4 h-4 text-gold mx-auto" title="Ima VSN pristup" />
+                    <CheckCircle className="w-4 h-4 text-gold mx-auto" />
                   ) : (
                     <XCircle className="w-4 h-4 text-white/20 mx-auto" />
                   )}
                 </td>
                 <td className="py-3 pr-4 text-center">
                   {entry.upgrade_coupon_used ? (
-                    <CheckCircle className="w-4 h-4 text-blue-400 mx-auto" title="Kupon iskorišten" />
+                    <CheckCircle className="w-4 h-4 text-blue-400 mx-auto" />
                   ) : (
                     <XCircle className="w-4 h-4 text-white/20 mx-auto" />
                   )}
