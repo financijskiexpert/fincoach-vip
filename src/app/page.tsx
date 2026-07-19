@@ -56,11 +56,16 @@ export default function LandingPage() {
           <Link href="/" className="flex items-center">
             <Image src="/logo/fincoach-logo-horizontal.svg" alt="FinCoach VIP" width={150} height={47} priority />
           </Link>
-          <Link href="/volim-svoj-novac">
-            <Button size="sm" variant="outline">
-              Pogledaj tečaj →
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/starter-paket" className="text-sm font-medium hidden sm:block" style={{ color: 'rgba(212,175,55,0.8)' }}>
+              Starter — 19€
+            </Link>
+            <Link href="/volim-svoj-novac">
+              <Button size="sm" variant="outline">
+                Pogledaj tečaj →
+              </Button>
+            </Link>
+          </div>
         </div>
       </nav>
 

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, XCircle, Zap, AlertCircle } from 'lucide-react'
+import { CheckCircle, XCircle, Zap, Clock } from 'lucide-react'
 
 const FINANCIAL_TYPE_LABELS: Record<string, { label: string; color: string }> = {
   hedonist: { label: 'Hedonist', color: 'bg-red-500/20 text-red-300' },
@@ -76,7 +76,8 @@ export default function AdminStarterClient({ starters }: Props) {
             <th className="text-center pb-3 text-white/40 font-medium">Portal login</th>
             <th className="text-center pb-3 text-white/40 font-medium">VSN pristup</th>
             <th className="text-center pb-3 text-white/40 font-medium">Upgrade kupon</th>
-            <th className="text-right pb-3 text-white/40 font-medium">Datum</th>
+            <th className="text-right pb-3 text-white/40 font-medium">Kupljeno</th>
+            <th className="text-right pb-3 text-white/40 font-medium">Garancija</th>
             <th className="text-right pb-3 text-white/40 font-medium">Akcija</th>
           </tr>
         </thead>
@@ -129,6 +130,22 @@ export default function AdminStarterClient({ starters }: Props) {
                 </td>
                 <td className="py-3 pr-4 text-right text-white/40 text-xs">
                   {new Date(entry.created_at).toLocaleDateString('hr-HR')}
+                </td>
+                <td className="py-3 pr-4 text-right text-xs">
+                  {(() => {
+                    const expiry = new Date(new Date(entry.created_at).getTime() + 7 * 24 * 60 * 60 * 1000)
+                    const now = new Date()
+                    const active = expiry > now
+                    const daysLeft = Math.max(0, Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
+                    return active ? (
+                      <span className="inline-flex items-center gap-1 text-yellow-400">
+                        <Clock className="w-3 h-3" />
+                        {daysLeft}d
+                      </span>
+                    ) : (
+                      <span className="text-white/20">Istekla</span>
+                    )
+                  })()}
                 </td>
                 <td className="py-3 text-right">
                   {msg?.id === entry.id && (

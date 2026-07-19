@@ -22,6 +22,85 @@ function getDeadline(): number {
 
 function pad(n: number) { return String(n).padStart(2, '0') }
 
+// SVG portal mockup — health score gauge
+function PortalMockup() {
+  return (
+    <div className="flex justify-center my-2">
+      <div
+        className="relative rounded-3xl overflow-hidden shadow-2xl"
+        style={{
+          width: 280,
+          background: 'linear-gradient(145deg, #0a1929 0%, #0d1b2a 100%)',
+          border: '1px solid rgba(212,175,55,0.25)',
+          padding: '20px 18px 18px',
+        }}
+      >
+        {/* Status bar mockup */}
+        <div className="flex justify-between items-center mb-4 px-1">
+          <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 10 }}>9:41</span>
+          <div className="flex gap-1">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} style={{ width: 4, height: 6 + i * 2, backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: 1 }} />
+            ))}
+          </div>
+        </div>
+
+        {/* App header */}
+        <div className="flex items-center gap-2 mb-5">
+          <div style={{ width: 28, height: 28, borderRadius: '50%', backgroundColor: 'rgba(212,175,55,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: 14 }}>⚡</span>
+          </div>
+          <div>
+            <p style={{ color: '#fff', fontSize: 11, fontWeight: 700, lineHeight: 1 }}>Starter Paket</p>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 9 }}>Tvoja financijska dijagnoza</p>
+          </div>
+        </div>
+
+        {/* Health Score gauge */}
+        <div className="text-center mb-4">
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 9, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Financijski Health Score</p>
+          <svg width="140" height="80" viewBox="0 0 140 80" style={{ margin: '0 auto', display: 'block' }}>
+            {/* Background arc */}
+            <path d="M 14 74 A 56 56 0 0 1 126 74" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" strokeLinecap="round" />
+            {/* Score arc — 68/100 = 68% */}
+            <path d="M 14 74 A 56 56 0 0 1 126 74" fill="none" stroke="url(#scoreGrad)" strokeWidth="10" strokeLinecap="round"
+              strokeDasharray="176" strokeDashoffset="56" />
+            <defs>
+              <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ef4444" />
+                <stop offset="50%" stopColor="#f59e0b" />
+                <stop offset="100%" stopColor="#22c55e" />
+              </linearGradient>
+            </defs>
+            <text x="70" y="66" textAnchor="middle" fill="#D4AF37" fontSize="26" fontWeight="900">68</text>
+            <text x="70" y="78" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="8">/100</text>
+          </svg>
+        </div>
+
+        {/* Type badge */}
+        <div
+          className="text-center rounded-xl py-2 mb-3"
+          style={{ backgroundColor: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}
+        >
+          <p style={{ color: '#D4AF37', fontSize: 10, fontWeight: 700 }}>🧠 Tvoj tip: Branič</p>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 9, marginTop: 2 }}>Skloniš novac, ali se bojiš investirati</p>
+        </div>
+
+        {/* Progress bar */}
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 9 }}>30-dnevni plan</span>
+            <span style={{ color: '#D4AF37', fontSize: 9, fontWeight: 700 }}>Dan 7/30</span>
+          </div>
+          <div style={{ height: 4, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 2 }}>
+            <div style={{ height: '100%', width: '23%', backgroundColor: '#D4AF37', borderRadius: 2 }} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function StarterPaketContent() {
   const params = useSearchParams()
   const tip = params.get('tip') ?? ''
@@ -108,6 +187,24 @@ function StarterPaketContent() {
             </p>
           </div>
 
+          {/* VIDEO PLACEHOLDER — zamijeni src kad Brane pošalje video */}
+          <div
+            className="rounded-2xl overflow-hidden mb-8"
+            style={{ border: '1px solid rgba(212,175,55,0.2)', backgroundColor: 'rgba(0,0,0,0.3)', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            id="starter-landing-video"
+          >
+            {/* TODO: zamijeni ovaj div s <video> ili <iframe> kad video bude spreman */}
+            <div className="text-center px-6">
+              <div
+                className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center"
+                style={{ backgroundColor: 'rgba(212,175,55,0.15)', border: '2px solid rgba(212,175,55,0.4)' }}
+              >
+                <span style={{ fontSize: 28 }}>▶</span>
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>Video uskoro — Brane ti objašnjava sve</p>
+            </div>
+          </div>
+
           {/* PROBLEM */}
           <div
             className="rounded-2xl p-6 mb-6"
@@ -165,7 +262,7 @@ function StarterPaketContent() {
               {
                 icon: '🎬',
                 title: '4 ekskluzivna videa s Branetom',
-                desc: 'Jeden video tjedno. Dubinski uvidi koje ne možeš naći nigdje drugdje.',
+                desc: 'Jedan video tjedno. Dubinski uvidi koje ne možeš naći nigdje drugdje.',
               },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-4 mb-5 last:mb-0">
@@ -181,6 +278,88 @@ function StarterPaketContent() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* PORTAL MOCKUP */}
+          <div className="mb-2 text-center">
+            <p className="text-sm font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              Kako izgleda tvoj portal
+            </p>
+          </div>
+          <PortalMockup />
+          <p className="text-center text-xs mb-8 mt-3" style={{ color: 'rgba(255,255,255,0.25)' }}>
+            Tvoja osobna nadzorna ploča — dostupna odmah nakon kupnje
+          </p>
+
+          {/* BRANE CREDENTIALS */}
+          <div
+            className="rounded-2xl p-6 mb-6 flex items-start gap-5"
+            style={{ backgroundColor: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
+          >
+            {/* Photo placeholder — zamijeni src s pravom slikom */}
+            <div
+              className="rounded-2xl shrink-0 flex items-center justify-center"
+              style={{ width: 72, height: 72, backgroundColor: 'rgba(212,175,55,0.12)', border: '2px solid rgba(212,175,55,0.3)' }}
+            >
+              {/* TODO: <Image src="/brane-foto.jpg" alt="Brane Recek" width={72} height={72} className="rounded-2xl object-cover" /> */}
+              <span style={{ fontSize: 32 }}>👤</span>
+            </div>
+            <div>
+              <p className="font-black mb-0.5" style={{ fontSize: '1rem', color: '#D4AF37' }}>Brane Recek</p>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', marginBottom: 10 }}>Financijski coach · FinCoach VIP</p>
+              <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem', lineHeight: 1.6 }}>
+                Pomogao sam stotinama ljudi iz Hrvatske i Slovenije da prestanu "živjeti od plaće do plaće" —
+                bez smanjivanja životnog standarda. Starter Paket je ono što bi svaki odrasli trebao dobiti
+                na početku — ali nikad nije.
+              </p>
+            </div>
+          </div>
+
+          {/* ZA KOGA JE / ZA KOGA NIJE */}
+          <div className="mb-6">
+            <p className="text-center text-sm font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              Je li Starter Paket za tebe?
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {/* JE */}
+              <div
+                className="rounded-2xl p-4"
+                style={{ backgroundColor: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)' }}
+              >
+                <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#22c55e' }}>✓ Za tebe je</p>
+                {[
+                  'Ne znaš kamo ti odlazi novac',
+                  'Zarađuješ, ali ne štediš',
+                  'Trebaš plan, ne motivaciju',
+                  'Spreman/a 15 min dnevno',
+                  'Počinješ od nule',
+                ].map((t, i) => (
+                  <div key={i} className="flex items-start gap-2 mb-2 last:mb-0">
+                    <span style={{ color: '#22c55e', fontSize: 12, flexShrink: 0, marginTop: 1 }}>✓</span>
+                    <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', lineHeight: 1.45 }}>{t}</span>
+                  </div>
+                ))}
+              </div>
+              {/* NIJE */}
+              <div
+                className="rounded-2xl p-4"
+                style={{ backgroundColor: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.2)' }}
+              >
+                <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#ef4444' }}>✗ Nije za tebe</p>
+                {[
+                  'Tražiš brzo bogaćenje',
+                  'Nisi spreman/a na promjenu',
+                  'Već imaš fin. sustav',
+                  'Tražiš investicijski savjet',
+                  'Ne možeš odvojiti 15 min/dan',
+                ].map((t, i) => (
+                  <div key={i} className="flex items-start gap-2 mb-2 last:mb-0">
+                    <span style={{ color: '#ef4444', fontSize: 12, flexShrink: 0, marginTop: 1 }}>✗</span>
+                    <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', lineHeight: 1.45 }}>{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* SOCIAL PROOF */}
@@ -208,7 +387,6 @@ function StarterPaketContent() {
               border: `1px solid ${expired ? 'rgba(255,255,255,0.1)' : 'rgba(212,175,55,0.4)'}`,
             }}
           >
-            {/* Countdown / expired header */}
             {!expired ? (
               <div
                 className="px-6 py-4 flex items-center justify-between flex-wrap gap-3"
@@ -258,28 +436,9 @@ function StarterPaketContent() {
               <div className="flex items-center justify-center gap-4 flex-wrap">
                 <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>🔒 Sigurno plaćanje — Stripe</span>
                 <span className="text-xs" style={{ color: 'rgba(255,255,255,0.12)' }}>·</span>
-                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>30-dnevna garancija povrata</span>
+                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>7-dnevna garancija povrata</span>
               </div>
             </div>
-          </div>
-
-          {/* WHO IS THIS FOR */}
-          <div
-            className="rounded-2xl p-6 mb-6"
-            style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
-          >
-            <p className="text-sm font-bold mb-4" style={{ color: '#D4AF37' }}>Starter Paket je za tebe ako:</p>
-            {[
-              'Znaš da nešto ne valja — ali ne znaš točno što.',
-              'Imaš prihode, ali novac uvijek nekamo "nestane".',
-              'Volio/la bi početi štedjeti i investirati, ali ne znaš odakle.',
-              'Trebaš ne motivaciju, nego konkretan plan prilagođen tebi.',
-            ].map((t, i) => (
-              <div key={i} className="flex items-start gap-3 mb-2 last:mb-0">
-                <span style={{ color: '#D4AF37', flexShrink: 0 }}>✓</span>
-                <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem' }}>{t}</span>
-              </div>
-            ))}
           </div>
 
           {/* FAQ */}
@@ -287,15 +446,19 @@ function StarterPaketContent() {
             {[
               {
                 q: 'Koliko vremena trebam?',
-                a: '30 minuta tjedno — to je sve. Plan je dizajniran za zaposlene ljude s punim rasporedima.',
+                a: '15 minuta dnevno — to je sve. Plan je dizajniran za zaposlene ljude s punim rasporedima.',
               },
               {
                 q: 'Što ako ne vidim rezultate?',
-                a: '30-dnevna garancija povrata. Ako u prvih 30 dana ne vidiš vrijednost — vraćam ti novac bez pitanja.',
+                a: '7-dnevna garancija povrata. Ako u prvih 7 dana ne vidiš vrijednost — vraćam ti 19€ bez pitanja. Bez formulara, bez čekanja.',
               },
               {
                 q: 'Trebam li financijsko znanje?',
                 a: 'Nula. Program počinje od dijagnoze — i gradi plan na temelju točno tvoje situacije.',
+              },
+              {
+                q: 'Kad dobijem pristup?',
+                a: 'Odmah. Nakon plaćanja dobivaš email s pristupnim podacima i možeš početi za 5 minuta.',
               },
             ].map((item, i) => (
               <div
