@@ -295,6 +295,57 @@ export async function sendStarterPortalEmail(email: string, name: string, genera
   })
 }
 
+export async function sendStarterReengagementEmail(email: string, name: string): Promise<void> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+  const firstName = name.split(' ')[0] || 'prijatelju'
+  const portalUrl = `${siteUrl}/portal/starter`
+
+  const htmlContent = `<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  body{font-family:Inter,Arial,sans-serif;background:#f1f5f9;margin:0;padding:0}
+  .wrap{max-width:600px;margin:32px auto;background:#0D1B2A;border-radius:14px;overflow:hidden}
+  .header{background:linear-gradient(135deg,#0D1B2A 0%,#1a2f47 100%);padding:32px 40px;text-align:center}
+  .logo{color:#D4AF37;font-size:22px;font-weight:800;letter-spacing:1px}
+  .body{padding:40px;color:#fff}
+  h2{color:#D4AF37;font-size:22px;font-weight:700;margin:0 0 20px;line-height:1.3}
+  p{color:#cbd5e0;line-height:1.75;margin:0 0 16px;font-size:15px}
+  .btn{display:inline-block;background:#D4AF37;color:#0D1B2A;padding:16px 36px;border-radius:8px;text-decoration:none;font-weight:800;font-size:16px;margin:8px 0}
+  .box{background:#0a1929;border:1px solid rgba(212,175,55,0.35);border-radius:10px;padding:20px 24px;margin:20px 0}
+  .footer{background:#091623;padding:20px 40px;text-align:center;color:#4a5568;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header"><div class="logo">FinCoach VIP</div></div>
+  <div class="body">
+    <h2>Čekamo te, ${firstName}! 👋</h2>
+    <p>Primijetili smo da nisi bio/bila u svom Starter portalu već 2 dana.</p>
+    <p>Razumijemo — život je gužva. Ali financijska sloboda ne čeka.</p>
+    <div class="box">
+      <p style="color:#D4AF37;font-weight:700;margin:0 0 10px;">💡 Zašto je kontinuitet važan:</p>
+      <p style="margin:4px 0;font-size:14px;">✅ <strong style="color:#fff;">Polaznici koji svaki dan odrade bar 1 zadatak</strong> završe plan 4× češće.</p>
+      <p style="margin:4px 0;font-size:14px;">📅 Samo <strong style="color:#fff;">5 minuta dnevno</strong> — to je sve što treba.</p>
+      <p style="margin:4px 0 0;font-size:14px;">🏆 <strong style="color:#fff;">30 dana</strong> = trajne navike koje funkcioniraju i bez volje.</p>
+    </div>
+    <p>Tvoj 30-dnevni plan čeka točno tamo gdje si stao/la. Samo se vrati i nastavi — bez krivnje, bez ispočetka.</p>
+    <div style="text-align:center;margin:28px 0;">
+      <a href="${portalUrl}" class="btn">Nastavi plan →</a>
+    </div>
+    <p>Navijam za tebe! 💪</p>
+    <p><strong style="color:#D4AF37;">Brane</strong><br><span style="color:#718096;font-size:13px;">Financijski coach · FinCoach VIP</span></p>
+  </div>
+  <div class="footer">© 2026 FinCoach VIP &nbsp;·&nbsp; <a href="${siteUrl}/odjava" style="color:#4a5568;">Odjava</a></div>
+</div>
+</body></html>`
+
+  await sendTransactionalEmail({
+    to: [{ email, name }],
+    subject: `${firstName}, tvoj 30-dnevni plan čeka — nastavi gdje si stao/la 📅`,
+    htmlContent,
+  })
+}
+
 export async function sendLeadPdfEmail(email: string, name: string, pdfUrl: string): Promise<void> {
   const htmlContent = `
     <!DOCTYPE html>

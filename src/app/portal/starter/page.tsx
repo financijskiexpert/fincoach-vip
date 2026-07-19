@@ -110,7 +110,9 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Smanji jedan fiksni trošak za 10% (internet, mobitel, osiguranje)', tip_: '📞 Jedno pregovaranje tjedno' },
     { day: 26, task: 'Postavi automatski transfer za dug u skladu s tvojom metodom', tip_: '🤖 Automatizacija = konzistentnost' },
     { day: 27, task: 'Pronađi jedan "side hustle" koji možeš početi ovaj tjedan', tip_: '💡 Dodatnih 100 € = razlika' },
-    { day: 28, task: 'Tjedni pregled: kako napreduju dugovi i hitni fond? Napiši 5 navika koje si izgradio/la i napravi plan za sljedeći mjesec.', tip_: '✅ 4 tjedna — novi ti! Kraj je novi početak.' },
+    { day: 28, task: 'Tjedni pregled: kako napreduju dugovi i hitni fond?', tip_: '✅ 4 tjedna — novi ti!' },
+    { day: 29, task: 'Napiši 5 navika koje si izgradio/la u 30 dana', tip_: '🏆 Navike = bogatstvo' },
+    { day: 30, task: 'Napravi financijski plan za sljedeći mjesec s konkretnim brojevima', tip_: '🎯 Kraj je novi početak' },
   ],
   branic: [
     { day: 1,  task: 'Financijski audit: zbrojvi sve prihode i rashode zadnjeg mjeseca', tip_: '📊 Crno na bijelo' },
@@ -140,7 +142,9 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Napravi jednu kupnju s "troškom slobode" — bez krivnje', tip_: '✨ Zaslužio/la si' },
     { day: 26, task: 'Pregled portfelja: je li diverzificiran kako si planirao/la?', tip_: '📊 Pregled, ne opsesija' },
     { day: 27, task: 'Napravi "što-ako" plan za recesiju — kako reagirati', tip_: '🛡️ Plan smanjuje paniku' },
-    { day: 28, task: 'Tjedni pregled: napredak u 4 tjedna. Napiši 5 stvari koje si naučio/la o sebi i novcu i napravi plan za sljedeće 3 mjeseca.', tip_: '✅ 4 tjedna — pravi investitor! Planiranje = sigurnost.' },
+    { day: 28, task: 'Tjedni pregled: napredak u 4 tjedna — je li portfelj diverzificiran?', tip_: '✅ 4 tjedna — pravi investitor!' },
+    { day: 29, task: 'Napiši 5 stvari koje si naučio/la o investiranju i novcu u 30 dana', tip_: '🏆 Znanje = bogatstvo' },
+    { day: 30, task: 'Napravi investicijski plan za sljedeća 3 mjeseca s konkretnim brojevima', tip_: '🎯 Kraj je novi početak' },
   ],
   vrtlog: [
     { day: 1,  task: 'SAMO ovo: postavi podsjetnik za 9 ujutro svaki dan s natpisom "Dan X"', tip_: '⏰ Struktura je tvoj prijatelj' },
@@ -170,7 +174,9 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Napiši što ti je bio najveći "aha moment" u 30 dana', tip_: '💡 Uvid = trajni temelj' },
     { day: 26, task: 'Postavi financijsku rutinu za sljedeći mjesec — isti dani, iste aktivnosti', tip_: '📅 Rutina = sloboda' },
     { day: 27, task: 'Istraži jedan konkretan način povećanja prihoda — side hustle ili pregovaranje', tip_: '💰 Prihodi + štednja = ubrzanje' },
-    { day: 28, task: 'Tjedni pregled: 4 tjedna sustava. Što će biti drugačije sljedeći mjesec? Napiši pismo sebi za 6 mjeseci i postavi 3 konkretna cilja.', tip_: '✅ 4 tjedna — sustav je uspostavljen! Kraj je novi početak.' },
+    { day: 28, task: 'Tjedni pregled: 4 tjedna sustava — radi li automatizacija?', tip_: '✅ 4 tjedna — sustav je uspostavljen!' },
+    { day: 29, task: 'Napiši pismo sebi za 6 mjeseci: gdje želiš biti financijski', tip_: '💌 Tvoja budućnost te čeka' },
+    { day: 30, task: 'Postavi 3 konkretna cilja za sljedeći mjesec s rokovima i akcijama', tip_: '🎯 Kraj je novi početak' },
   ],
   teoreticar: [
     { day: 1,  task: 'PRAVILO: danas nema čitanja, nema istraživanja — samo akcija', tip_: '🚫 Bez teorije — samo radi' },
@@ -200,7 +206,9 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Postavi cilj za neto vrijednost za 1 godinu — napiši ga', tip_: '🎯 Bez izračuna — procijeni intuitivno' },
     { day: 26, task: 'Istraži jedan NOVI izvor prihoda — 30 min max, onda ODLUČI', tip_: '💰 Odluka bez savršenih info' },
     { day: 27, task: 'Napravi jednu akciju prema tom izvoru prihoda — email, prijava, poziv', tip_: '⚡ Gotovo, ne savršeno' },
-    { day: 28, task: 'Tjedni pregled: 4 tjedna akcije. Koliko si implementirao/la? Napiši 3 stvari koje si naučio/la o sebi i postavi 3 konkretne akcije za sljedeći mjesec.', tip_: '✅ 4 tjedna — akcijski čovjek/žena! Kraj je novi početak.' },
+    { day: 28, task: 'Tjedni pregled: 4 tjedna akcije — koliko si implementirao/la?', tip_: '✅ 4 tjedna — akcijski čovjek/žena!' },
+    { day: 29, task: 'Napiši 3 stvari koje si naučio/la o sebi (ne o financijama) u 30 dana', tip_: '🏆 Samosvijest = temelj bogatstva' },
+    { day: 30, task: 'Postavi 3 konkretne akcije za sljedeći mjesec — bez analize, odmah napiši', tip_: '🎯 Kraj je novi početak' },
   ],
 }
 
@@ -457,7 +465,7 @@ export default function StarterPortalPage() {
   const tipData = tip && TIPOVI[tip] ? TIPOVI[tip] : DEFAULT_TIP
   const plan = tip && PLANOVI[tip] ? PLANOVI[tip] : DEFAULT_PLAN
   const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
-  const TOTAL_DAYS = 28
+  const TOTAL_DAYS = 30
   const doneCount = doneTasks.size
   const progress = Math.round((doneCount / TOTAL_DAYS) * 100)
 
@@ -480,7 +488,7 @@ export default function StarterPortalPage() {
             <button key={tab} onClick={() => setActiveTab(tab)}
               className="flex-1 py-2 rounded-lg text-sm font-bold transition-all capitalize"
               style={{ backgroundColor: activeTab === tab ? 'rgba(212,175,55,0.2)' : 'transparent', color: activeTab === tab ? '#D4AF37' : 'rgba(255,255,255,0.4)', border: activeTab === tab ? '1px solid rgba(212,175,55,0.3)' : '1px solid transparent' }}>
-              {tab === 'dijagnoza' ? '📊 Dijagnoza' : tab === 'plan' ? '📅 28-dnevni plan' : '🎬 Videa'}
+              {tab === 'dijagnoza' ? '📊 Dijagnoza' : tab === 'plan' ? '📅 30-dnevni plan' : '🎬 Videa'}
             </button>
           ))}
         </div>
@@ -563,14 +571,15 @@ export default function StarterPortalPage() {
                 </p>
               )}
             </div>
-            {[0, 1, 2, 3].map(week => {
+            {[0, 1, 2, 3, 4].map(week => {
               const weekTasks = plan.slice(week * 7, week * 7 + 7)
+              if (weekTasks.length === 0) return null
               const weekDone = weekTasks.filter(t => doneTasks.has(t.day)).length
               return (
                 <div key={week} className="mb-5">
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.35)' }}>Tjedan {week + 1}</p>
-                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>{weekDone}/7</span>
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>{weekDone}/{weekTasks.length}</span>
                   </div>
                   <div className="space-y-2">
                     {weekTasks.map(t => (
@@ -594,7 +603,7 @@ export default function StarterPortalPage() {
             <div className="rounded-2xl p-4 flex items-start gap-3" style={{ backgroundColor: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.2)' }}>
               <span className="text-lg flex-shrink-0">📅</span>
               <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                <strong style={{ color: '#22c55e' }}>Važno:</strong> Videa su dodatna podrška — ali napredak dolazi od svakodnevnog rada na <strong style={{ color: '#fff' }}>28-dnevnom planu</strong>. Prati zadatke svaki dan. Samo oni koji zaista rade zadatke mogu očekivati promjenu.
+                <strong style={{ color: '#22c55e' }}>Važno:</strong> Videa su dodatna podrška — ali napredak dolazi od svakodnevnog rada na <strong style={{ color: '#fff' }}>30-dnevnom planu</strong>. Prati zadatke svaki dan. Samo oni koji zaista rade zadatke mogu očekivati promjenu.
               </p>
             </div>
 
@@ -613,7 +622,7 @@ export default function StarterPortalPage() {
               },
               {
                 week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak', status: 'locked',
-                afterWatch: 'Nakon gledanja: otvori investicijski račun (DEGIRO ili slično) i ulož minimalni iznos. Početi s malo je 100× bolje od ne početi.',
+                afterWatch: 'Ne znaš odakle početi s ulaganjem? To je normalno — ali skupo. Jedan razgovor s Branetom (besplatno, bez obveze) i znat ćeš točno gdje tvoj novac treba ići. Štednja, osiguranje ili investicija — prilagođeno tebi.',
               },
             ].map(video => (
               <div key={video.week} className="rounded-2xl overflow-hidden"

@@ -32,6 +32,14 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: 'Nemaš pristup Starter Paketu.' }, { status: 403 })
   }
 
+  // Track last portal visit for re-engagement emails
+  if (purchase?.id) {
+    await service
+      .from('starter_purchases')
+      .update({ last_seen_starter: new Date().toISOString() })
+      .eq('id', purchase.id)
+  }
+
   return NextResponse.json({
     ok: true,
     email: purchase?.email ?? user.email,
