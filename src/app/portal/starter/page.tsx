@@ -13,6 +13,7 @@ interface StarterData {
   full_name: string
   financial_type: Tip | null
   purchased_at: string
+  via_affiliate: boolean
 }
 
 // ─── Tip profili ──────────────────────────────────────────────────────────────
@@ -78,7 +79,7 @@ const DEFAULT_TIP = {
   savjet: 'Napravi financijski audit: zbrojvi prihode i rashode. Gdje novac odlazi? Svjesnost je prvi korak svake promjene.',
 }
 
-type Task = { day: number; task: string; tip_: string }
+type Task = { day: number; task: string; tip_: string; detail?: string }
 
 const PLANOVI: Record<Tip, Task[]> = {
   hedonist: [
@@ -109,9 +110,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Smanji jedan fiksni trošak za 10% (internet, mobitel, osiguranje)', tip_: '📞 Jedno pregovaranje tjedno' },
     { day: 26, task: 'Postavi automatski transfer za dug u skladu s tvojom metodom', tip_: '🤖 Automatizacija = konzistentnost' },
     { day: 27, task: 'Pronađi jedan "side hustle" koji možeš početi ovaj tjedan', tip_: '💡 Dodatnih 100 € = razlika' },
-    { day: 28, task: 'Tjedni pregled: kako napreduju dugovi i hitni fond?', tip_: '✅ 4 tjedna — novi ti!' },
-    { day: 29, task: 'Napiši 5 navika koje si izgradio/la u 30 dana', tip_: '🏆 Navike = bogatstvo' },
-    { day: 30, task: 'Napravi financijski plan za sljedeći mjesec s konkretnim brojevima', tip_: '🎯 Kraj je novi početak' },
+    { day: 28, task: 'Tjedni pregled: kako napreduju dugovi i hitni fond? Napiši 5 navika koje si izgradio/la i napravi plan za sljedeći mjesec.', tip_: '✅ 4 tjedna — novi ti! Kraj je novi početak.' },
   ],
   branic: [
     { day: 1,  task: 'Financijski audit: zbrojvi sve prihode i rashode zadnjeg mjeseca', tip_: '📊 Crno na bijelo' },
@@ -141,9 +140,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Napravi jednu kupnju s "troškom slobode" — bez krivnje', tip_: '✨ Zaslužio/la si' },
     { day: 26, task: 'Pregled portfelja: je li diverzificiran kako si planirao/la?', tip_: '📊 Pregled, ne opsesija' },
     { day: 27, task: 'Napravi "što-ako" plan za recesiju — kako reagirati', tip_: '🛡️ Plan smanjuje paniku' },
-    { day: 28, task: 'Tjedni pregled: napredak u 4 tjedna', tip_: '✅ 4 tjedna — pravi investitor!' },
-    { day: 29, task: 'Napiši 5 stvari koje si naučio/la o sebi i novcu', tip_: '🏆 Uvid = rast' },
-    { day: 30, task: 'Napravi financijski plan za sljedeće 3 mjeseca s konkretnim brojevima', tip_: '🎯 Planiranje = sigurnost' },
+    { day: 28, task: 'Tjedni pregled: napredak u 4 tjedna. Napiši 5 stvari koje si naučio/la o sebi i novcu i napravi plan za sljedeće 3 mjeseca.', tip_: '✅ 4 tjedna — pravi investitor! Planiranje = sigurnost.' },
   ],
   vrtlog: [
     { day: 1,  task: 'SAMO ovo: postavi podsjetnik za 9 ujutro svaki dan s natpisom "Dan X"', tip_: '⏰ Struktura je tvoj prijatelj' },
@@ -173,9 +170,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Napiši što ti je bio najveći "aha moment" u 30 dana', tip_: '💡 Uvid = trajni temelj' },
     { day: 26, task: 'Postavi financijsku rutinu za sljedeći mjesec — isti dani, iste aktivnosti', tip_: '📅 Rutina = sloboda' },
     { day: 27, task: 'Istraži jedan konkretan način povećanja prihoda — side hustle ili pregovaranje', tip_: '💰 Prihodi + štednja = ubrzanje' },
-    { day: 28, task: 'Tjedni pregled: 4 tjedna sustava. Što će biti drugačije sljedeći mjesec?', tip_: '✅ 4 tjedna — sustav je uspostavljen!' },
-    { day: 29, task: 'Napiši pismo sebi za 6 mjeseci: gdje želiš biti financijski', tip_: '🔮 Vizija vuče akciju' },
-    { day: 30, task: 'Finalni plan: 3 financijska cilja za sljedeće 3 mjeseca s konkretnim koracima', tip_: '🎯 Kraj je novi početak' },
+    { day: 28, task: 'Tjedni pregled: 4 tjedna sustava. Što će biti drugačije sljedeći mjesec? Napiši pismo sebi za 6 mjeseci i postavi 3 konkretna cilja.', tip_: '✅ 4 tjedna — sustav je uspostavljen! Kraj je novi početak.' },
   ],
   teoreticar: [
     { day: 1,  task: 'PRAVILO: danas nema čitanja, nema istraživanja — samo akcija', tip_: '🚫 Bez teorije — samo radi' },
@@ -205,9 +200,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 25, task: 'Postavi cilj za neto vrijednost za 1 godinu — napiši ga', tip_: '🎯 Bez izračuna — procijeni intuitivno' },
     { day: 26, task: 'Istraži jedan NOVI izvor prihoda — 30 min max, onda ODLUČI', tip_: '💰 Odluka bez savršenih info' },
     { day: 27, task: 'Napravi jednu akciju prema tom izvoru prihoda — email, prijava, poziv', tip_: '⚡ Gotovo, ne savršeno' },
-    { day: 28, task: 'Tjedni pregled: 4 tjedna akcije. Koliko si implementirao/la?', tip_: '✅ 4 tjedna — akcijski čovjek/žena!' },
-    { day: 29, task: 'Napiši 3 stvari koje si naučio/la o SEBI (ne o financijama)', tip_: '🏆 Financije su samo ogledalo' },
-    { day: 30, task: 'Plan za sljedeći mjesec: 3 konkretne akcije, bez analize', tip_: '🎯 Kraj je novi početak' },
+    { day: 28, task: 'Tjedni pregled: 4 tjedna akcije. Koliko si implementirao/la? Napiši 3 stvari koje si naučio/la o sebi i postavi 3 konkretne akcije za sljedeći mjesec.', tip_: '✅ 4 tjedna — akcijski čovjek/žena! Kraj je novi početak.' },
   ],
 }
 
@@ -288,23 +281,39 @@ function HealthScoreGauge({ score }: { score: number }) {
 }
 
 function PlanRow({ task, done, onToggle }: { task: Task; done: boolean; onToggle: () => void }) {
+  const [showInfo, setShowInfo] = useState(false)
   return (
-    <button onClick={onToggle} className="w-full text-left flex items-start gap-3 rounded-xl px-4 py-3 transition-all"
-      style={{ backgroundColor: done ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.03)', border: `1px solid ${done ? 'rgba(34,197,94,0.25)' : 'rgba(255,255,255,0.07)'}` }}>
-      <span className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-full border flex items-center justify-center text-xs"
-        style={{ borderColor: done ? '#22c55e' : 'rgba(255,255,255,0.25)', backgroundColor: done ? '#22c55e' : 'transparent', color: '#0D1B2A' }}>
-        {done && '✓'}
-      </span>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.6)' }}>Dan {task.day}</span>
+    <div>
+      <button onClick={onToggle} className="w-full text-left flex items-start gap-3 rounded-xl px-4 py-3 transition-all"
+        style={{ backgroundColor: done ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.03)', border: `1px solid ${done ? 'rgba(34,197,94,0.25)' : 'rgba(255,255,255,0.07)'}`, borderBottomLeftRadius: showInfo ? 0 : undefined, borderBottomRightRadius: showInfo ? 0 : undefined }}>
+        <span className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-full border flex items-center justify-center text-xs"
+          style={{ borderColor: done ? '#22c55e' : 'rgba(255,255,255,0.25)', backgroundColor: done ? '#22c55e' : 'transparent', color: '#0D1B2A' }}>
+          {done && '✓'}
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.6)' }}>Dan {task.day}</span>
+            <button
+              onClick={e => { e.stopPropagation(); setShowInfo(s => !s) }}
+              className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center text-xs leading-none font-bold"
+              style={{ backgroundColor: showInfo ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)', color: showInfo ? '#D4AF37' : 'rgba(255,255,255,0.35)', border: '1px solid ' + (showInfo ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.12)') }}
+              title="Što trebam napraviti?"
+            >i</button>
+          </div>
+          <p className="text-sm leading-snug" style={{ color: done ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.8)', textDecoration: done ? 'line-through' : 'none' }}>
+            {task.task}
+          </p>
         </div>
-        <p className="text-sm leading-snug" style={{ color: done ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.8)', textDecoration: done ? 'line-through' : 'none' }}>
-          {task.task}
-        </p>
-        <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>{task.tip_}</p>
-      </div>
-    </button>
+      </button>
+      {showInfo && (
+        <div className="px-4 py-3 rounded-b-xl" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.18)', borderTop: 'none' }}>
+          <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>{task.tip_}</p>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            {task.detail ?? 'Označi zadatak kao završen samo kada si ga stvarno napravio/la — ne kada si ga samo pročitao/la. Svaki završeni dan gradi financijsku naviku koja ostaje cijeli život.'}
+          </p>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -448,8 +457,9 @@ export default function StarterPortalPage() {
   const tipData = tip && TIPOVI[tip] ? TIPOVI[tip] : DEFAULT_TIP
   const plan = tip && PLANOVI[tip] ? PLANOVI[tip] : DEFAULT_PLAN
   const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
+  const TOTAL_DAYS = 28
   const doneCount = doneTasks.size
-  const progress = Math.round((doneCount / 30) * 100)
+  const progress = Math.round((doneCount / TOTAL_DAYS) * 100)
 
   return (
     <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A' }}>
@@ -470,7 +480,7 @@ export default function StarterPortalPage() {
             <button key={tab} onClick={() => setActiveTab(tab)}
               className="flex-1 py-2 rounded-lg text-sm font-bold transition-all capitalize"
               style={{ backgroundColor: activeTab === tab ? 'rgba(212,175,55,0.2)' : 'transparent', color: activeTab === tab ? '#D4AF37' : 'rgba(255,255,255,0.4)', border: activeTab === tab ? '1px solid rgba(212,175,55,0.3)' : '1px solid transparent' }}>
-              {tab === 'dijagnoza' ? '📊 Dijagnoza' : tab === 'plan' ? '📅 30-dnevni plan' : '🎬 Videa'}
+              {tab === 'dijagnoza' ? '📊 Dijagnoza' : tab === 'plan' ? '📅 28-dnevni plan' : '🎬 Videa'}
             </button>
           ))}
         </div>
@@ -521,7 +531,11 @@ export default function StarterPortalPage() {
             <div className="rounded-2xl p-5" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.04) 100%)', border: '1px solid rgba(212,175,55,0.25)' }}>
               <p className="text-sm font-bold mb-2" style={{ color: '#D4AF37' }}>Spreman/na ići dublje?</p>
               <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                90-dnevni program ide puno dalje — investiranje, eliminacija duga, pasivni prihodi. Poseban popust za Starter Paket korisnike: <strong style={{ color: '#fff' }}>197 € (umj. 397 €)</strong>.
+                90-dnevni program ide puno dalje — investiranje, eliminacija duga, pasivni prihodi.{' '}
+                {data.via_affiliate
+                  ? <>Cijena za tebe: <strong style={{ color: '#fff' }}>397 €</strong>.</>
+                  : <>Poseban popust za Starter Paket korisnike: <strong style={{ color: '#fff' }}>197 € (umj. 397 €)</strong>.</>
+                }
               </p>
               <Link href="/volim-svojnovac"
                 className="block text-center rounded-xl py-3 text-sm font-bold"
@@ -538,14 +552,14 @@ export default function StarterPortalPage() {
             <div className="rounded-2xl p-5 mb-5" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
               <div className="flex items-center justify-between mb-3">
                 <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>Napredak</p>
-                <p className="text-sm font-bold" style={{ color: '#fff' }}>{doneCount}/30 dana ({progress}%)</p>
+                <p className="text-sm font-bold" style={{ color: '#fff' }}>{doneCount}/{TOTAL_DAYS} dana ({progress}%)</p>
               </div>
               <div className="rounded-full h-3" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
                 <div className="h-3 rounded-full transition-all duration-500" style={{ width: `${progress}%`, backgroundColor: '#D4AF37' }} />
               </div>
               {doneCount > 0 && (
                 <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                  {doneCount === 30 ? '🎉 Završio/la si cijeli plan!' : `Nastavi — još ${30 - doneCount} dana do kraja.`}
+                  {doneCount === TOTAL_DAYS ? '🎉 Završio/la si cijeli plan!' : `Nastavi — još ${TOTAL_DAYS - doneCount} dana do kraja.`}
                 </p>
               )}
             </div>
@@ -575,15 +589,36 @@ export default function StarterPortalPage() {
             <p className="text-sm text-center" style={{ color: 'rgba(255,255,255,0.45)' }}>
               Brane snima 4 ekskluzivna videa — svaki tjedan jedan stiže direktno na tvoj email.
             </p>
+
+            {/* Dnevni plan podsjetnik */}
+            <div className="rounded-2xl p-4 flex items-start gap-3" style={{ backgroundColor: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.2)' }}>
+              <span className="text-lg flex-shrink-0">📅</span>
+              <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                <strong style={{ color: '#22c55e' }}>Važno:</strong> Videa su dodatna podrška — ali napredak dolazi od svakodnevnog rada na <strong style={{ color: '#fff' }}>28-dnevnom planu</strong>. Prati zadatke svaki dan. Samo oni koji zaista rade zadatke mogu očekivati promjenu.
+              </p>
+            </div>
+
             {[
-              { week: 1, title: 'Financijski audit i postavljanje temelja', subtitle: 'Gdje si sada i kamo ideš', status: 'soon' },
-              { week: 2, title: 'Automatizacija štednje i hitni fond', subtitle: 'Sustav koji radi dok spavaš', status: 'locked' },
-              { week: 3, title: 'Eliminacija duga — metode koje funkcioniraju', subtitle: 'Lavina vs. snježna gruda', status: 'locked' },
-              { week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak', status: 'locked' },
+              {
+                week: 1, title: 'Financijski audit i postavljanje temelja', subtitle: 'Gdje si sada i kamo ideš', status: 'soon',
+                afterWatch: 'Nakon gledanja: napravi financijski audit (Dan 2 plana) i postavi automatski transfer štednje. Ne čekaj — napravi danas.',
+              },
+              {
+                week: 2, title: 'Automatizacija štednje i hitni fond', subtitle: 'Sustav koji radi dok spavaš', status: 'locked',
+                afterWatch: 'Nakon gledanja: otvori odvojen račun za hitni fond i postavi trajni nalog. Automatizacija eliminira potrebu za voljom.',
+              },
+              {
+                week: 3, title: 'Eliminacija duga — metode koje funkcioniraju', subtitle: 'Lavina vs. snježna gruda', status: 'locked',
+                afterWatch: 'Nakon gledanja: napiši sve dugove (iznos + kamata) na papir i odaberi jednu metodu eliminacije — danas, ne sutra.',
+              },
+              {
+                week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak', status: 'locked',
+                afterWatch: 'Nakon gledanja: otvori investicijski račun (DEGIRO ili slično) i ulož minimalni iznos. Početi s malo je 100× bolje od ne početi.',
+              },
             ].map(video => (
-              <div key={video.week} className="rounded-2xl p-5"
-                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', opacity: video.status === 'locked' ? 0.6 : 1 }}>
-                <div className="flex items-center gap-4">
+              <div key={video.week} className="rounded-2xl overflow-hidden"
+                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', opacity: video.status === 'locked' ? 0.65 : 1 }}>
+                <div className="flex items-center gap-4 p-5">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl"
                     style={{ backgroundColor: video.status === 'soon' ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)' }}>
                     {video.status === 'locked' ? '🔒' : '🎬'}
@@ -599,8 +634,17 @@ export default function StarterPortalPage() {
                     <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{video.subtitle}</p>
                   </div>
                 </div>
+                {video.status !== 'locked' && (
+                  <div className="px-5 pb-4 pt-0">
+                    <div className="rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                      <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>✅ Što napraviti nakon gledanja:</p>
+                      <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{video.afterWatch}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
+
             <div className="rounded-2xl p-5 text-center" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>📧 Video #1 dolazi uskoro</p>
               <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>

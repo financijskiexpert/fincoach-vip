@@ -23,7 +23,7 @@ export async function GET() {
 
   const { data: purchase } = await service
     .from('starter_purchases')
-    .select('id, email, financial_type, created_at')
+    .select('id, email, financial_type, created_at, affiliate_ref')
     .eq('email', user.email.toLowerCase())
     .eq('status', 'active')
     .maybeSingle()
@@ -38,6 +38,7 @@ export async function GET() {
     full_name: profile?.full_name ?? user.email.split('@')[0],
     financial_type: purchase?.financial_type ?? null,
     purchased_at: purchase?.created_at ?? new Date().toISOString(),
+    via_affiliate: !!(purchase as Record<string, unknown> | null)?.affiliate_ref,
     is_admin_preview: isAdmin && !purchase,
   })
 }
