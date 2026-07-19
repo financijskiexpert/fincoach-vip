@@ -93,7 +93,8 @@ export default async function PortalLayout({
     .eq('email', (user.email ?? '').toLowerCase())
     .eq('status', 'active')
     .maybeSingle()
-  const hasStarterAccess = !!starterPurchase
+  // Admin uvijek vidi Starter sekciju (preview mode)
+  const hasStarterAccess = isAdmin || !!starterPurchase
 
   const { lessons, completedIds } = await getLessonsAndProgress(user.id, user.email ?? '')
   const hasVSNAccess = lessons.length > 0
