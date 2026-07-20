@@ -14,6 +14,7 @@ interface StarterData {
   financial_type: Tip | null
   purchased_at: string
   via_affiliate: boolean
+  initial_score: number | null
 }
 
 // ─── Tip profili ──────────────────────────────────────────────────────────────
@@ -87,8 +88,8 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 2,  task: 'Pronađi 3 pretplate koje ne koristiš — odmah ih otkaži', tip_: '💸 Svaka otkazana pretplata = ušteđevina', detail: 'Provjeri Settings → Pretplate na mobitelu i bankovni izvod za redovne odljeve. Traži Netflix, Spotify, cloud storage, aplikacije koje ne koristiš. Otkaži odmah — svaka otkazana pretplata trajno povećava ušteđevinu.' },
     { day: 3,  task: 'Postavi trajni nalog: 10% plaće na odvojeni račun čim stigne', tip_: '🔒 Automatizirano = bez volje', detail: 'Internet bankarstvo → Trajni nalozi → Novi nalog. Datum: isti dan kad stiže plaća. Iznos: 10% neto plaće. Konto: odvojeni štedni račun bez debitne kartice. Kad je automatizirano — ne ovisi o volji ni motivaciji.' },
     { day: 4,  task: 'Definiraj 3 troška koje ne osjećaš, a skupo koštaju (dostava, taxi, café)', tip_: '☕ Svjesnost je moć', detail: 'Otvori bankovni izvod i traži: dostava hrane (Glovo, Wolt), prijevoz (Uber, taxi), kava i grickalice van kuće. Zbroji ukupni iznos svake kategorije. Svjesnost o trošku je prvi korak promjene — ne odricanje.' },
-    { day: 5,  task: 'Postavi "buffer" od 200 € za neočekivane troškove ovog mjeseca', tip_: '🛡️ Hitni fond počinje ovdje', detail: 'Prebaci 200€ odmah na odvojeni štedni račun — to je tvoj mini hitni fond. Bez ovog "jastuka" svako iznenađenje (kvar auta, liječnik) završava na kreditnoj kartici s kamatama.' },
-    { day: 6,  task: 'Napravi "wish list" s 5 stvari koje želiš kupiti — pričekaj 48 sati', tip_: '⏳ Test impulzivnosti', detail: 'Zapiši 5 željenih kupnji s datumom pisanja. Čekaj 48 sati. Što i dalje želiš jednako snažno? Što više i ne zanima? Impulzivna kupnja ne preživi 48 sati — prava želja da.' },
+    { day: 5,  task: 'Postavi rezervu od 200 € za neočekivane troškove ovog mjeseca', tip_: '🛡️ Hitni fond počinje ovdje', detail: 'Prebaci 200€ odmah na odvojeni štedni račun — to je tvoj mini hitni fond. Bez ovog "jastuka" svako iznenađenje (kvar auta, liječnik) završava na kreditnoj kartici s kamatama.' },
+    { day: 6,  task: 'Napravi listu želja s 5 stvari koje želiš kupiti — pričekaj 48 sati', tip_: '⏳ Test impulzivnosti', detail: 'Zapiši 5 željenih kupnji s datumom pisanja. Čekaj 48 sati. Što i dalje želiš jednako snažno? Što više i ne zanima? Impulzivna kupnja ne preživi 48 sati — prava želja da.' },
     { day: 7,  task: 'Tjedni pregled: je li automatska štednja radila? Prilagodi ako treba', tip_: '✅ Tjedan 1 završen!', detail: 'Provjeri 3 broja: 1) Je li automatski nalog prošao? 2) Kolika je ukupna ušteđevina? 3) Koliko si potrošio/la u tjednu? Zapiši rezultat — to je tvoja tjedna financijska mjera.' },
     { day: 8,  task: 'Prati troškove ovog tjedna u bilježnici ili aplikaciji', tip_: '📱 Što ne mjeriš, ne možeš kontrolirati', detail: 'Svaki trošak zapiši odmah: iznos + kategorija + dan. Može biti Notes na mobitelu, bilježnica ili aplikacija Spendee. Ono što mjeriš — mijenja se. Ono što ignoriraš — raste.' },
     { day: 9,  task: 'Pronađi jednu kategoriju troškova i smanji za 20% ovaj tjedan', tip_: '✂️ Mala redukcija, veliki efekt', detail: 'Odaberi kategoriju s najviše troškova (restoran, dostava, odjeća). Konkretno: 1 od 5 obroka kuhaj doma umjesto naručivati, ili preskoči jednu kupnju. Malo, ali učinak je trajan.' },
@@ -109,7 +110,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 24, task: 'Odaberi metodu eliminacije duga: lavina ili snježna gruda', tip_: '⚡ Obje funkcioniraju — budi dosljedan/na', detail: 'Lavina = počni s dugom koji ima najveću kamatnu stopu (matematički optimalno, uštediš više). Snježna gruda = počni s najmanjim dugom (psihološki motivirajuće, brže vidiš napredak). Obje funkcioniraju — bitan je odabir jedne i dosljednost.' },
     { day: 25, task: 'Smanji jedan fiksni trošak za 10% (internet, mobitel, osiguranje)', tip_: '📞 Jedno pregovaranje tjedno', detail: 'Nazovi pružatelja mobitela, interneta ili osiguranja. Reci: "Vidim povoljniju ponudu drugdje — možete li se uskladiti?" 10% na 3 fiksna troška = 30-60€ trajne uštedine svaki mjesec, zauvijek.' },
     { day: 26, task: 'Postavi automatski transfer za dug u skladu s tvojom metodom', tip_: '🤖 Automatizacija = konzistentnost', detail: 'Trajni nalog: datum = dan plaće. Iznos = minimalna rata + extra iznos prema metodi (lavina ili snježna gruda). Automatizacija eliminira iskušenje da potrošiš taj extra novac na nešto drugo.' },
-    { day: 27, task: 'Pronađi jedan "side hustle" koji možeš početi ovaj tjedan', tip_: '💡 Dodatnih 100 € = razlika', detail: 'Što znaš raditi što bi drugi platili? Prijevoz, tutorstvo, fotografija, pisanje, popravci, prevođenje. Napiši jednu konkretnu ponudu na Njuškalu, Fiverru ili u lokalnu Facebook grupu. Extra 100€/mj = financijsko ubrzanje.' },
+    { day: 27, task: 'Pronađi jedan dodatni posao koji možeš početi ovaj tjedan', tip_: '💡 Dodatnih 100 € = razlika', detail: 'Što znaš raditi što bi drugi platili? Prijevoz, tutorstvo, fotografija, pisanje, popravci, prevođenje. Napiši jednu konkretnu ponudu na Njuškalu, Fiverru ili u lokalnu Facebook grupu. Extra 100€/mj = financijsko ubrzanje.' },
     { day: 28, task: 'Tjedni pregled: kako napreduju dugovi i hitni fond?', tip_: '✅ 4 tjedna — novi ti!', detail: 'Dva broja danas: 1) Za koliko su dugovi manji nego dan 1? 2) Kolika je ušteđevina na štednom računu? Zbroj ova dva broja = tvoja neto financijska promjena za 30 dana. Zapiši za uspomenu.' },
     { day: 29, task: 'Napiši 5 navika koje si izgradio/la u 30 dana', tip_: '🏆 Navike = bogatstvo', detail: 'Zapiši konkretno, ne apstraktno. Ne "bolje štedim" — nego "Automatski prebacujem 150€ svaki 1. u mj." i "Svaki tjedan pregledam troškove." Navike koje možeš opisati jednom rečenicom — to su prave navike.' },
     { day: 30, task: 'Napravi financijski plan za sljedeći mjesec s konkretnim brojevima', tip_: '🎯 Kraj je novi početak', detail: 'Tablica: prihodi - fiksni troškovi - automatska štednja - dug = slobodni novac. Slobodni novac rasporedi UNAPRIJED po kategorijama. Plan na papiru je 10× bolji od plana koji postoji samo u glavi.' },
@@ -152,7 +153,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 3,  task: 'Odaberi JEDNU financijsku naviku za ovaj tjedan — samo jednu', tip_: '🎯 Fokus pobjeđuje listu', detail: 'Odaberi JEDNU, ne nekoliko: "Svaki tjedan pratim troškove" ili "Automatski štedim 10%." Više od jedne navike istovremeno = nijedna navika. Jedan cilj koji se postiže vrijedi 10 nedovršenih ciljeva.' },
     { day: 4,  task: 'Postavi automatski transfer štednje — odmah, ne sutra', tip_: '🤖 Automatizirano = ne ovisi o volji', detail: 'Internet bankarstvo → Odmah, dok si motiviran/a. Trajni nalog: datum = dan plaće, iznos = 5-10% neto, konto = odvojen štedni račun. Jednom postavljeno → radi bez tvoje volje i motivacije.' },
     { day: 5,  task: 'Napiši 3 razloga zašto TI osobno trebaš financijsku slobodu', tip_: '💡 Osobni razlog = gorivo koje traje', detail: 'Ne "štednja je dobra ideja" — nego što konkretno možeš napraviti s financijskom slobodom. "Mogu dati otkaz kad hoću", "Mogu uzeti djeci godišnji odmor bez stresa." Osobni razlog je gorivo koje ne nestaje.' },
-    { day: 6,  task: 'Pronađi "accountability partnera" — osoba koja će te pitati za napredak', tip_: '👥 Vanjska odgovornost je moćna', detail: 'Jedna poruka prijatelju, partneru ili kolegi: "Radim financijski program 30 dana — možeš li me pitati svaki tjedan kako ide?" Vanjska odgovornost poboljšava ishod za 65% u istraživanjima o navikama.' },
+    { day: 6,  task: 'Pronađi partnera za praćenje napretka — osoba koja će te pitati za razvoj', tip_: '👥 Vanjska odgovornost je moćna', detail: 'Jedna poruka prijatelju, partneru ili kolegi: "Radim financijski program 30 dana — možeš li me pitati svaki tjedan kako ide?" Vanjska odgovornost poboljšava ishod za 65% u istraživanjima o navikama.' },
     { day: 7,  task: 'Tjedni pregled: je li automatska štednja radila? Javi se partneru', tip_: '✅ Tjedan 1 — napravio/la si!', detail: 'Javi se accountability partneru s 2 broja: 1) Je li automatski nalog prošao (da/ne)? 2) Koliko si uštedjeo/la ovaj tjedan? Dijeljenje napretka aktivira osjećaj odgovornosti koji čini nastavak lakšim.' },
     { day: 8,  task: 'Prati troškove 3 dana u bilježnici (papir, ne app — fizičan čin)', tip_: '✏️ Pisanje rukom = veća svjesnost', detail: 'Uzmi fizičku bilježnicu. Svaki trošak zapiši odmah: iznos + što + datum. Ruka koja piše aktivira drugačiji dio mozga nego tipkanje — fizičan čin pojačava svjesnost o potrošnji za 40%.' },
     { day: 9,  task: 'Pronađi jedan trošak koji možeš eliminirati ODMAH — otkaži danas', tip_: '✂️ Akcija danas, ne "od ponedjeljka"', detail: 'Otvori bankovni izvod — nađi jedan redovni odljev koji nije neophodan. Otkaži odmah — ne od ponedjeljka, ne kad se smirim, nego sada. Svaka odgoda od "ponedjeljka" košta 4 tjedna uštedine.' },
@@ -173,7 +174,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 24, task: 'Provjeri: koliko se tvoj financijski status poboljšao od dana 1?', tip_: '📈 Mjerljivost je motivacija', detail: 'Usporedi: prihodi - troškovi - dugovi + ušteđevina danas vs. dan 1. Kolika je konkretna razlika? Mjerljivi napredak je motivacija koja ne nestaje — za razliku od osjećaja koji dolaze i odlaze.' },
     { day: 25, task: 'Napiši što ti je bio najveći "aha moment" u 30 dana', tip_: '💡 Uvid koji mijenja ponašanje', detail: '"Aha moment" = uvid koji trajno mijenja ponašanje. Može biti: "Automatska štednja mi je lakša nego mislim" ili "Trošim 200€/mj na dostavu a da to nisam osjećao/la." Konkretan uvid, ne opća lekcija.' },
     { day: 26, task: 'Postavi financijsku rutinu za sljedeći mjesec — isti dani, iste aktivnosti', tip_: '📅 Rutina = sloboda od odlučivanja', detail: 'Zapiši konkretno: svaki 1. u mj = pregled računa, svaku nedjelju = 5 min pregled troškova. Iste aktivnosti, isti dani, bez razmišljanja. Rutina eliminira trošenje mentalne energije na financijske odluke.' },
-    { day: 27, task: 'Istraži jedan konkretan način povećanja prihoda — side hustle ili pregovaranje', tip_: '💰 Prihodi + štednja = ubrzanje', detail: 'Povećanje prihoda + štednja = financijsko ubrzanje koje nije moguće samo štednjom. Konkretno: nazovi poslodavca za pregovaranje, ili napiši prvu ponudu za side hustle danas — ne "sutra."' },
+    { day: 27, task: 'Istraži jedan konkretan način povećanja prihoda — dodatni posao ili pregovaranje', tip_: '💰 Prihodi + štednja = ubrzanje', detail: 'Povećanje prihoda + štednja = financijsko ubrzanje koje nije moguće samo štednjom. Konkretno: nazovi poslodavca za pregovaranje, ili napiši prvu ponudu za dodatni posao danas — ne "sutra."' },
     { day: 28, task: 'Tjedni pregled: 4 tjedna sustava — radi li automatizacija?', tip_: '✅ 4 tjedna — sustav je uspostavljen!', detail: 'Što od automatizacija radi samostalno? Koji je bio najtežji moment ovog tjedna? Koji si korak napravio/la koji se činio nemogućim dana 1? Zapiši ova tri odgovora — vrijede više od bilo koje knjige.' },
     { day: 29, task: 'Napiši pismo sebi za 6 mjeseci: gdje želiš biti financijski', tip_: '💌 Vizija budućnosti koja motivira', detail: 'Format: "Dragi ja za 6 mj... Želim da si dostigao/la [X€ ušteđevine], [Y duga manje], [Z navika]." Vizualizacija željene budućnosti aktivira iste moždane krugove kao stvarno iskustvo — moćan motivacijski alat.' },
     { day: 30, task: 'Postavi 3 konkretna cilja za sljedeći mjesec s rokovima i akcijama', tip_: '🎯 Kraj je novi početak', detail: 'ŠTO + KOLIKO + DO KADA za svaki od 3 cilja. Unesi ih odmah u kalendar s podsjetnikom. Cilj koji ima datum ima 40% veće šanse realizacije od cilja koji postoji samo kao namjera.' },
@@ -204,7 +205,7 @@ const PLANOVI: Record<Tip, Task[]> = {
     { day: 23, task: 'Pregledaj sve automatizacije — rade li? Prilagodi bez duboke analize', tip_: '🔧 Prilagodba ≠ perfekcionizam', detail: 'Provjeri svaki trajni nalog: je li prošao ovog mjeseca? Je li iznos ispravan? Prilagodi u jednom pogledu, bez produbljivanja analize. Kratki pregled, jedna prilagodba ako treba — gotovo.' },
     { day: 24, task: 'Napravi financijsku bilancu: imovina minus obveze = neto vrijednost', tip_: '📊 Jedan broj koji govori sve', detail: 'Imovina (ušteđevina + investicije + nekretnina) minus obveze (dugovi + krediti) = neto vrijednost. Taj jedan broj govori više o financijskom zdravlju od svakog pojedinog računa zasebno.' },
     { day: 25, task: 'Postavi cilj neto vrijednosti za 1 godinu — napiši ga bez kalkulatora', tip_: '🎯 Intuitivni cilj + plan > savršen cilj bez akcije', detail: 'Koji iznos neto vrijednosti želiš za godinu dana? Procijeni odmah, bez kalkulatora. Intuitivni cilj + plan je uvijek bolji od savršenog cilja koji čeka savršene informacije. Zapiši i zalijepi na vidljivo.' },
-    { day: 26, task: 'Istraži jedan NOVI izvor prihoda — 30 min max, onda ODLUČI', tip_: '💰 Odluka bez savršenih informacija', detail: 'Postavi timer na 30 minuta. Istraži jedan novi izvor prihoda (side hustle, pregovaranje plaće, pasivni prihod). Kad timer istekne — odluči: da ili ne. Bez dodatnog "istraživanja." Odluka u nesavršenosti.' },
+    { day: 26, task: 'Istraži jedan NOVI izvor prihoda — 30 min max, onda ODLUČI', tip_: '💰 Odluka bez savršenih informacija', detail: 'Postavi timer na 30 minuta. Istraži jedan novi izvor prihoda (dodatni posao, pregovaranje plaće, pasivni prihod). Kad timer istekne — odluči: da ili ne. Bez dodatnog "istraživanja." Odluka u nesavršenosti.' },
     { day: 27, task: 'Napravi jednu konkretnu akciju prema novom izvoru prihoda', tip_: '⚡ Gotovo, ne savršeno', detail: 'Pošalji email, uplati pristupninu, napiši prvu ponudu ili dogovori razgovor. Jedna konkretna akcija danas. Imperfektna akcija koja se dogodi pobjeđuje savršeni plan koji čeka savršene uvjete.' },
     { day: 28, task: 'Tjedni pregled: 4 tjedna akcije — koliko si implementirao/la?', tip_: '✅ 4 tjedna — akcijski čovjek/žena!', detail: 'Nabroji konkretno: koje akcije si implementirao/la od dana 1? Svaka implementirana akcija vrijedi 100× više od pročitane teorije. Bogatstvo grade implementirane akcije, ne akumulirano znanje.' },
     { day: 29, task: 'Napiši 3 stvari koje si naučio/la o SEBI (ne o financijama) u 30 dana', tip_: '🏆 Samosvijest = kapital koji ne gubi vrijednost', detail: 'Što si naučio/la o sebi — ne o financijama? Brže odlučuješ? Manje te paralizira neizvjesnost? Prihvaćaš imperfektne akcije? Samosvijest o vlastitim obrascima je kapital koji se ne amortizira.' },
@@ -344,6 +345,9 @@ export default function StarterPortalPage() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, Tip>>({})
   const [quizSubmitting, setQuizSubmitting] = useState(false)
   const [quizError, setQuizError] = useState('')
+  const [completionStep, setCompletionStep] = useState<null | 'quiz' | 'result'>(null)
+  const [finalScore, setFinalScore] = useState<number | null>(null)
+  const [reassessmentAnswers, setReassessmentAnswers] = useState<Record<number, Tip>>({})
 
   useEffect(() => {
     async function load() {
@@ -377,14 +381,13 @@ export default function StarterPortalPage() {
   }, [])
 
   async function toggleTask(day: number) {
+    if (doneTasks.has(day)) return
     const { data: { user } } = await supabase.auth.getUser()
-    setDoneTasks(prev => {
-      const next = new Set(prev)
-      if (next.has(day)) next.delete(day)
-      else next.add(day)
-      if (user) localStorage.setItem(`fc_starter_done_portal_${user.id}`, JSON.stringify(Array.from(next)))
-      return next
-    })
+    const next = new Set(doneTasks)
+    next.add(day)
+    if (user) localStorage.setItem(`fc_starter_done_portal_${user.id}`, JSON.stringify(Array.from(next)))
+    setDoneTasks(next)
+    if (day === 30) setCompletionStep('quiz')
   }
 
   async function submitQuiz() {
@@ -392,21 +395,37 @@ export default function StarterPortalPage() {
     setQuizSubmitting(true)
     setQuizError('')
     const detectedType = calculateType(quizAnswers)
+    const initialScore = TIPOVI[detectedType].zdravScore
     try {
       const res = await fetch('/api/starter/set-type-portal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ financial_type: detectedType }),
+        body: JSON.stringify({ financial_type: detectedType, initial_score: initialScore }),
       })
       const json = await res.json()
       if (!json.ok) throw new Error(json.error ?? 'Greška')
-      setData(prev => prev ? { ...prev, financial_type: detectedType } : prev)
+      setData(prev => prev ? { ...prev, financial_type: detectedType, initial_score: prev.initial_score ?? initialScore } : prev)
       setShowQuiz(false)
     } catch {
       setQuizError('Greška pri spremanju — pokušaj ponovo.')
     } finally {
       setQuizSubmitting(false)
     }
+  }
+
+  async function resetDijagnoza() {
+    await fetch('/api/starter/reset-type', { method: 'POST' })
+    setData(prev => prev ? { ...prev, financial_type: null } : prev)
+    setShowQuiz(true)
+  }
+
+  async function submitReassessment() {
+    if (Object.keys(reassessmentAnswers).length !== QUIZ_QUESTIONS.length) return
+    const baseScore = data?.initial_score ?? DEFAULT_TIP.zdravScore
+    const bonus = Math.round((doneTasks.size / 30) * 22)
+    const newScore = Math.min(100, baseScore + bonus)
+    setFinalScore(newScore)
+    setCompletionStep('result')
   }
 
   if (loading) return (
@@ -416,6 +435,142 @@ export default function StarterPortalPage() {
   )
 
   if (!data) return null
+
+  // ── Completion re-assessment quiz ──────────────────────────────────────────
+  if (completionStep === 'quiz') {
+    const answeredCount = Object.keys(reassessmentAnswers).length
+    const allAnswered = answeredCount === QUIZ_QUESTIONS.length
+    const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
+    return (
+      <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A', color: '#fff' }}>
+        <div className="max-w-xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5"
+              style={{ backgroundColor: 'rgba(34,197,94,0.12)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
+              🎉 30 dana završeno!
+            </div>
+            <h1 className="text-2xl font-black mb-2">Ponovna procjena, {firstName}!</h1>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Odgovori na ista 5 pitanja kako bismo vidjeli tvoj napredak.</p>
+          </div>
+          <div className="mb-4 flex items-center gap-2">
+            <div className="flex-1 rounded-full h-1.5" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+              <div className="h-1.5 rounded-full transition-all duration-500"
+                style={{ width: `${(answeredCount / QUIZ_QUESTIONS.length) * 100}%`, backgroundColor: '#22c55e' }} />
+            </div>
+            <span className="text-xs tabular-nums" style={{ color: 'rgba(255,255,255,0.35)' }}>{answeredCount}/{QUIZ_QUESTIONS.length}</span>
+          </div>
+          <div className="space-y-6">
+            {QUIZ_QUESTIONS.map((q, qi) => (
+              <div key={qi} className="rounded-2xl p-5"
+                style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: `1px solid ${reassessmentAnswers[qi] ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.08)'}` }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>Pitanje {qi + 1}</p>
+                <p className="font-bold mb-4" style={{ lineHeight: 1.4 }}>{q.q}</p>
+                <div className="space-y-2">
+                  {q.opts.map((opt, oi) => {
+                    const selected = reassessmentAnswers[qi] === opt.tip
+                    return (
+                      <button key={oi} onClick={() => setReassessmentAnswers(prev => ({ ...prev, [qi]: opt.tip }))}
+                        className="w-full text-left rounded-xl px-4 py-3 text-sm transition-all"
+                        style={{ backgroundColor: selected ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.03)', border: `1px solid ${selected ? 'rgba(34,197,94,0.5)' : 'rgba(255,255,255,0.07)'}`, color: selected ? '#22c55e' : 'rgba(255,255,255,0.7)', fontWeight: selected ? 700 : 400 }}>
+                        {selected && <span className="mr-2">✓</span>}{opt.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+          <button onClick={submitReassessment} disabled={!allAnswered}
+            className="w-full mt-6 rounded-xl py-4 font-black text-lg transition-opacity hover:opacity-90 disabled:opacity-40"
+            style={{ backgroundColor: '#22c55e', color: '#0D1B2A' }}>
+            {allAnswered ? 'Vidi rezultat →' : `Odgovori na sva pitanja (${answeredCount}/5)`}
+          </button>
+          <button onClick={() => setCompletionStep(null)} className="w-full mt-3 text-sm py-2"
+            style={{ color: 'rgba(255,255,255,0.35)' }}>
+            Preskoči
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Completion result view ─────────────────────────────────────────────────
+  if (completionStep === 'result' && finalScore !== null) {
+    const initialScore = data.initial_score ?? DEFAULT_TIP.zdravScore
+    const improved = finalScore > initialScore
+    const diff = finalScore - initialScore
+    const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
+    return (
+      <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A', color: '#fff' }}>
+        <div className="max-w-xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-5xl mb-4">{improved ? '🏆' : '📊'}</div>
+            <h1 className="text-2xl font-black mb-2">
+              {improved ? `Čestitamo, ${firstName}!` : `Tvoj napredak, ${firstName}!`}
+            </h1>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              {improved ? 'Tvoj financijski Health Score je porastao.' : 'Završio/la si 30-dnevni program!'}
+            </p>
+          </div>
+
+          <div className="rounded-2xl p-6 mb-5" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <h2 className="text-base font-bold mb-5 text-center" style={{ color: '#D4AF37' }}>📊 Usporedba Health Score-a</h2>
+            <div className="flex items-center justify-around">
+              <div className="text-center">
+                <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>Početak</p>
+                <p className="text-5xl font-black" style={{ color: 'rgba(255,255,255,0.5)' }}>{initialScore}</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>/100</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-black" style={{ color: improved ? '#22c55e' : '#f59e0b' }}>
+                  {improved ? `+${diff}` : `±${Math.abs(diff)}`}
+                </p>
+                <p className="text-xs" style={{ color: improved ? 'rgba(34,197,94,0.6)' : 'rgba(245,158,11,0.6)' }}>bodova</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>Sada</p>
+                <p className="text-5xl font-black" style={{ color: improved ? '#22c55e' : '#D4AF37' }}>{finalScore}</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>/100</p>
+              </div>
+            </div>
+          </div>
+
+          {improved && (
+            <div className="rounded-2xl p-5 mb-5" style={{ backgroundColor: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.2)' }}>
+              <p className="text-sm font-bold mb-2" style={{ color: '#22c55e' }}>🎉 Nevjerojatan napredak!</p>
+              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                Podigao/la si score za <strong style={{ color: '#22c55e' }}>{diff} bodova</strong> za samo 30 dana!
+                To je dokaz da financijske navike funkcioniraju — i da ti funkcioniraš.
+                Zamisli što možeš postići za 90 dana.
+              </p>
+            </div>
+          )}
+
+          <div className="rounded-2xl p-5 mb-5" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 100%)', border: '1px solid rgba(212,175,55,0.3)' }}>
+            <p className="text-sm font-bold mb-2" style={{ color: '#D4AF37' }}>🚀 Sljedeći korak: FinCoach VIP 90 dana</p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              Starter Paket bio je 30 dana. Program koji te vodi do financijske slobode traje 90 dana —
+              investiranje, eliminacija duga, pasivni prihodi, individualni coaching.
+              {improved
+                ? ' Iskoristio/la si impuls koji si izgradio/la — ne zaustavljaj se sada.'
+                : ' Nastavi dalje — 90 dana je dovoljno za trajnu promjenu.'}
+            </p>
+            <Link href="/volim-svojnovac"
+              className="block text-center rounded-xl py-3 text-sm font-bold"
+              style={{ backgroundColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.4)' }}>
+              Saznaj više o FinCoach VIP 90 dana →
+            </Link>
+          </div>
+
+          <button onClick={() => setCompletionStep(null)}
+            className="w-full rounded-xl py-3 text-sm font-bold"
+            style={{ backgroundColor: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            ← Vrati se na portal
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   // ── Quiz view ──────────────────────────────────────────────────────────────
   if (showQuiz) {
@@ -546,6 +701,18 @@ export default function StarterPortalPage() {
               </div>
             )}
 
+            {/* Ponovi dijagnozu */}
+            {tip && (
+              <div className="rounded-2xl p-4 flex items-center justify-between" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>Pogrešno odgovorena pitanja?</p>
+                <button onClick={resetDijagnoza}
+                  className="text-xs font-bold px-3 py-1.5 rounded-lg"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  🔄 Ponovi dijagnozu
+                </button>
+              </div>
+            )}
+
             {/* Upsell na VSN */}
             <div className="rounded-2xl p-5" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.04) 100%)', border: '1px solid rgba(212,175,55,0.25)' }}>
               <p className="text-sm font-bold mb-2" style={{ color: '#D4AF37' }}>Spreman/na ići dublje?</p>
@@ -568,6 +735,19 @@ export default function StarterPortalPage() {
         {/* ── TAB: 30-dnevni plan ───────────────────────────────────────────── */}
         {activeTab === 'plan' && (
           <div>
+            {doneTasks.has(30) && completionStep === null && (
+              <div className="rounded-2xl p-5 mb-5" style={{ background: 'linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(34,197,94,0.04) 100%)', border: '1px solid rgba(34,197,94,0.25)' }}>
+                <p className="text-sm font-bold mb-1" style={{ color: '#22c55e' }}>🏆 Čestitamo — završio/la si program!</p>
+                <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  30 dana je iza tebe. Pogledaj kako se promijenio tvoj financijski Health Score.
+                </p>
+                <button onClick={() => setCompletionStep('quiz')}
+                  className="w-full rounded-xl py-2.5 text-sm font-bold"
+                  style={{ backgroundColor: 'rgba(34,197,94,0.2)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
+                  Procijeni napredak →
+                </button>
+              </div>
+            )}
             <div className="rounded-2xl p-5 mb-5" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
               <div className="flex items-center justify-between mb-3">
                 <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>Napredak</p>

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json()
-  const { financial_type } = body
+  const { financial_type, initial_score } = body
 
   const validTypes = ['hedonist', 'branic', 'vrtlog', 'teoreticar']
   if (!validTypes.includes(financial_type)) {
@@ -21,9 +21,22 @@ export async function POST(request: NextRequest) {
 
   const service = await createServiceClient()
 
+  // Provjeri je li initial_score već postavljen — ne prepiši ga pri resetiranju
+  const { data: existing } = await service
+    .from('starter_purchases')
+    .select('initial_score')
+    .eq('email', user.email.toLowerCase())
+    .eq('status', 'active')
+    .maybeSingle()
+
+  const updateData: Record<string, unknown> = { financial_type }
+  if (typeof initial_score === 'number' && !(existing as Record<string, unknown> | null)?.initial_score) {
+    updateData.initial_score = initial_score
+  }
+
   const { error } = await service
     .from('starter_purchases')
-    .update({ financial_type })
+    .update(updateData)
     .eq('email', user.email.toLowerCase())
     .eq('status', 'active')
 
