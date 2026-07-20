@@ -58,7 +58,7 @@ export default function LandingPage() {
           </Link>
           <div className="flex items-center gap-2">
             <Link href="/starter-paket" className="hidden sm:block">
-              <Button size="sm" variant="outline" style={{ borderColor: 'rgba(212,175,55,0.5)', color: '#D4AF37' }}>
+              <Button size="sm" variant="outline">
                 Starter Paket — 19€
               </Button>
             </Link>
