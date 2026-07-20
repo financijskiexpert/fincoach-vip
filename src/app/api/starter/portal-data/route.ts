@@ -23,7 +23,7 @@ export async function GET() {
 
   const { data: purchase } = await service
     .from('starter_purchases')
-    .select('id, email, financial_type, created_at, affiliate_ref')
+    .select('id, email, financial_type, purchased_at')
     .eq('email', user.email.toLowerCase())
     .eq('status', 'active')
     .maybeSingle()
@@ -32,25 +32,13 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: 'Nemaš pristup Starter Paketu.' }, { status: 403 })
   }
 
-  // Track last portal visit for re-engagement emails (column added in migration 20260719)
-  if (purchase?.id) {
-    try {
-      await service
-        .from('starter_purchases')
-        .update({ last_seen_starter: new Date().toISOString() } as Record<string, unknown>)
-        .eq('id', purchase.id)
-    } catch {
-      // Column may not exist yet — migration pending
-    }
-  }
-
   return NextResponse.json({
     ok: true,
     email: purchase?.email ?? user.email,
     full_name: profile?.full_name ?? user.email.split('@')[0],
     financial_type: purchase?.financial_type ?? null,
-    purchased_at: purchase?.created_at ?? new Date().toISOString(),
-    via_affiliate: !!(purchase as Record<string, unknown> | null)?.affiliate_ref,
+    purchased_at: purchase?.purchased_at ?? new Date().toISOString(),
+    via_affiliate: false,
     is_admin_preview: isAdmin && !purchase,
   })
 }
