@@ -57,6 +57,16 @@
 .prose-blog ol { @apply list-decimal; }
 .prose-blog li { @apply leading-relaxed; }
 .prose-blog strong { @apply text-white font-semibold; }
+
+/* Skrij spinner gumbe na number inputih */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
 .prose-blog em { @apply text-white/80 italic; }
 .prose-blog blockquote { @apply border-l-4 border-[#D4AF37] pl-5 py-1 my-6 text-white/60 italic; }
 .prose-blog a { @apply text-[#D4AF37] hover:underline; }

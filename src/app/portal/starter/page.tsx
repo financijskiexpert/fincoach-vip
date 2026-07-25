@@ -658,7 +658,7 @@ export default function StarterPortalPage() {
     const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
     return (
       <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A', color: '#fff' }}>
-        <div className="max-w-2xl mx-auto">
+        <div className="w-full max-w-sm md:max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5"
               style={{ backgroundColor: 'rgba(34,197,94,0.12)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
@@ -717,7 +717,7 @@ export default function StarterPortalPage() {
     const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
     return (
       <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A', color: '#fff' }}>
-        <div className="max-w-2xl mx-auto">
+        <div className="w-full max-w-sm md:max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <div className="text-5xl mb-4">{improved ? '🏆' : '📊'}</div>
             <h1 className="text-2xl font-black mb-2">
@@ -794,7 +794,7 @@ export default function StarterPortalPage() {
     const firstName = data.full_name?.split(' ')[0] || 'prijatelju'
     return (
       <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A', color: '#fff' }}>
-        <div className="max-w-2xl mx-auto">
+        <div className="w-full max-w-sm md:max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5"
               style={{ backgroundColor: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
@@ -852,7 +852,7 @@ export default function StarterPortalPage() {
 
   return (
     <div className="min-h-screen px-4 pb-24 pt-8" style={{ backgroundColor: '#0D1B2A' }}>
-      <div className="max-w-2xl mx-auto">
+      <div className="w-full max-w-sm md:max-w-3xl mx-auto">
 
         {/* Header */}
         <div className="text-center mb-6">
