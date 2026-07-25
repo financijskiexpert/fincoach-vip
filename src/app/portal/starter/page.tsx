@@ -432,7 +432,21 @@ const VIDEO1_META: StarterVideoMeta = {
   sljedeci_tjedan: 'Automatizacija štednje — zašto volja ne funkcionira i kako postaviti sustav koji radi dok spavaš.',
 }
 
-const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META }
+const VIDEO2_META: StarterVideoMeta = {
+  uvod: 'U drugoj lekciji Starter Paketa učit ćeš najvažniju financijsku istinu: volja ne funkcionira. Nitko tko je izgradio financijsku sigurnost to nije napravio snagom volje — napravio je to sustavima koji rade automatski dok spava. Jedan trajni nalog može zauvijek promijeniti tvoj odnos prema novcu.',
+  kljucne_tocke: [
+    'Zašto mozak sabotira štednju — neurološko objašnjenje',
+    'Princip "Plati sebi prvo" — kako funkcionira u praksi',
+    'Kako postaviti automatski trajni nalog u 4 koraka',
+    'Zašto trebaš odvojeni štedni račun (psihološka barijera)',
+    'Hitni fond — što je, koliko trebaš i zašto je to prva investicija',
+    'Mini-cilj: 1.000 EUR — realni početni cilj za hitni fond',
+  ],
+  zadatak_tjedna: 'Trostruki zadatak: (1) Otvori odvojeni štedni račun. (2) Postavi automatski trajni nalog na dan nakon plaće — iznos nije važan, važno je da postoji. (3) Zapiši datum do kada planiraš stići do 1.000 EUR hitnog fonda. ROK: 7 dana.',
+  sljedeci_tjedan: 'Eliminacija duga — metode lavine i snježne grude: koja funkcionira za tebe i konkretni koraci za koga ima kredite i kartice.',
+}
+
+const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META, 2: VIDEO2_META }
 
 function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
   week: number; title: string; subtitle: string; userEmail: string
@@ -1175,16 +1189,22 @@ export default function StarterPortalPage() {
               </p>
             </div>
 
-            {/* Tjedan 1 — dostupan video */}
+            {/* Tjedan 1 — dostupan */}
             <StarterVideoPlayer week={1}
               title="Osnove proračuna i prvi koraci"
               subtitle="Metoda 50/30/20 i kako preuzeti kontrolu nad novcem"
               userEmail={data.email}
             />
 
-            {/* Tjedni 2/3/4 — zaključani */}
+            {/* Tjedan 2 — dostupan */}
+            <StarterVideoPlayer week={2}
+              title="Automatizacija štednje i hitni fond"
+              subtitle="Sustav koji radi dok spavaš"
+              userEmail={data.email}
+            />
+
+            {/* Tjedni 3/4 — zaključani */}
             {[
-              { week: 2, title: 'Automatizacija štednje i hitni fond', subtitle: 'Sustav koji radi dok spavaš' },
               { week: 3, title: 'Eliminacija duga — metode koje funkcioniraju', subtitle: 'Lavina vs. snježna gruda' },
               { week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak' },
             ].map(v => (
