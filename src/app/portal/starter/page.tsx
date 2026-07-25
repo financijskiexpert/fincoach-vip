@@ -442,12 +442,20 @@ function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
   const [open, setOpen] = useState(false)
   const [note, setNote] = useState('')
   const [noteSaved, setNoteSaved] = useState(false)
-  const noteKey = `fc_sv_note_${userEmail}_w${week}`
+  const [noteSaving, setNoteSaving] = useState(false)
   const meta = STARTER_VIDEO_META[week]
 
   useEffect(() => {
-    try { setNote(localStorage.getItem(noteKey) ?? '') } catch { /* */ }
-  }, [noteKey])
+    // Najprej localStorage (instant), nato API (kanonično)
+    try {
+      const local = localStorage.getItem(`fc_sv_note_${userEmail}_w${week}`)
+      if (local) setNote(local)
+    } catch { /* */ }
+    fetch(`/api/starter/notes?week=${week}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.note?.content) setNote(d.note.content) })
+      .catch(() => { /* fallback na localStorage */ })
+  }, [week, userEmail])
 
   async function load() {
     if (videoUrl) { setOpen(v => !v); return }
@@ -458,10 +466,27 @@ function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
     } finally { setLoading(false) }
   }
 
-  function saveNote() {
-    try { localStorage.setItem(noteKey, note) } catch { /* */ }
-    setNoteSaved(true)
-    setTimeout(() => setNoteSaved(false), 2000)
+  async function saveNote() {
+    setNoteSaving(true)
+    try {
+      // Shrani v Supabase
+      await fetch('/api/starter/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ week_num: week, content: note }),
+      })
+      // Backup v localStorage
+      try { localStorage.setItem(`fc_sv_note_${userEmail}_w${week}`, note) } catch { /* */ }
+      setNoteSaved(true)
+      setTimeout(() => setNoteSaved(false), 2500)
+    } catch {
+      // Fallback samo localStorage
+      try { localStorage.setItem(`fc_sv_note_${userEmail}_w${week}`, note) } catch { /* */ }
+      setNoteSaved(true)
+      setTimeout(() => setNoteSaved(false), 2500)
+    } finally {
+      setNoteSaving(false)
+    }
   }
 
   return (
@@ -538,10 +563,10 @@ function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
           className="w-full rounded-xl px-4 py-3 text-sm resize-none"
           style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }}
         />
-        <button onClick={saveNote}
-          className="mt-2 px-4 py-2 rounded-xl text-xs font-bold transition-opacity hover:opacity-80"
+        <button onClick={saveNote} disabled={noteSaving}
+          className="mt-2 px-4 py-2 rounded-xl text-xs font-bold transition-opacity hover:opacity-80 disabled:opacity-50"
           style={{ backgroundColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
-          💾 Spremi bilješku
+          {noteSaving ? '...' : '💾 Spremi bilješku'}
         </button>
       </div>
     </div>
