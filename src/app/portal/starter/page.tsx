@@ -446,7 +446,21 @@ const VIDEO2_META: StarterVideoMeta = {
   sljedeci_tjedan: 'Eliminacija duga — metode lavine i snježne grude: koja funkcionira za tebe i konkretni koraci za koga ima kredite i kartice.',
 }
 
-const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META, 2: VIDEO2_META }
+const VIDEO3_META: StarterVideoMeta = {
+  uvod: 'U trećoj lekciji govorimo o temi koja za mnoge nosi sram i stres: dug. Dug nije moralni propust — to je financijsko stanje s konkretnim izlazom. Naučit ćeš dvije najmoćnije metode eliminacije duga i saznati da možeš pregovarati s bankom — što malo tko zna.',
+  kljucne_tocke: [
+    'Psihologija duga — zašto mozak sabotira otplatu',
+    'Matematika kamate: 5.000 EUR × 18% = 14 godina i 9.000 EUR ukupno',
+    'Metoda Lavina — matematički optimalna (najveća kamata prva)',
+    'Metoda Snježna gruda — psihološki optimalna (najmanji iznos prvi)',
+    'Kako pregovarati s bankom: reprogram, refinanciranje, konsolidacija',
+    'Trostruki plan: lista dugova → metoda → jedan konkretan korak',
+  ],
+  zadatak_tjedna: 'Trostruki zadatak: (1) Napiši listu svih dugova s iznosom, kamatom i ratom. (2) Odaberi metodu — Lavina ili Snježna gruda — nema krivog odgovora. (3) Napravi jedan konkretan korak danas — pozovi banku ili postavi extra 20 EUR na najmanji dug. ROK: 7 dana.',
+  sljedeci_tjedan: 'Prve investicije bez straha — ETF za početnike i zašto investiranje nije samo za bogate.',
+}
+
+const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META, 2: VIDEO2_META, 3: VIDEO3_META }
 
 function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
   week: number; title: string; subtitle: string; userEmail: string
@@ -1203,9 +1217,15 @@ export default function StarterPortalPage() {
               userEmail={data.email}
             />
 
-            {/* Tjedni 3/4 — zaključani */}
+            {/* Tjedan 3 — dostupan */}
+            <StarterVideoPlayer week={3}
+              title="Eliminacija duga — metode koje funkcioniraju"
+              subtitle="Lavina vs. snježna gruda"
+              userEmail={data.email}
+            />
+
+            {/* Tjedan 4 — zaključan */}
             {[
-              { week: 3, title: 'Eliminacija duga — metode koje funkcioniraju', subtitle: 'Lavina vs. snježna gruda' },
               { week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak' },
             ].map(v => (
               <div key={v.week} className="rounded-2xl p-5 flex items-center gap-4"
