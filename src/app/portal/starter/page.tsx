@@ -411,15 +411,46 @@ function openBudzetPrint(data: BudzetData, monthLabel: string, blank: boolean) {
   if (w) { w.document.write(html); w.document.close() }
 }
 
-function StarterVideoPlayer({ week, title, subtitle, afterWatch }: {
-  week: number; title: string; subtitle: string; afterWatch: string
+interface StarterVideoMeta {
+  uvod: string
+  kljucne_tocke: string[]
+  zadatak_tjedna: string
+  sljedeci_tjedan: string
+}
+
+const VIDEO1_META: StarterVideoMeta = {
+  uvod: 'U prvoj lekciji Starter Paketa postavljamo temelje. Proračun koji danas napraveš nije lista zabrana — to je alatka kojom preuzimaš kontrolu nad svakim eurom koji zarađuješ. Bez proračuna radiš, trošiš i pitaš se na kraju mjeseca gdje je nestao novac. S proračunom — znaš točno gdje ide, i možeš svjesno odlučivati.',
+  kljucne_tocke: [
+    'Razlika između fiksnih, varijabilnih i nevidljivih troškova',
+    'Metoda 50/30/20 — kako podijeliti dohodak na potrebe, želje i budućnost',
+    'Konkretan primjer idealne raspodjele za prihod od 2.000 EUR',
+    '5 konkretnih koraka za izradu prvog proračuna',
+    'Zašto točna dijagnoza uvijek dolazi prije optimizacije',
+    'Nevidljivi troškovi — zašto 200–400 EUR svaki mjesec "nestaje"',
+  ],
+  zadatak_tjedna: 'Napravi proračun za ovaj mjesec koristeći interaktivni alat u Materijali tabu. Popuni ga onako kako je stvarno — ne kako bi htio da izgleda. Tvoj proračun je tvoj financijski snapshot: odatle krećemo. ROK: 7 dana.',
+  sljedeci_tjedan: 'Automatizacija štednje — zašto volja ne funkcionira i kako postaviti sustav koji radi dok spavaš.',
+}
+
+const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META }
+
+function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
+  week: number; title: string; subtitle: string; userEmail: string
 }) {
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
+  const [note, setNote] = useState('')
+  const [noteSaved, setNoteSaved] = useState(false)
+  const noteKey = `fc_sv_note_${userEmail}_w${week}`
+  const meta = STARTER_VIDEO_META[week]
+
+  useEffect(() => {
+    try { setNote(localStorage.getItem(noteKey) ?? '') } catch { /* */ }
+  }, [noteKey])
 
   async function load() {
-    if (videoUrl) { setOpen(true); return }
+    if (videoUrl) { setOpen(v => !v); return }
     setLoading(true)
     try {
       const res = await fetch(`/api/starter/video-url?week=${week}`)
@@ -427,14 +458,21 @@ function StarterVideoPlayer({ week, title, subtitle, afterWatch }: {
     } finally { setLoading(false) }
   }
 
+  function saveNote() {
+    try { localStorage.setItem(noteKey, note) } catch { /* */ }
+    setNoteSaved(true)
+    setTimeout(() => setNoteSaved(false), 2000)
+  }
+
   return (
     <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.25)' }}>
+      {/* Header */}
       <div className="flex items-center gap-4 p-5">
         <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl"
           style={{ backgroundColor: 'rgba(212,175,55,0.15)' }}>🎬</div>
         <div className="flex-1 min-w-0">
           <span className="text-xs font-bold block mb-0.5" style={{ color: '#D4AF37' }}>Tjedan {week} — DOSTUPNO</span>
-          <p className="text-sm font-bold truncate" style={{ color: '#fff' }}>{title}</p>
+          <p className="text-sm font-bold" style={{ color: '#fff' }}>{title}</p>
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{subtitle}</p>
         </div>
         <button onClick={load} disabled={loading}
@@ -444,8 +482,9 @@ function StarterVideoPlayer({ week, title, subtitle, afterWatch }: {
         </button>
       </div>
 
+      {/* Video player */}
       {open && videoUrl && (
-        <div className="px-4 pb-4">
+        <div className="px-4 pb-2">
           <video controls className="w-full rounded-xl" style={{ backgroundColor: '#000', maxHeight: '480px' }}
             src={videoUrl} controlsList="nodownload" onContextMenu={e => e.preventDefault()}>
             Tvoj preglednik ne podržava video.
@@ -453,11 +492,57 @@ function StarterVideoPlayer({ week, title, subtitle, afterWatch }: {
         </div>
       )}
 
-      <div className="px-5 pb-4 pt-0">
-        <div className="rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>✅ Što napraviti nakon gledanja:</p>
-          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{afterWatch}</p>
+      {/* O ovoj lekciji */}
+      {meta && (
+        <div className="px-5 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <h3 className="text-sm font-bold mb-2" style={{ color: '#D4AF37' }}>O ovoj lekciji</h3>
+          <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>{meta.uvod}</p>
+
+          <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>Ključne točke</h4>
+          <ul className="space-y-1.5 mb-4">
+            {meta.kljucne_tocke.map((t, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                <span className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }}>✓</span>
+                {t}
+              </li>
+            ))}
+          </ul>
+
+          <div className="rounded-xl px-4 py-3 mb-4" style={{ backgroundColor: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
+            <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>📌 Zadatak tjedna</p>
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{meta.zadatak_tjedna}</p>
+          </div>
+
+          <div className="rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <p className="text-xs font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Sljedeći tjedan</p>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{meta.sljedeci_tjedan}</p>
+          </div>
         </div>
+      )}
+
+      {/* Moje bilješke */}
+      <div className="px-5 pb-5" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="flex items-center justify-between mt-4 mb-2">
+          <h3 className="text-sm font-bold" style={{ color: '#fff' }}>📝 Moje bilješke</h3>
+          {noteSaved && <span className="text-xs" style={{ color: '#22c55e' }}>✓ Spremljeno</span>}
+        </div>
+        <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          Tijekom gledanja zapiši misli, zadatke i uvide. Sve bilješke možeš pregledati na stranici{' '}
+          <a href="/portal/biljeske" style={{ color: '#D4AF37' }}>Moje bilješke</a>.
+        </p>
+        <textarea
+          value={note}
+          onChange={e => { setNote(e.target.value); setNoteSaved(false) }}
+          placeholder="Dobio/la sam video posnetke..."
+          rows={4}
+          className="w-full rounded-xl px-4 py-3 text-sm resize-none"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }}
+        />
+        <button onClick={saveNote}
+          className="mt-2 px-4 py-2 rounded-xl text-xs font-bold transition-opacity hover:opacity-80"
+          style={{ backgroundColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+          💾 Spremi bilješku
+        </button>
       </div>
     </div>
   )
@@ -1069,7 +1154,7 @@ export default function StarterPortalPage() {
             <StarterVideoPlayer week={1}
               title="Osnove proračuna i prvi koraci"
               subtitle="Metoda 50/30/20 i kako preuzeti kontrolu nad novcem"
-              afterWatch="Otvori Materijali tab → popuni proračun za ovaj mjesec. Budi iskren — napiši kako stvari zaista stoje, ne kako bi htio da izgledaju."
+              userEmail={data.email}
             />
 
             {/* Tjedni 2/3/4 — zaključani */}
