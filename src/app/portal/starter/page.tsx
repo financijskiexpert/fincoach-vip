@@ -411,6 +411,58 @@ function openBudzetPrint(data: BudzetData, monthLabel: string, blank: boolean) {
   if (w) { w.document.write(html); w.document.close() }
 }
 
+function StarterVideoPlayer({ week, title, subtitle, afterWatch }: {
+  week: number; title: string; subtitle: string; afterWatch: string
+}) {
+  const [videoUrl, setVideoUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  async function load() {
+    if (videoUrl) { setOpen(true); return }
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/starter/video-url?week=${week}`)
+      if (res.ok) { const { url } = await res.json(); setVideoUrl(url); setOpen(true) }
+    } finally { setLoading(false) }
+  }
+
+  return (
+    <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.25)' }}>
+      <div className="flex items-center gap-4 p-5">
+        <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl"
+          style={{ backgroundColor: 'rgba(212,175,55,0.15)' }}>🎬</div>
+        <div className="flex-1 min-w-0">
+          <span className="text-xs font-bold block mb-0.5" style={{ color: '#D4AF37' }}>Tjedan {week} — DOSTUPNO</span>
+          <p className="text-sm font-bold truncate" style={{ color: '#fff' }}>{title}</p>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{subtitle}</p>
+        </div>
+        <button onClick={load} disabled={loading}
+          className="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-black transition-opacity hover:opacity-80 disabled:opacity-50"
+          style={{ backgroundColor: '#D4AF37', color: '#0D1B2A' }}>
+          {loading ? '...' : open ? '▲ Zatvori' : '▶ Gledaj'}
+        </button>
+      </div>
+
+      {open && videoUrl && (
+        <div className="px-4 pb-4">
+          <video controls className="w-full rounded-xl" style={{ backgroundColor: '#000', maxHeight: '480px' }}
+            src={videoUrl} controlsList="nodownload" onContextMenu={e => e.preventDefault()}>
+            Tvoj preglednik ne podržava video.
+          </video>
+        </div>
+      )}
+
+      <div className="px-5 pb-4 pt-0">
+        <div className="rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>✅ Što napraviti nakon gledanja:</p>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{afterWatch}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function BudzetTracker({ userEmail }: { userEmail: string }) {
   const now = new Date()
   const [month, setMonth] = useState(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`)
@@ -1002,71 +1054,41 @@ export default function StarterPortalPage() {
         {activeTab === 'videa' && (
           <div className="space-y-4">
             <p className="text-sm text-center" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Brane snima 4 ekskluzivna videa — svaki tjedan jedan stiže direktno na tvoj email.
+              4 ekskluzivna videa — jedan po tjednu, direktno u portalu.
             </p>
 
             {/* Dnevni plan podsjetnik */}
             <div className="rounded-2xl p-4 flex items-start gap-3" style={{ backgroundColor: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.2)' }}>
               <span className="text-lg flex-shrink-0">📅</span>
               <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                <strong style={{ color: '#22c55e' }}>Važno:</strong> Videa su dodatna podrška — ali napredak dolazi od svakodnevnog rada na <strong style={{ color: '#fff' }}>30-dnevnom planu</strong>. Prati zadatke svaki dan. Samo oni koji zaista rade zadatke mogu očekivati promjenu.
+                <strong style={{ color: '#22c55e' }}>Važno:</strong> Videa su dodatna podrška — ali napredak dolazi od svakodnevnog rada na <strong style={{ color: '#fff' }}>30-dnevnom planu</strong>. Prati zadatke svaki dan.
               </p>
             </div>
 
+            {/* Tjedan 1 — dostupan video */}
+            <StarterVideoPlayer week={1}
+              title="Osnove proračuna i prvi koraci"
+              subtitle="Metoda 50/30/20 i kako preuzeti kontrolu nad novcem"
+              afterWatch="Otvori Materijali tab → popuni proračun za ovaj mjesec. Budi iskren — napiši kako stvari zaista stoje, ne kako bi htio da izgledaju."
+            />
+
+            {/* Tjedni 2/3/4 — zaključani */}
             {[
-              {
-                week: 1, title: 'Financijski audit i postavljanje temelja', subtitle: 'Gdje si sada i kamo ideš', status: 'soon',
-                afterWatch: 'Nakon gledanja: napravi financijski audit (Dan 2 plana) i postavi automatski transfer štednje. Ne čekaj — napravi danas.',
-              },
-              {
-                week: 2, title: 'Automatizacija štednje i hitni fond', subtitle: 'Sustav koji radi dok spavaš', status: 'locked',
-                afterWatch: 'Nakon gledanja: otvori odvojen račun za hitni fond i postavi trajni nalog. Automatizacija eliminira potrebu za voljom.',
-              },
-              {
-                week: 3, title: 'Eliminacija duga — metode koje funkcioniraju', subtitle: 'Lavina vs. snježna gruda', status: 'locked',
-                afterWatch: 'Nakon gledanja: napiši sve dugove (iznos + kamata) na papir i odaberi jednu metodu eliminacije — danas, ne sutra.',
-              },
-              {
-                week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak', status: 'locked',
-                afterWatch: 'Ne znaš odakle početi s ulaganjem? To je normalno — ali skupo. Jedan razgovor s Branetom (besplatno, bez obveze) i znat ćeš točno gdje tvoj novac treba ići. Štednja, osiguranje ili investicija — prilagođeno tebi.',
-              },
-            ].map(video => (
-              <div key={video.week} className="rounded-2xl overflow-hidden"
-                style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', opacity: video.status === 'locked' ? 0.65 : 1 }}>
-                <div className="flex items-center gap-4 p-5">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl"
-                    style={{ backgroundColor: video.status === 'soon' ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)' }}>
-                    {video.status === 'locked' ? '🔒' : '🎬'}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.6)' }}>Tjedan {video.week}</span>
-                      {video.status === 'soon' && (
-                        <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ backgroundColor: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>Uskoro</span>
-                      )}
-                    </div>
-                    <p className="text-sm font-bold mb-0.5" style={{ color: '#fff' }}>{video.title}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{video.subtitle}</p>
-                  </div>
+              { week: 2, title: 'Automatizacija štednje i hitni fond', subtitle: 'Sustav koji radi dok spavaš' },
+              { week: 3, title: 'Eliminacija duga — metode koje funkcioniraju', subtitle: 'Lavina vs. snježna gruda' },
+              { week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak' },
+            ].map(v => (
+              <div key={v.week} className="rounded-2xl p-5 flex items-center gap-4"
+                style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', opacity: 0.55 }}>
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}>🔒</div>
+                <div>
+                  <span className="text-xs font-bold block mb-0.5" style={{ color: 'rgba(212,175,55,0.5)' }}>Tjedan {v.week}</span>
+                  <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.6)' }}>{v.title}</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>{v.subtitle}</p>
                 </div>
-                {video.status !== 'locked' && (
-                  <div className="px-5 pb-4 pt-0">
-                    <div className="rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                      <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>✅ Što napraviti nakon gledanja:</p>
-                      <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{video.afterWatch}</p>
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
-
-            <div className="rounded-2xl p-5 text-center" style={{ backgroundColor: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)' }}>
-              <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>📧 Video #1 dolazi uskoro</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                Videa stižu direktno na <strong style={{ color: '#fff' }}>{data.email}</strong>.<br />
-                Provjeri inbox i folder Promotions.
-              </p>
-            </div>
           </div>
         )}
 
