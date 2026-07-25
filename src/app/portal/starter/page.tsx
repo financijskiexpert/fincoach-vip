@@ -327,6 +327,221 @@ function PlanRow({ task, done, onToggle }: { task: Task; done: boolean; onToggle
   )
 }
 
+// ─── Proračun tracker ─────────────────────────────────────────────────────────
+
+const BUDZET_KAT: Array<{
+  key: 'potrebe' | 'zelje' | 'buducnost'
+  label: string; emoji: string; target: number; color: string; items: string[]
+}> = [
+  { key: 'potrebe',   label: 'POTREBE',   emoji: '🏠', target: 50, color: '#3b82f6',
+    items: ['Stanarina / Kredit', 'Hrana', 'Prijevoz / Gorivo', 'Struja / Komunalije', 'Osiguranje', 'Pretplate (fiksne)', 'Ostalo'] },
+  { key: 'zelje',     label: 'ŽELJÉ',     emoji: '🎭', target: 30, color: '#f59e0b',
+    items: ['Restoran / Kava', 'Odjeća', 'Zabava / Izlasci', 'Hobiji', 'Njega / Kozmetika', 'Ostalo'] },
+  { key: 'buducnost', label: 'BUDUĆNOST', emoji: '📈', target: 20, color: '#22c55e',
+    items: ['Štednja', 'Hitni fond', 'Investicije / ETF', 'Otplata duga', 'Ostalo'] },
+]
+
+interface BudzetData {
+  income: number
+  potrebe: number[]
+  zelje: number[]
+  buducnost: number[]
+  notes: string
+}
+
+function defaultBudzet(): BudzetData {
+  return { income: 0, potrebe: Array(7).fill(0), zelje: Array(6).fill(0), buducnost: Array(5).fill(0), notes: '' }
+}
+
+function openBudzetPrint(data: BudzetData, monthLabel: string, blank: boolean) {
+  const G = '#C5A028'
+  const katHtml = (k: 'potrebe' | 'zelje' | 'buducnost') => {
+    const kat = BUDZET_KAT.find(x => x.key === k)!
+    const vals = blank ? Array(kat.items.length).fill(0) : data[k] as number[]
+    const tot = (vals as number[]).reduce((s: number, v: number) => s + v, 0)
+    const pct = !blank && data.income > 0 ? `${Math.round((tot / data.income) * 100)}%` : '—'
+    const rows = kat.items.map((item, i) => `
+      <tr><td style="padding:5px 8px;border-bottom:1px solid #eee;font-size:11px;color:#555">${item}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #eee;text-align:right;font-size:11px;font-weight:bold">
+        ${blank ? '<span style="color:#bbb">_____________ €</span>' : `${((vals as number[])[i] || 0).toFixed(2)} €`}
+      </td></tr>`).join('')
+    return `<table style="width:100%;border-collapse:collapse;margin-bottom:16px">
+      <thead><tr style="background:${kat.color}22">
+        <th style="padding:8px;text-align:left;font-size:12px;color:${kat.color};border-left:3px solid ${kat.color}">
+          ${kat.emoji} ${kat.label} <span style="font-weight:400;color:#888;font-size:10px">  cilj ${kat.target}%</span></th>
+        <th style="padding:8px;text-align:right;font-size:13px;color:#333">
+          ${blank ? '<span style="color:#bbb">_____________ €</span>' : `${tot.toFixed(2)} €`}
+          <span style="font-size:11px;color:${kat.color};margin-left:8px">${pct}</span>
+        </th></tr></thead><tbody>${rows}</tbody></table>`
+  }
+  const totAll = blank ? 0 : (['potrebe','zelje','buducnost'] as const).reduce((s, k) => s + (data[k] as number[]).reduce((a, b) => a + b, 0), 0)
+  const ostaje = blank ? 0 : data.income - totAll
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Proračun ${monthLabel}</title>
+    <style>body{font-family:Arial,sans-serif;padding:15mm 20mm;color:#222;font-size:12px}@media print{body{padding:10mm 15mm}}</style>
+    </head><body>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid ${G}">
+      <div><div style="font-size:10px;letter-spacing:2px;color:${G};font-weight:bold;text-transform:uppercase">FinCoach VIP · Starter Paket</div>
+        <div style="font-size:22px;font-weight:900;color:#1a1a2e;margin-top:2px">Moj Proračun</div>
+        <div style="font-size:13px;color:#666;margin-top:2px">${monthLabel}</div></div>
+      <div style="text-align:right;font-size:10px;color:#aaa">www.fincoach.vip</div></div>
+    <table style="width:100%;margin-bottom:20px;border-collapse:collapse"><tr style="background:#f8f6f0">
+      <td style="padding:10px 12px;font-weight:bold;font-size:14px">💰 Neto prihodi ovog mjeseca</td>
+      <td style="padding:10px 12px;text-align:right;font-size:16px;font-weight:900;color:${G}">
+        ${blank ? '<span style="color:#bbb">_____________ €</span>' : `${data.income.toFixed(2)} €`}</td></tr></table>
+    ${katHtml('potrebe')}${katHtml('zelje')}${katHtml('buducnost')}
+    <table style="width:100%;border-collapse:collapse;margin-top:8px">
+      <tr style="background:#f8f6f0"><td style="padding:8px 12px;font-size:12px;color:#555">Ukupni troškovi</td>
+        <td style="padding:8px 12px;text-align:right;font-weight:bold">${blank ? '— €' : `${totAll.toFixed(2)} €`}</td></tr>
+      <tr style="background:${blank ? '#f8f8f8' : ostaje >= 0 ? '#e8f5e9' : '#fde8e8'}">
+        <td style="padding:8px 12px;font-size:13px;font-weight:bold">Ostaje (prihodi − troškovi)</td>
+        <td style="padding:8px 12px;text-align:right;font-size:14px;font-weight:900;color:${blank ? '#bbb' : ostaje >= 0 ? '#22c55e' : '#ef4444'}">
+          ${blank ? '— €' : `${ostaje >= 0 ? '+' : ''}${ostaje.toFixed(2)} €`}</td></tr></table>
+    <div style="margin-top:20px;padding:10px;background:#fffbf0;border:1px solid ${G}40;border-radius:6px">
+      <div style="font-size:10px;font-weight:bold;color:${G};margin-bottom:4px">METODA 50/30/20</div>
+      <div style="font-size:10px;color:#666;display:flex;gap:20px">
+        <span>🏠 Potrebe: max 50%</span><span>🎭 Željé: max 30%</span><span>📈 Budućnost: min 20%</span></div></div>
+    ${!blank && data.notes ? `<div style="margin-top:16px;padding:12px;background:#f8f8f8;border-left:3px solid ${G};border-radius:4px">
+      <div style="font-size:10px;font-weight:bold;color:#888;margin-bottom:4px">BILJEŠKE</div>
+      <div style="font-size:11px;color:#555">${data.notes.replace(/\n/g, '<br>')}</div></div>` : ''}
+    ${blank ? `<div style="margin-top:20px;border:1px dashed #ccc;padding:12px;min-height:60px">
+      <div style="font-size:10px;color:#aaa;margin-bottom:4px">BILJEŠKE:</div></div>` : ''}
+    <script>window.onload=function(){window.print();window.onafterprint=function(){window.close()}}</script>
+    </body></html>`
+  const w = window.open('', '_blank', 'width=800,height=900')
+  if (w) { w.document.write(html); w.document.close() }
+}
+
+function BudzetTracker({ userEmail }: { userEmail: string }) {
+  const now = new Date()
+  const [month, setMonth] = useState(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`)
+  const [data, setData] = useState<BudzetData>(defaultBudzet)
+
+  useEffect(() => {
+    try {
+      const s = localStorage.getItem(`fc_b_${userEmail}_${month}`)
+      setData(s ? JSON.parse(s) : defaultBudzet())
+    } catch { setData(defaultBudzet()) }
+  }, [month, userEmail])
+
+  function save(next: BudzetData) {
+    localStorage.setItem(`fc_b_${userEmail}_${month}`, JSON.stringify(next))
+    setData(next)
+  }
+
+  const sumFn = (arr: number[]) => arr.reduce((s, v) => s + v, 0)
+  const pctFn = (n: number) => data.income > 0 ? Math.round((n / data.income) * 100) : 0
+  const totAll = sumFn(data.potrebe) + sumFn(data.zelje) + sumFn(data.buducnost)
+  const ostaje = data.income - totAll
+  const monthLabel = new Date(month + '-01').toLocaleDateString('hr-HR', { month: 'long', year: 'numeric' })
+
+  return (
+    <div>
+      <div className="flex items-start justify-between mb-5">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: 'rgba(212,175,55,0.6)' }}>Odaberi mjesec</p>
+          <input type="month" value={month} onChange={e => setMonth(e.target.value)}
+            className="rounded-lg px-3 py-1.5 text-sm font-bold"
+            style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#D4AF37' }} />
+        </div>
+        <div className="flex flex-col gap-2 mt-5">
+          <button onClick={() => openBudzetPrint(data, monthLabel, false)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap"
+            style={{ backgroundColor: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+            🖨️ Ispis / PDF
+          </button>
+          <button onClick={() => openBudzetPrint(defaultBudzet(), monthLabel, true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap"
+            style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            📄 Prazan predložak
+          </button>
+        </div>
+      </div>
+
+      <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.25)' }}>
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm font-bold" style={{ color: '#fff' }}>💰 Neto prihodi — {monthLabel}</span>
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <input type="number" min={0} value={data.income || ''} placeholder="npr. 1800"
+              onChange={e => save({ ...data, income: Number(e.target.value) || 0 })}
+              className="w-24 text-right rounded-lg px-2 py-1.5 text-sm font-bold"
+              style={{ backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid rgba(212,175,55,0.4)', color: '#D4AF37' }} />
+            <span className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>€</span>
+          </div>
+        </div>
+      </div>
+
+      {BUDZET_KAT.map(kat => {
+        const amounts = data[kat.key] as number[]
+        const tot = sumFn(amounts); const p = pctFn(tot); const diff = p - kat.target
+        const sc = diff > 5 ? '#ef4444' : (Math.abs(diff) <= 5 && data.income > 0) ? '#22c55e' : 'rgba(255,255,255,0.35)'
+        return (
+          <div key={kat.key} className="rounded-xl mb-4 overflow-hidden" style={{ border: `1px solid ${kat.color}30` }}>
+            <div className="flex items-center justify-between px-4 py-3"
+              style={{ backgroundColor: `${kat.color}18`, borderBottom: `1px solid ${kat.color}22` }}>
+              <span className="text-sm font-black" style={{ color: kat.color }}>{kat.emoji} {kat.label}</span>
+              <div className="flex items-center gap-2">
+                {data.income > 0 && <span className="text-xs font-bold" style={{ color: sc }}>{p}% / {kat.target}%</span>}
+                <span className="text-sm font-black" style={{ color: '#fff' }}>{tot.toFixed(0)} €</span>
+              </div>
+            </div>
+            <div className="px-4 py-3 space-y-2" style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>
+              {kat.items.map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between gap-3">
+                  <span className="text-xs flex-1" style={{ color: 'rgba(255,255,255,0.5)' }}>{item}</span>
+                  <div className="flex items-center gap-1">
+                    <input type="number" min={0} value={amounts[idx] || ''} placeholder="0"
+                      onChange={e => {
+                        const arr = [...amounts]; arr[idx] = Number(e.target.value) || 0
+                        save({ ...data, [kat.key]: arr })
+                      }}
+                      className="w-20 text-right rounded px-2 py-1 text-xs"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }} />
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>€</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      })}
+
+      <div className="rounded-xl p-5 mb-4" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: 'rgba(255,255,255,0.35)' }}>📊 Usporedba s metodom 50/30/20</p>
+        {BUDZET_KAT.map(kat => {
+          const tot = sumFn(data[kat.key] as number[]); const p = pctFn(tot)
+          return (
+            <div key={kat.key} className="flex items-center gap-3 mb-3">
+              <span className="text-xs w-20 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.5)' }}>{kat.label}</span>
+              <div className="flex-1 rounded-full h-2.5" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
+                <div className="h-2.5 rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(p, 100)}%`, backgroundColor: kat.color }} />
+              </div>
+              <span className="text-xs w-14 text-right tabular-nums font-bold" style={{ color: data.income > 0 ? kat.color : 'rgba(255,255,255,0.2)' }}>
+                {data.income > 0 ? `${p}% / ${kat.target}` : '—'}
+              </span>
+            </div>
+          )
+        })}
+        <div className="h-px my-3" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
+        <div className="flex justify-between items-center">
+          <span className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Ostaje neraspoređeno</span>
+          <span className="text-xl font-black" style={{ color: ostaje >= 0 ? '#22c55e' : '#ef4444' }}>
+            {ostaje >= 0 ? '+' : ''}{ostaje.toFixed(0)} €
+          </span>
+        </div>
+      </div>
+
+      <div className="rounded-xl p-4" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+        <p className="text-xs font-bold mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>📝 Bilješke — {monthLabel}</p>
+        <textarea rows={3} value={data.notes} placeholder="Npr. Plaća stiže 5., auto servis 80€ neplanirano..."
+          onChange={e => save({ ...data, notes: e.target.value })}
+          className="w-full resize-none rounded-lg px-3 py-2 text-xs"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.65)', outline: 'none' }} />
+      </div>
+    </div>
+  )
+}
+
 // ─── Glavni page ──────────────────────────────────────────────────────────────
 
 export default function StarterPortalPage() {
@@ -339,7 +554,7 @@ export default function StarterPortalPage() {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<StarterData | null>(null)
   const [doneTasks, setDoneTasks] = useState<Set<number>>(new Set())
-  const [activeTab, setActiveTab] = useState<'dijagnoza' | 'plan' | 'videa'>('dijagnoza')
+  const [activeTab, setActiveTab] = useState<'dijagnoza' | 'plan' | 'videa' | 'materijali'>('dijagnoza')
   const [tabInitialized, setTabInitialized] = useState(false)
   const [showQuiz, setShowQuiz] = useState(false)
   const [quizAnswers, setQuizAnswers] = useState<Record<number, Tip>>({})
@@ -368,7 +583,7 @@ export default function StarterPortalPage() {
       }
 
       // Persist active tab — default to 'plan' if quiz already completed
-      const savedTab = localStorage.getItem('fc_starter_tab') as 'dijagnoza' | 'plan' | 'videa' | null
+      const savedTab = localStorage.getItem('fc_starter_tab') as 'dijagnoza' | 'plan' | 'videa' | 'materijali' | null
       if (savedTab) {
         setActiveTab(savedTab)
       } else if (json.financial_type) {
@@ -649,12 +864,12 @@ export default function StarterPortalPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 p-1 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}>
-          {(['dijagnoza', 'plan', 'videa'] as const).map(tab => (
+        <div className="grid grid-cols-4 gap-1 mb-6 p-1 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}>
+          {(['dijagnoza', 'plan', 'videa', 'materijali'] as const).map(tab => (
             <button key={tab} onClick={() => { setActiveTab(tab); localStorage.setItem('fc_starter_tab', tab) }}
-              className="flex-1 py-2 rounded-lg text-sm font-bold transition-all"
+              className="py-2 rounded-lg text-xs font-bold transition-all"
               style={{ backgroundColor: activeTab === tab ? 'rgba(212,175,55,0.2)' : 'transparent', color: activeTab === tab ? '#D4AF37' : 'rgba(255,255,255,0.4)', border: activeTab === tab ? '1px solid rgba(212,175,55,0.3)' : '1px solid transparent' }}>
-              {tab === 'dijagnoza' ? '📊 Dijagnoza' : tab === 'plan' ? '📅 30-dnevni plan' : '🎬 Videa'}
+              {tab === 'dijagnoza' ? '📊 Dijagnoza' : tab === 'plan' ? '📅 Plan' : tab === 'videa' ? '🎬 Videa' : '📁 Materijali'}
             </button>
           ))}
         </div>
@@ -852,6 +1067,41 @@ export default function StarterPortalPage() {
                 Provjeri inbox i folder Promotions.
               </p>
             </div>
+          </div>
+        )}
+
+        {/* ── TAB: Materijali ───────────────────────────────────────────────── */}
+        {activeTab === 'materijali' && (
+          <div className="space-y-5">
+
+            {/* Interaktivni proračun */}
+            <div className="rounded-2xl p-5" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <h2 className="text-base font-bold mb-1" style={{ color: '#D4AF37' }}>💰 Moj proračun — metoda 50/30/20</h2>
+              <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                Unesi prihode i troškove — sve se sprema automatski. Klikni 🖨️ za PDF izvoz ili 📄 za prazan predložak za tiskanje.
+              </p>
+              <BudzetTracker userEmail={data.email} />
+            </div>
+
+            {/* Ostali materijali — placeholder za videe 2/3/4 */}
+            <div className="rounded-2xl p-5" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <h2 className="text-base font-bold mb-1" style={{ color: 'rgba(255,255,255,0.45)' }}>📂 Ostali materijali</h2>
+              <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Otključavaju se s novim tjednima programa.</p>
+              <div className="space-y-2">
+                {[
+                  'Tjedan 2 — Radni list za automatizaciju štednje',
+                  'Tjedan 3 — Tablica za pregled i eliminaciju dugova',
+                  'Tjedan 4 — Starter vodič za ETF investicije',
+                ].map((label, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-xl px-4 py-3"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.55 }}>
+                    <span>🔒</span>
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         )}
 
