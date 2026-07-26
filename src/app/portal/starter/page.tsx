@@ -466,8 +466,8 @@ const VIDEO4_META: StarterVideoMeta = {
     'Složeni prinos — 100 EUR/mj. × 30 godina = 150.000 EUR',
     'Zaštita obitelji PRIJE investiranja — zašto i kako',
     'Vinkulacija banke vs. individualno riziko ŽO — ključna razlika',
-    'Naložbeno životno osiguranje — kako funkcionira, za koga je',
-    'Primjeri iz prakse: Maja (NŽO 20 god.) i Ivan (riziko + vinkulacija)',
+    'Investicijsko životno osiguranje — kako funkcionira, za koga je',
+    'Primjeri iz prakse: Maja (IŽO 20 god.) i Ivan (riziko + vinkulacija)',
     '4 pitanja za odabir pravog osiguranja za tvoju situaciju',
   ],
   zadatak_tjedna: 'Trojni završni zadatak: (1) Dovrši sve u tabu Plan u portalu. (2) Ponovi Dijagnoza nakon 30 dana — vidi napredak. (3) Preuzmi PDF Moj proračun iz Materijala. Bonus: zapiši jedno konkretno pitanje o osiguranju i pošalji ga na fincoach.vip/kontakt.',
@@ -1499,7 +1499,7 @@ export default function StarterPortalPage() {
             {/* Tjedan 4 — dostupan */}
             <StarterVideoPlayer week={4}
               title="Investiranje i financijska zaštita"
-              subtitle="Složeni prinos, NŽO, riziko ŽO i vinkulacija"
+              subtitle="Složeni prinos, IŽO, riziko ŽO i vinkulacija"
               userEmail={data.email}
             />
 
