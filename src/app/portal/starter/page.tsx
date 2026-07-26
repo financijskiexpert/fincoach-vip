@@ -732,6 +732,264 @@ function BudzetTracker({ userEmail }: { userEmail: string }) {
   )
 }
 
+// ─── Mini kalkulatori za Starter Materijali tab ───────────────────────────────
+
+function VsnUpsell() {
+  return (
+    <div className="mt-4 rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0.03) 100%)', border: '1px solid rgba(212,175,55,0.2)' }}>
+      <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>🚀 Ovo je alat koji koriste studenti programa Volim Svoj Novac!</p>
+      <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>VSN program uključuje potpunu verziju s pohranom, grafikonima, usporedbom scenarija i još 4 ekskluzivna kalkulatora.</p>
+      <a href="/volim-svojnovac" className="block text-center rounded-lg py-2 text-xs font-bold"
+        style={{ backgroundColor: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+        Saznaj više o Volim Svoj Novac →
+      </a>
+    </div>
+  )
+}
+
+function MiniHitniFond() {
+  const [prihod, setPrihod] = useState('')
+  const [troskovi, setTroskovi] = useState('')
+  const [buffer, setBuffer] = useState(6)
+  const [imaNa, setImaNa] = useState('')
+
+  const troskoviNum = parseFloat(troskovi.replace(',', '.')) || 0
+  const imaNum = parseFloat(imaNa.replace(',', '.')) || 0
+  const cilj = troskoviNum * buffer
+  const nedostaje = Math.max(0, cilj - imaNum)
+  const postotak = cilj > 0 ? Math.min(100, Math.round((imaNum / cilj) * 100)) : 0
+  const prihodNum = parseFloat(prihod.replace(',', '.')) || 0
+  const mjeseciDoCilja = prihodNum > 0 && nedostaje > 0 ? Math.ceil(nedostaje / (prihodNum * 0.1)) : null
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-base">🛡️</span>
+        <h3 className="text-sm font-bold" style={{ color: '#D4AF37' }}>Kalkulator hitnog fonda</h3>
+      </div>
+      <div className="space-y-3 mb-4">
+        <div>
+          <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Miesečni troškovi (€)</label>
+          <input type="number" value={troskovi} onChange={e => setTroskovi(e.target.value)} placeholder="npr. 1200"
+            className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }} />
+        </div>
+        <div>
+          <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Trajanje hitnog fonda</label>
+          <select value={buffer} onChange={e => setBuffer(Number(e.target.value))}
+            className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }}>
+            <option value={3}>3 mjeseca (minimum)</option>
+            <option value={6}>6 mjeseci (preporučeno)</option>
+            <option value={12}>12 mjeseci (konzervativno)</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Imam trenutno na štednom računu (€)</label>
+          <input type="number" value={imaNa} onChange={e => setImaNa(e.target.value)} placeholder="npr. 500"
+            className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }} />
+        </div>
+        <div>
+          <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Miesečni prihod (€) — za izračun roka</label>
+          <input type="number" value={prihod} onChange={e => setPrihod(e.target.value)} placeholder="npr. 1500"
+            className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }} />
+        </div>
+      </div>
+      {cilj > 0 && (
+        <div className="rounded-xl p-4 space-y-3" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="flex justify-between items-center">
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Cilj hitnog fonda</span>
+            <span className="text-base font-black" style={{ color: '#D4AF37' }}>{cilj.toLocaleString('hr-HR')} €</span>
+          </div>
+          {imaNum > 0 && (
+            <>
+              <div className="flex justify-between items-center">
+                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Nedostaje</span>
+                <span className="text-base font-black" style={{ color: nedostaje === 0 ? '#22c55e' : '#f59e0b' }}>{nedostaje.toLocaleString('hr-HR')} €</span>
+              </div>
+              <div>
+                <div className="flex justify-between text-xs mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  <span>Napredak</span><span>{postotak}%</span>
+                </div>
+                <div className="h-2 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                  <div className="h-2 rounded-full transition-all" style={{ width: `${postotak}%`, backgroundColor: postotak >= 100 ? '#22c55e' : '#D4AF37' }} />
+                </div>
+              </div>
+              {mjeseciDoCilja && mjeseciDoCilja > 0 && (
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  Uz 10% prihoda/mj ({(prihodNum * 0.1).toFixed(0)} €) → cilj za <strong style={{ color: '#fff' }}>{mjeseciDoCilja} {mjeseciDoCilja === 1 ? 'mjesec' : 'mj.'}</strong>
+                </p>
+              )}
+            </>
+          )}
+        </div>
+      )}
+      <VsnUpsell />
+    </div>
+  )
+}
+
+function MiniOtplataDuga() {
+  const EMPTY_DUG = { naziv: '', iznos: '', kamata: '' }
+  const [dugovi, setDugovi] = useState([{ ...EMPTY_DUG }, { ...EMPTY_DUG }, { ...EMPTY_DUG }])
+  const [metoda, setMetoda] = useState<'lavina' | 'gruda'>('lavina')
+
+  const parsed = dugovi
+    .map((d, i) => ({ ...d, i, iznosNum: parseFloat(d.iznos.replace(',', '.')) || 0, kamataNum: parseFloat(d.kamata.replace(',', '.')) || 0 }))
+    .filter(d => d.iznosNum > 0)
+
+  const sorted = [...parsed].sort((a, b) =>
+    metoda === 'lavina' ? b.kamataNum - a.kamataNum : a.iznosNum - b.iznosNum
+  )
+
+  const updateDug = (idx: number, field: string, val: string) => {
+    setDugovi(prev => prev.map((d, i) => i === idx ? { ...d, [field]: val } : d))
+  }
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-base">💸</span>
+        <h3 className="text-sm font-bold" style={{ color: '#D4AF37' }}>Kalkulator eliminacije duga</h3>
+      </div>
+      <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>Unesi do 3 duga. Odaberi metodu — prikazujemo redoslijed otplate.</p>
+      <div className="space-y-3 mb-4">
+        {dugovi.map((d, i) => (
+          <div key={i} className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <p className="text-xs font-bold mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>Dug {i + 1}</p>
+            <div className="grid grid-cols-3 gap-2">
+              <input type="text" value={d.naziv} onChange={e => updateDug(i, 'naziv', e.target.value)} placeholder="Naziv"
+                className="col-span-3 rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
+              <input type="number" value={d.iznos} onChange={e => updateDug(i, 'iznos', e.target.value)} placeholder="Iznos (€)"
+                className="rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
+              <input type="number" value={d.kamata} onChange={e => updateDug(i, 'kamata', e.target.value)} placeholder="Kamata %"
+                className="rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
+              <div className="flex items-center justify-center text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                {d.iznosNum > 0 ? `${d.iznosNum.toLocaleString('hr-HR')} €` : '—'}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        {(['lavina', 'gruda'] as const).map(m => (
+          <button key={m} onClick={() => setMetoda(m)}
+            className="rounded-xl py-2 text-xs font-bold transition-all"
+            style={{ backgroundColor: metoda === m ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.04)', border: `1px solid ${metoda === m ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`, color: metoda === m ? '#D4AF37' : 'rgba(255,255,255,0.5)' }}>
+            {m === 'lavina' ? '⚡ Lavina (kamata)' : '❄️ Snježna gruda (iznos)'}
+          </button>
+        ))}
+      </div>
+      {sorted.length > 0 && (
+        <div className="rounded-xl p-4 space-y-2" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <p className="text-xs font-bold mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>Preporučeni redoslijed:</p>
+          {sorted.map((d, rank) => (
+            <div key={d.i} className="flex items-center gap-3 rounded-lg px-3 py-2"
+              style={{ backgroundColor: rank === 0 ? 'rgba(212,175,55,0.08)' : 'rgba(255,255,255,0.02)', border: `1px solid ${rank === 0 ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.05)'}` }}>
+              <span className="text-sm font-black" style={{ color: rank === 0 ? '#D4AF37' : 'rgba(255,255,255,0.3)', minWidth: 20 }}>{rank + 1}.</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold truncate" style={{ color: rank === 0 ? '#fff' : 'rgba(255,255,255,0.6)' }}>{d.naziv || `Dug ${d.i + 1}`}</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                  {d.iznosNum.toLocaleString('hr-HR')} € · {d.kamataNum}% kamata
+                </p>
+              </div>
+              {rank === 0 && <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>PRVO</span>}
+            </div>
+          ))}
+          <p className="text-xs pt-2" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            {metoda === 'lavina' ? '⚡ Lavina — otplati dug s najvećom kamatom prvi. Matematički optimalno.' : '❄️ Snježna gruda — počni s najmanjim dugom. Brže pobjede, veća motivacija.'}
+          </p>
+        </div>
+      )}
+      <VsnUpsell />
+    </div>
+  )
+}
+
+function MiniSlozenaKamata() {
+  const [iznos, setIznos] = useState('')
+  const [godine, setGodine] = useState('20')
+  const [prinos, setPrinos] = useState('7')
+
+  const iznosNum = parseFloat(iznos.replace(',', '.')) || 0
+  const godinNum = parseInt(godine) || 0
+  const prinosNum = parseFloat(prinos.replace(',', '.')) || 0
+
+  const rezultati: { god: number; vrijednost: number; ulozeno: number }[] = []
+  if (iznosNum > 0 && godinNum > 0 && prinosNum > 0) {
+    const checkpoints = [5, 10, 15, 20, 25, 30].filter(g => g <= godinNum)
+    if (!checkpoints.includes(godinNum)) checkpoints.push(godinNum)
+    for (const g of checkpoints.sort((a, b) => a - b)) {
+      let v = 0
+      for (let m = 0; m < g * 12; m++) {
+        v = (v + iznosNum) * (1 + prinosNum / 100 / 12)
+      }
+      rezultati.push({ god: g, vrijednost: Math.round(v), ulozeno: iznosNum * g * 12 })
+    }
+  }
+
+  const finalR = rezultati[rezultati.length - 1]
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-base">📈</span>
+        <h3 className="text-sm font-bold" style={{ color: '#D4AF37' }}>Kalkulator složene kamate</h3>
+      </div>
+      <div className="space-y-3 mb-4">
+        <div>
+          <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Mijesečni iznos ulaganja (€)</label>
+          <input type="number" value={iznos} onChange={e => setIznos(e.target.value)} placeholder="npr. 100"
+            className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }} />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Broj godina</label>
+            <select value={godine} onChange={e => setGodine(e.target.value)}
+              className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }}>
+              {[5, 10, 15, 20, 25, 30].map(g => <option key={g} value={g}>{g} godina</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Godišnji prinos (%)</label>
+            <select value={prinos} onChange={e => setPrinos(e.target.value)}
+              className="w-full rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none' }}>
+              <option value="4">4% (konzervativno)</option>
+              <option value="6">6% (umjereno)</option>
+              <option value="7">7% (historijsko)</option>
+              <option value="8">8% (optimistično)</option>
+              <option value="10">10% (S&P 500 prosjek)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      {finalR && (
+        <div className="space-y-3">
+          <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 100%)', border: '1px solid rgba(212,175,55,0.3)' }}>
+            <p className="text-xs mb-1" style={{ color: 'rgba(212,175,55,0.7)' }}>Vrijednost za {godinNum} godina</p>
+            <p className="text-3xl font-black" style={{ color: '#D4AF37' }}>{finalR.vrijednost.toLocaleString('hr-HR')} €</p>
+            <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              Uloženo: {finalR.ulozeno.toLocaleString('hr-HR')} € · Zarada: <span style={{ color: '#22c55e' }}>+{(finalR.vrijednost - finalR.ulozeno).toLocaleString('hr-HR')} €</span>
+            </p>
+          </div>
+          {rezultati.length > 1 && (
+            <div className="rounded-xl p-4 space-y-2" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              {rezultati.map(r => (
+                <div key={r.god} className="flex items-center justify-between">
+                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>{r.god} god.</span>
+                  <div className="flex-1 mx-3 h-1.5 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
+                    <div className="h-1.5 rounded-full" style={{ width: `${Math.round((r.vrijednost / finalR.vrijednost) * 100)}%`, backgroundColor: 'rgba(212,175,55,0.5)' }} />
+                  </div>
+                  <span className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.7)' }}>{r.vrijednost.toLocaleString('hr-HR')} €</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      <VsnUpsell />
+    </div>
+  )
+}
+
 // ─── Glavni page ──────────────────────────────────────────────────────────────
 
 export default function StarterPortalPage() {
@@ -1255,22 +1513,51 @@ export default function StarterPortalPage() {
               <BudzetTracker userEmail={data.email} />
             </div>
 
-            {/* Ostali materijali — placeholder za videe 2/3/4 */}
+            {/* Ostali materijali — mini kalkulatori po tjednima */}
             <div className="rounded-2xl p-5" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <h2 className="text-base font-bold mb-1" style={{ color: 'rgba(255,255,255,0.45)' }}>📂 Ostali materijali</h2>
+              <h2 className="text-base font-bold mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>📂 Ostali materijali</h2>
               <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Otključavaju se s novim tjednima programa.</p>
-              <div className="space-y-2">
-                {[
-                  'Tjedan 2 — Radni list za automatizaciju štednje',
-                  'Tjedan 3 — Tablica za pregled i eliminaciju dugova',
-                  'Tjedan 4 — Starter vodič za ETF investicije',
-                ].map((label, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-xl px-4 py-3"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.55 }}>
-                    <span>🔒</span>
-                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>{label}</span>
+              <div className="space-y-3">
+
+                {/* Tjedan 2 — Hitni fond kalkulator */}
+                {STARTER_VIDEO_META[2] ? (
+                  <div className="rounded-xl p-4" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'rgba(212,175,55,0.6)' }}>Tjedan 2</p>
+                    <MiniHitniFond />
                   </div>
-                ))}
+                ) : (
+                  <div className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.55 }}>
+                    <span>🔒</span>
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Tjedan 2 — Kalkulator hitnog fonda</span>
+                  </div>
+                )}
+
+                {/* Tjedan 3 — Otplata duga kalkulator */}
+                {STARTER_VIDEO_META[3] ? (
+                  <div className="rounded-xl p-4" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'rgba(212,175,55,0.6)' }}>Tjedan 3</p>
+                    <MiniOtplataDuga />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.55 }}>
+                    <span>🔒</span>
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Tjedan 3 — Kalkulator eliminacije duga</span>
+                  </div>
+                )}
+
+                {/* Tjedan 4 — Složena kamata kalkulator */}
+                {STARTER_VIDEO_META[4] ? (
+                  <div className="rounded-xl p-4" style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'rgba(212,175,55,0.6)' }}>Tjedan 4</p>
+                    <MiniSlozenaKamata />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.55 }}>
+                    <span>🔒</span>
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>Tjedan 4 — Kalkulator složene kamate</span>
+                  </div>
+                )}
+
               </div>
             </div>
 
