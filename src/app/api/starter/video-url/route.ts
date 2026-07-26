@@ -8,8 +8,7 @@ const STARTER_VIDEOS: Record<number, string> = {
   1: 'starter/video1.mp4',
   2: 'starter/video2.mp4',
   3: 'starter/video3.mp4',
-  // 3: 'starter/video3.mp4',
-  // 4: 'starter/video4.mp4',
+  4: 'starter/video4.mp4',
 }
 
 export async function GET(request: NextRequest) {

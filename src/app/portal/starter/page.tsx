@@ -460,7 +460,21 @@ const VIDEO3_META: StarterVideoMeta = {
   sljedeci_tjedan: 'Prve investicije bez straha — ETF za početnike i zašto investiranje nije samo za bogate.',
 }
 
-const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META, 2: VIDEO2_META, 3: VIDEO3_META }
+const VIDEO4_META: StarterVideoMeta = {
+  uvod: 'U četvrtoj i posljednjoj lekciji Starter Paketa postavljamo temelje zaštite i investiranja. Naučit ćeš zašto je riziko životno osiguranje važnije od investiranja za svakoga tko ima obitelj, zašto bankina vinkulacija ne štiti tvoju obitelj, i što je naložbeno životno osiguranje — jednostavan alat koji kombinira investiranje i zaštitu u jednom.',
+  kljucne_tocke: [
+    'Složeni prinos — 100 EUR/mj. × 30 godina = 150.000 EUR',
+    'Zaštita obitelji PRIJE investiranja — zašto i kako',
+    'Vinkulacija banke vs. individualno riziko ŽO — ključna razlika',
+    'Naložbeno životno osiguranje — kako funkcionira, za koga je',
+    'Primjeri iz prakse: Maja (NŽO 20 god.) i Ivan (riziko + vinkulacija)',
+    '4 pitanja za odabir pravog osiguranja za tvoju situaciju',
+  ],
+  zadatak_tjedna: 'Trojni završni zadatak: (1) Dovrši sve u tabu Plan u portalu. (2) Ponovi Dijagnoza nakon 30 dana — vidi napredak. (3) Preuzmi PDF Moj proračun iz Materijala. Bonus: zapiši jedno konkretno pitanje o osiguranju i pošalji ga na fincoach.vip/kontakt.',
+  sljedeci_tjedan: 'Ovo je završetak Starter Paketa. Sljedeći korak je program Volim Svoj Novac — 90 dana dublje, s pratnjom i zajednicom.',
+}
+
+const STARTER_VIDEO_META: Record<number, StarterVideoMeta> = { 1: VIDEO1_META, 2: VIDEO2_META, 3: VIDEO3_META, 4: VIDEO4_META }
 
 function StarterVideoPlayer({ week, title, subtitle, userEmail }: {
   week: number; title: string; subtitle: string; userEmail: string
@@ -1482,21 +1496,13 @@ export default function StarterPortalPage() {
               userEmail={data.email}
             />
 
-            {/* Tjedan 4 — zaključan */}
-            {[
-              { week: 4, title: 'Prve investicije — bez straha', subtitle: 'ETF za početnike, korak po korak' },
-            ].map(v => (
-              <div key={v.week} className="rounded-2xl p-5 flex items-center gap-4"
-                style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', opacity: 0.55 }}>
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}>🔒</div>
-                <div>
-                  <span className="text-xs font-bold block mb-0.5" style={{ color: 'rgba(212,175,55,0.5)' }}>Tjedan {v.week}</span>
-                  <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.6)' }}>{v.title}</p>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>{v.subtitle}</p>
-                </div>
-              </div>
-            ))}
+            {/* Tjedan 4 — dostupan */}
+            <StarterVideoPlayer week={4}
+              title="Investiranje i financijska zaštita"
+              subtitle="Složeni prinos, NŽO, riziko ŽO i vinkulacija"
+              userEmail={data.email}
+            />
+
           </div>
         )}
 
