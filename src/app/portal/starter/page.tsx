@@ -863,7 +863,7 @@ function MiniOtplataDuga() {
               <input type="number" value={d.kamata} onChange={e => updateDug(i, 'kamata', e.target.value)} placeholder="Kamata %"
                 className="rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none' }} />
               <div className="flex items-center justify-center text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                {d.iznosNum > 0 ? `${d.iznosNum.toLocaleString('hr-HR')} €` : '—'}
+                {parseFloat(d.iznos) > 0 ? `${parseFloat(d.iznos).toLocaleString('hr-HR')} €` : '—'}
               </div>
             </div>
           </div>
