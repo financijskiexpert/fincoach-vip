@@ -59,7 +59,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <Link href="/starter-paket" className="hidden sm:block">
               <Button size="sm" variant="outline">
-                Starter Paket — 19€
+                Starter Paket
               </Button>
             </Link>
             <Link href="/volim-svojnovac">
