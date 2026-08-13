@@ -28,6 +28,17 @@ export async function deleteLead(leadId: string) {
   revalidatePath('/admin/leadovi')
 }
 
+export async function bulkDeleteLeads(leadIds: string[]) {
+  if (!leadIds.length) return
+  const service = await assertAdmin()
+  const { data: leads } = await service.from('leads').select('email').in('id', leadIds)
+  await service.from('email_sequence_queue').delete().in('lead_id', leadIds)
+  await service.from('leads').delete().in('id', leadIds)
+  const { deleteContact } = await import('@/lib/brevo')
+  await Promise.all((leads ?? []).map(l => deleteContact(l.email)))
+  revalidatePath('/admin/leadovi')
+}
+
 export async function updateLead(leadId: string, fullName: string, email: string) {
   const service = await assertAdmin()
   await service.from('leads').update({ full_name: fullName, email: email.toLowerCase().trim() }).eq('id', leadId)
