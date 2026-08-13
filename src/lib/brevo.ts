@@ -65,6 +65,15 @@ export async function addContact(contact: BrevoContact): Promise<{ id: number } 
   }
 }
 
+export async function deleteContact(emailOrId: string): Promise<void> {
+  try {
+    const encoded = encodeURIComponent(emailOrId)
+    await brevoFetch(`/contacts/${encoded}`, { method: 'DELETE' })
+  } catch (error) {
+    console.error('Error deleting Brevo contact:', error)
+  }
+}
+
 export async function triggerEmailSequence(email: string, workflowId: number): Promise<void> {
   try {
     await brevoFetch('/contacts/doubleOptinConfirmation', {

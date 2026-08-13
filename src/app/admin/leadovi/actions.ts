@@ -16,8 +16,15 @@ async function assertAdmin() {
 
 export async function deleteLead(leadId: string) {
   const service = await assertAdmin()
+  // Preberi email preden izbrišemo (za Brevo DELETE)
+  const { data: lead } = await service.from('leads').select('email').eq('id', leadId).maybeSingle()
   await service.from('email_sequence_queue').delete().eq('lead_id', leadId)
   await service.from('leads').delete().eq('id', leadId)
+  // Izbriši kontakt iz Breva (zaustavi vse bodočje pošiljanje)
+  if (lead?.email) {
+    const { deleteContact } = await import('@/lib/brevo')
+    await deleteContact(lead.email)
+  }
   revalidatePath('/admin/leadovi')
 }
 
