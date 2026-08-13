@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { Mail, Users, CheckCircle, AlertCircle } from 'lucide-react'
+import { EMAIL_SEQUENCE } from '@/lib/email-sequence'
 import LeadoviClient from './LeadoviClient'
 
 export default async function LeadoviPage() {
@@ -39,6 +40,36 @@ export default async function LeadoviPage() {
   const totalSent = Object.values(queueByLead).flat().filter(i => i?.status === 'sent').length
   const totalFailed = Object.values(queueByLead).flat().filter(i => i?.status === 'failed').length
 
+  // Preračunaj vse na serverju — client ne potrebuje EMAIL_SEQUENCE
+  const enrichedLeads = (leads ?? []).map(lead => {
+    const items = queueByLead[lead.id] ?? []
+    const sent = items.filter(i => i?.status === 'sent')
+    const pending = items.filter(i => i?.status === 'pending')
+    const failed = items.filter(i => i?.status === 'failed')
+    const skipped = items.filter(i => i?.status === 'skipped')
+    const lastSent = sent.at(-1) ?? null
+    const nextPending = pending[0] ?? null
+    return {
+      id: lead.id,
+      email: lead.email,
+      full_name: lead.full_name as string | null,
+      created_at: lead.created_at as string,
+      source: lead.source as string | null,
+      converted_to_purchase: lead.converted_to_purchase as boolean,
+      sentCount: sent.length,
+      pendingCount: pending.length,
+      failedCount: failed.length,
+      skippedCount: skipped.length,
+      lastSubject: lastSent ? (EMAIL_SEQUENCE[lastSent.sequence_index]?.subject ?? null) : null,
+      lastSentIndex: lastSent?.sequence_index ?? null,
+      lastSentAt: lastSent?.sent_at ?? null,
+      nextSubject: nextPending ? (EMAIL_SEQUENCE[nextPending.sequence_index]?.subject ?? null) : null,
+      nextIndex: nextPending?.sequence_index ?? null,
+      nextScheduledAt: nextPending?.scheduled_at ?? null,
+      failedDetails: failed.map(f => ({ index: f.sequence_index, error: f.error_message ?? null })),
+    }
+  })
+
   return (
     <div className="min-h-screen bg-navy p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
@@ -65,8 +96,7 @@ export default async function LeadoviPage() {
 
         {/* Lead kartice s bulk-select */}
         <LeadoviClient
-          leads={leads ?? []}
-          queueByLead={queueByLead}
+          leads={enrichedLeads}
           courses={courses ?? []}
         />
       </div>
