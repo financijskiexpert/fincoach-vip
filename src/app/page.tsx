@@ -13,12 +13,23 @@ import PdfBookMockup from '@/components/PdfBookMockup'
 import SiteFooter from '@/components/SiteFooter'
 import TestimonialsCarousel from '@/components/TestimonialsCarousel'
 
+function genCaptcha() {
+  const a = Math.floor(Math.random() * 9) + 1
+  const b = Math.floor(Math.random() * 9) + 1
+  const ops = ['+', '-', '+'] // weighted toward addition
+  const op = ops[Math.floor(Math.random() * ops.length)]
+  const answer = op === '+' ? a + b : a - b
+  return { question: `Koliko je ${a} ${op} ${b}?`, answer }
+}
+
 export default function LandingPage() {
   const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [marketingConsent, setMarketingConsent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [captcha] = useState(genCaptcha)
+  const [captchaInput, setCaptchaInput] = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -28,6 +39,10 @@ export default function LandingPage() {
     }
     if (!marketingConsent) {
       toast.error('Za primanje vodiča potrebna je suglasnost za primanje emailova.')
+      return
+    }
+    if (parseInt(captchaInput, 10) !== captcha.answer) {
+      toast.error('Netočan odgovor. Molimo provjeri i pokušaj ponovo.')
       return
     }
     setLoading(true)
@@ -113,6 +128,17 @@ export default function LandingPage() {
                   required
                   className="text-base"
                 />
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-white/60 shrink-0">{captcha.question}</span>
+                  <Input
+                    type="number"
+                    placeholder="Odgovor"
+                    value={captchaInput}
+                    onChange={e => setCaptchaInput(e.target.value)}
+                    required
+                    className="text-base w-28"
+                  />
+                </div>
                 <Button type="submit" size="lg" loading={loading} className="w-full text-base">
                   Pošalji mi vodič besplatno →
                 </Button>
@@ -325,6 +351,17 @@ export default function LandingPage() {
                   onChange={e => setEmail(e.target.value)}
                   required
                 />
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-white/60 shrink-0">{captcha.question}</span>
+                  <Input
+                    type="number"
+                    placeholder="Odgovor"
+                    value={captchaInput}
+                    onChange={e => setCaptchaInput(e.target.value)}
+                    required
+                    className="w-28"
+                  />
+                </div>
                 <Button type="submit" size="lg" loading={loading} className="w-full">
                   Pošalji mi vodič besplatno →
                 </Button>
