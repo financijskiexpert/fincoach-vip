@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
+﻿const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fincoach.vip'
 const CODE = 'PRILIKA'
 const CODE_VIP = 'PRIJATELJ'
 
@@ -1862,7 +1862,7 @@ export function buildLeadEmail(
       <p style="font-size:42px;font-weight:900;color:#D4AF37;margin:4px 0;">197 €</p>
       <p style="color:#718096;font-size:12px;margin:0 0 16px;">Umjesto redovnih 397 € · Doživotni pristup · 90 lekcija</p>
     </div>
-    <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svojnovac" class="btn">Upiši se sada →</a></div>
+    <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svoj-novac" class="btn">Upiši se sada →</a></div>
     <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata novca. Nema rizika.</p>`
 
   const softStarterCta = `<p style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);color:#718096;font-size:13px;">
@@ -2091,7 +2091,7 @@ export function buildLeadEmail(
         <p style="font-size:42px;font-weight:900;color:#D4AF37;margin:4px 0;">197 €</p>
         <p style="color:#718096;font-size:12px;margin:0;">Ista cijena — ali ovaj kod je samo tvoj.</p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svojnovac" class="btn">Upiši se s kodom PRIJATELJ →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svoj-novac" class="btn">Upiši se s kodom PRIJATELJ →</a></div>
       <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija. Ako ne vidiš razliku — vraćam ti novac. Osobno.</p>
       ${sig}`,
   }
@@ -2137,7 +2137,7 @@ export function buildStarterEmail(
       <p style="font-family:monospace;font-size:24px;font-weight:900;color:#fff;background:#1a2f47;padding:8px 20px;border-radius:8px;display:inline-block;letter-spacing:3px;margin:0 0 12px;">${couponDisplay}</p>
       <p style="color:#718096;font-size:12px;margin:0 0 16px;">90 lekcija · Doživotni pristup · 30-dnevna garancija</p>
     </div>
-    <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svojnovac" class="btn">Nastavi transformaciju →</a></div>`
+    <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svoj-novac" class="btn">Nastavi transformaciju →</a></div>`
 
   const appLink = `<div style="text-align:center;margin:16px 0;"><a href="${siteUrl}/starter" class="btn" style="background:#1a2f47;color:#D4AF37;border:1px solid rgba(212,175,55,0.4);">Otvori Starter App →</a></div>`
 
@@ -2258,7 +2258,7 @@ export function buildStarterEmail(
         <p style="color:#718096;font-size:12px;margin:0 0 4px;"><s>397 €</s> — <strong style="color:#fff;">50% popusta</strong></p>
         <p style="color:#ef4444;font-size:12px;font-weight:700;margin:0;">⏰ Kod vrijedi 48 sati</p>
       </div>
-      <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svojnovac" class="btn">Iskoristi svoju ekskluzivnu ponudu →</a></div>
+      <div style="text-align:center;margin:20px 0;"><a href="${siteUrl}/volim-svoj-novac" class="btn">Iskoristi svoju ekskluzivnu ponudu →</a></div>
       <p style="color:#718096;font-size:12px;text-align:center;">30-dnevna garancija povrata. Nema rizika.</p>
       ${sig}`,
 
