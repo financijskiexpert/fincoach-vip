@@ -54,7 +54,7 @@ export default function LeadoviClient({ leads, courses }: Props) {
   }
 
   function handleBulkDelete() {
-    const ids = [...selected]
+    const ids = Array.from(selected)
     if (!ids.length) return
     if (!confirm(`Izbriši ${ids.length} označenih leadova?\n\nBriše se email sekvenca i kontakti iz Breva. Akcija je nepovratna.`)) return
     startTransition(async () => {
