@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -77,7 +77,7 @@ export default function LandingPage() {
                 Starter Paket
               </Button>
             </Link>
-            <Link href="/volim-svojnovac">
+            <Link href="/volim-svoj-novac">
               <Button size="sm" variant="outline">
                 Volim Svoj Novac →
               </Button>
@@ -170,7 +170,7 @@ export default function LandingPage() {
           <div className="max-w-md mx-auto mt-6 text-center">
               <p className="text-white/40 text-sm mb-2">Već znaš što tražiš?</p>
               <Link
-                href="/volim-svojnovac"
+                href="/volim-svojnovac
                 className="inline-flex items-center gap-2 text-gold hover:text-yellow-400 text-sm font-semibold transition-colors group"
               >
                 Prelistaj tečaj odmah
@@ -388,7 +388,7 @@ export default function LandingPage() {
             </form>
           <p className="mt-6 text-white/30 text-sm">
             Ili{' '}
-            <Link href="/volim-svojnovac" className="text-gold hover:underline">
+            <Link href="/volim-svojnovac className="text-gold hover:underline">
               odmah pogledaj kompletan tečaj →
             </Link>
           </p>
