@@ -1232,7 +1232,7 @@ export default function StarterPortalPage() {
                 ? ' Iskoristio/la si impuls koji si izgradio/la — ne zaustavljaj se sada.'
                 : ' Nastavi dalje — 90 dana je dovoljno za trajnu promjenu.'}
             </p>
-            <Link href="/volim-svojnovac
+            <Link href="/volim-svojnovac"
               className="block text-center rounded-xl py-3 text-sm font-bold"
               style={{ backgroundColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.4)' }}>
               Saznaj više o FinCoach VIP 90 dana →
@@ -1400,7 +1400,7 @@ export default function StarterPortalPage() {
                   : <>Poseban popust za Starter Paket korisnike: <strong style={{ color: '#fff' }}>197 € (umj. 397 €)</strong>.</>
                 }
               </p>
-              <Link href="/volim-svojnovac
+              <Link href="/volim-svojnovac"
                 className="block text-center rounded-xl py-3 text-sm font-bold"
                 style={{ backgroundColor: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
                 Saznaj više o programu →

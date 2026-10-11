@@ -170,7 +170,7 @@ export default function LandingPage() {
           <div className="max-w-md mx-auto mt-6 text-center">
               <p className="text-white/40 text-sm mb-2">Već znaš što tražiš?</p>
               <Link
-                href="/volim-svojnovac
+                href="/volim-svojnovac"
                 className="inline-flex items-center gap-2 text-gold hover:text-yellow-400 text-sm font-semibold transition-colors group"
               >
                 Prelistaj tečaj odmah
@@ -388,7 +388,7 @@ export default function LandingPage() {
             </form>
           <p className="mt-6 text-white/30 text-sm">
             Ili{' '}
-            <Link href="/volim-svojnovac className="text-gold hover:underline">
+            <Link href="/volim-svojnovac" className="text-gold hover:underline">
               odmah pogledaj kompletan tečaj →
             </Link>
           </p>
